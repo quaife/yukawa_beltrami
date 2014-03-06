@@ -12,6 +12,7 @@ c     ------------------------------------------------------------------
       implicit real*8 (a-h, o-z)
 c Maximum number of holes and points per hole
       parameter (kmax = 15, npmax = 512, nmax = kmax*npmax)
+      parameter (nvortmax = 10)
 c
 c Geometry of holes
       dimension ak(kmax), bk(kmax), th_k(kmax), phi_k(kmax), cx(kmax),
@@ -21,11 +22,19 @@ c Geometry of holes
       dimension dsda(nmax), diag(nmax)
       dimension d2x(nmax), d2y(nmax), d2z(nmax)
 c
+c  Vortex variables
+      dimension x1Vort(nvortmax),x2Vort(nvortmax),x3Vort(nvortmax)
+c     vortex location
+      dimension vortK(nvortmax)  
+c     vortex strength
+
+c
 c  Grid variables
       parameter (nth_max = 1000, nphi_max = 1000, 
      1          ng_max = nth_max*nphi_max)
       dimension igrid(ng_max), th_gr(ng_max), phi_gr(ng_max),
-     1          u_gr(ng_max), x_gr(ng_max), y_gr(ng_max), z_gr(ng_max)
+     1          u_gr(ng_max), x_gr(ng_max), y_gr(ng_max), z_gr(ng_max),
+     1          uExact_gr(ng_max)
 c
 c target points are used to check accuracy
       dimension xtar(ng_max), ytar(ng_max), ztar(ng_max)
@@ -56,7 +65,8 @@ c
 c Initial Hole Geometry is given by reading in data
       call PRINI(6,13)
       call READ_DATA (freq, k, nd, nbk, nth, nphi, ak, bk, 
-     1                      cx, cy, cz, th_k, phi_k)
+     1                      cx, cy, cz, th_k, phi_k,
+     2                      nvort, x1Vort, x2Vort, x3Vort, vortK)
 c
 c Construct hole geometry and grid on surface of sphere
       call MAKE_GEO (k, nd, nbk, ak, bk, th_k, phi_k, xs, ys, zs,
@@ -64,12 +74,14 @@ c Construct hole geometry and grid on surface of sphere
      2               diag)
 
 c Construct grid on surface of sphere
-      call SURFACE_GRID (k, nd, nbk, nth, nphi, ak, bk, cx, cy, cz, 
-     1                   th_k, phi_k, th_gr, phi_gr, x_gr, y_gr,
-     2                   z_gr, igrid)
+      call SURFACE_GRID (k, nd, nbk, freq, nth, nphi, ak, bk,
+     1                   cx, cy, cz, th_k, phi_k, th_gr, phi_gr, 
+     2                   nvort, x1Vort, x2Vort, x3Vort, vortK, 
+     3                   x_gr, y_gr, z_gr, igrid, uExact_gr)
 
 c Construct the RHS and solve
-      call getRHS (k, nd, nbk, rhs)
+      call getRHS (k, nd, nbk, nvort, freq, xs, ys, zs, 
+     1    x1Vort, x2Vort, x3Vort, vortK, rhs)
 
 c Find the density function defined on the boundaries of the
 c geometry
@@ -77,16 +89,18 @@ c geometry
      1            lrwork, igwork, liwork, dsda, maxl)
 
 c Construct solution on surface grid
-         call SOL_GRID (freq, nd, k, nbk, nth, nphi, density, 
+       call SOL_GRID (freq, nd, k, nbk, nth, nphi, density, 
      1        xs, ys, zs, xn, yn, zn, dsda, 
      2        x_gr, y_gr, z_gr, igrid, u_gr)
 c
+
+       call CHECK_ERROR (nth, nphi, u_gr, uExact_gr)
 
 c Create a matlab file that plots the solution on the surface
 c of the sphere
       open (unit = 35, file = 'surfPlot.m')
       call dump_movie (nth, nphi, x_gr, y_gr, z_gr, 
-     1          u_gr, 35)
+     1          u_gr, uExact_gr, 35)
       close(35)
 
 
@@ -97,7 +111,8 @@ c
 c
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine READ_DATA (freq, k, nd, nbk, nth, nphi, ak, bk, 
-     1                      cx, cy, cz, th_k, phi_k)
+     1                      cx, cy, cz, th_k, phi_k,
+     2                      nvort, x1Vort, x2Vort, x3Vort, vortK)
 c
 c  *** DESCRIPTION :
 c
@@ -128,6 +143,7 @@ c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
       dimension ak(*), bk(*), cx(*), cy(*), cz(*), th_k(*), phi_k(*)
+      dimension x1Vort(*),x2Vort(*),x3Vort(*),vortK(*)
       complex*16 eye
 c
       eye = dcmplx(0.d0,1.d0)
@@ -135,8 +151,9 @@ c
       open (unit = 12, file = 'input.data')
 c
 c     read in number of holes and number of points per hole
-      read (12,*) k, nd
-c     total number of points
+      read (12,*) k, nd, nvort
+c     total number of points and number of vorticies for forming
+c     exact solution
       nbk = k*nd
       call PRINF (' nbk = *', nbk, 1)
 c     read in the one parameter in the PDE
@@ -149,6 +166,14 @@ c       compute center of each componenet curve
         call sph2cart (th_k(kbod),phi_k(kbod), 1.d0, cx(kbod),
      1                 cy(kbod), cz(kbod))
       end do
+
+      do ivort = 1,nvort
+        read(12,*) theta,phi,vortK(ivort)
+        call sph2cart (theta,phi,1.d0,x1Vort(ivort),
+     1      x2Vort(ivort),x3Vort(ivort))
+      enddo
+
+
 c     stop if the parameter in the PDE is less than 1/2
 c     Our fundamental solution changes to the other associated
 c     Legendre function when this is the case ... future work
@@ -560,9 +585,10 @@ c
 c
 c
 c********1*********2*********3*********4*********5*********6*********7**
-      subroutine SURFACE_GRID (k, nd, nbk, nth, nphi, ak, bk, cx, cy,  
-     1                         cz, th_k, phi_k, th_gr, phi_gr, x_gr, 
-     2                         y_gr, z_gr, igrid)
+      subroutine SURFACE_GRID (k, nd, nbk, freq, nth, nphi, ak, bk, 
+     1                   cx, cy, cz, th_k, phi_k, th_gr, phi_gr, 
+     2                   nvort, x1Vort, x2Vort, x3Vort, vortK, 
+     3                   x_gr, y_gr, z_gr, igrid, uExact_gr)
 c
 c  *** DESCRIPTION :
 c
@@ -599,12 +625,25 @@ c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
       dimension ak(k), bk(k), cx(k), cy(k), cz(k), th_k(k), phi_k(k)
+      dimension x1Vort(nvort), x2Vort(nvort), x3Vort(nvort)
+      dimension vortK(nvort)
       dimension igrid(nth,nphi), th_gr(nth,nphi), phi_gr(nth,nphi),
-     1          x_gr(nth,nphi), y_gr(nth,nphi), z_gr(nth,nphi)
+     1          x_gr(nth,nphi), y_gr(nth,nphi), z_gr(nth,nphi),
+     2          uExact_gr(nth,nphi)
+      complex *16 nu,a,b,c,hyp_2f1
       complex*16 eye
 c
       pi = 4.d0*datan(1.d0)
       eye = dcmplx(0.d0,1.d0)
+
+c     parameter if using conical or hypergeometric functions
+      tau = sqrt(4*freq**2.d0 - 1.d0)/2.d0
+c     parameter if using associated Legendre P functions
+      nu = -0.5d0 + eye*tau
+c     parameters if using hypergeometric function 2F1
+      a = nu + 1.d0
+      b = -1.d0*nu;
+      c = (1.d0,0.d0)
 c
 c Calculate epsilon
       radmax = 0.d0
@@ -613,7 +652,7 @@ c Calculate epsilon
         radmax = max(radmax, dabs(bk(kbod)))
       end do
 
-      eps = 2*2.d0*pi*radmax/nd
+      eps = 4.d0*2.d0*pi*radmax/nd
 
       dth = 2.d0*pi/nth
       dphi = pi/(nphi-1)
@@ -642,6 +681,29 @@ c Check if it is inside any of the component curves
         end do
       end do 
 
+      do i = 1,nphi
+        do j = 1, nphi
+          uExact_gr(i,j) = 0.d0    
+          if (igrid(i,j).ne.0) then 
+            do ivort = 1, nvort
+              dist2 = (x_gr(i,j) - x1Vort(ivort))**2.d0 + 
+     1                (y_gr(i,j) - x2Vort(ivort))**2.d0 + 
+     2                (z_gr(i,j) - x3Vort(ivort))**2.d0 
+              z = 1.d0 - 2.5d-1*dist2
+              uExact_gr(i,j) = uExact_gr(i,j) + 
+     1            vortK(ivort) * dreal(hyp_2f1(a,b,c,dcmplx(z)))
+
+
+            enddo
+          endif
+        enddo
+      enddo
+
+
+
+
+
+
 c Write the location of points in the geomtery and 
 c meshgrid to dat files
       open (unit = 31, file = 'igrid.dat')
@@ -662,7 +724,8 @@ c
 
 c
 c********1*********2*********3*********4*********5*********6*********7**
-      subroutine getRHS (k, nd, nbk, rhs)
+      subroutine getRHS (k, nd, nbk, nvort, freq, xs, ys, zs, 
+     1    x1Vort, x2Vort, x3Vort, vortK, rhs)
 c
 c  *** DESCRIPTION :
 c
@@ -682,17 +745,55 @@ c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
 
+      dimension xs(k*nd), ys(k*nd), zs(k*nd)
+      dimension x1Vort(nvort), x2Vort(nvort), x3Vort(nvort)
+      dimension vortK(nvort)
       dimension rhs(nbk)
+
 c
-      pi = 4.d0*datan(1.d0)
+      complex *16 nu,a,b,c,hyp_2f1
+      complex *16 eye
+
+      eye = (0.d0,1.d0)
+
+c     parameter if using conical or hypergeometric functions
+      tau = sqrt(4*freq**2.d0 - 1.d0)/2.d0
+c     parameter if using associated Legendre P functions
+      nu = -0.5d0 + eye*tau
+c     parameters if using hypergeometric function 2F1
+      a = nu + 1.d0
+      b = -1.d0*nu;
+      c = (1.d0,0.d0)
+
       istart = 0
       do kbod = 1, k
         do j = 1, nd
-          rhs(istart+j) = 1.d0
-c          rhs(istart+j) = dsin(dble(j-1)*2.d0*pi/nd)
+          if (nvort .eq. 0) then
+            rhs(istart+j) = 1.d0
+          else
+            rhs(istart+j) = 0.d0
+          endif
         end do
         istart = istart+nd
       end do
+
+      istart = 0
+      do kbod = 1,k
+        do j = 1,nd
+          do ivort = 1,nvort
+            dist2 = (xs(istart+j) - x1Vort(ivort))**2.d0 + 
+     1              (ys(istart+j) - x2Vort(ivort))**2.d0 + 
+     2              (zs(istart+j) - x3Vort(ivort))**2.d0 
+            z = 1.d0 - 2.5d-1*dist2
+            rhs(istart+j) = rhs(istart+j) + 
+     1           vortK(ivort)*dreal(hyp_2f1(a,b,c,dcmplx(z)))
+          enddo
+        enddo
+        istart = istart + nd
+      enddo
+
+
+
 
 c Dump it out
       open (unit = 24, file = 'rhs.dat')
@@ -1183,10 +1284,61 @@ c
       return
       end
 
+c********1*********2*********3*********4*********5*********6*********7**
+      subroutine CHECK_ERROR (nth, nphi, u, uExact)
+c
+c  *** DESCRIPTION :
+c
+c   Write a matlab file that plots the sphere with the colormap
+c   correpsonding to the solution of the PDE
+c
+c   *** INPUT PARAMETERS :
+c
+c   nx       = number of points in the first coordinate
+c   ny       = number of points in the second coordinate
+c   xgrid    = x-coordinate of grid on sphere
+c   ygrid    = y-coordinate of grid on sphere
+c   zgrid    = z-coordinate of grid on sphere
+c   ugrid    = solution which is a function defined on the sphere
+c   ifile    = file ID where information is dumped
+c
+c   *** OUTPUT PARAMETERS :
+c
+c   NONE
+c
+c***********************************************************************
+c
+      implicit real *8 (a-h,o-z)
+
+      dimension u(nth,nphi), uExact(nth,nphi)
+
+      uExactMax = 0.d0
+      do i = 1,nth
+        do j = 1,nphi
+          uExactMax = max(uExactMax, dabs(uExact(i,j)))
+        enddo
+      enddo
+
+      absError = 0.d0
+      do i = 1,nth
+        do j = 1,nphi  
+          absError = max(absError,dabs(uExact(i,j) - u(i,j)))
+        enddo
+      enddo
+
+      relError = absError/uExactMax
+      call PRIN2(' Absolute Error = *', absError, 1)
+      call PRIN2(' Relative Error = *', relError, 1)
+
+
+
+
+      return
+      end
 
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine dump_movie (nx, ny, xgrid, ygrid, zgrid, 
-     1          ugrid, ifile)
+     1          ugrid, uExact, ifile)
 c
 c  *** DESCRIPTION :
 c
@@ -1210,8 +1362,8 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
-      dimension xgrid(nx,ny),ygrid(nx,ny),zgrid(nx,ny)
-      dimension ugrid(nx,ny)
+      dimension xgrid(nx,ny), ygrid(nx,ny), zgrid(nx,ny)
+      dimension ugrid(nx,ny), uExact(nx,ny)
 c
       write (ifile,*) 'nx = ',nx,';'
       write (ifile,*) 'ny = ',ny,';'
@@ -1219,6 +1371,7 @@ c
       write (ifile,*) 'ygrid = zeros(nx+1,ny);'
       write (ifile,*) 'zgrid = zeros(nx+1,ny);'
       write (ifile,*) 'ugrid = zeros(nx+1,ny);'
+      write (ifile,*) 'uExact = zeros(nx+1,ny);'
 c  periodically write the x-coordinate of the meshgrid
       do i = 1,nx
         do j = 1,ny
@@ -1254,6 +1407,15 @@ c  periodically write the solution on the meshgrid
       enddo
       do j = 1,ny
         write(ifile,*) 'ugrid(',nx+1,',',j,') = ',ugrid(1,j),';'
+      enddo
+c  periodically write the exact solution on the meshgrid
+      do i = 1,nx
+        do j = 1,ny
+          write(ifile,*) 'uExact(',i,',',j,') = ',uExact(i,j),';'
+        enddo
+      enddo
+      do j = 1,ny
+        write(ifile,*) 'uExact(',nx+1,',',j,') = ',uExact(1,j),';'
       enddo
 
 c  write Matlab code that makes pretty surface plot
