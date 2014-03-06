@@ -138,6 +138,11 @@ c   cy      = y-coordinate of center ellipses on sphere
 c   cz      = z-coordinate of center ellipses on sphere
 c   th_k    = parameter for ellipses on sphere
 c   phi_k   = parameter for ellipses on sphere
+c   nvort   = number of vorticies to form exact solution
+c   x1Vort  = x-coordinate of the vorticies
+c   x2Vort  = y-coordinate of the vorticies
+c   x3Vort  = z-coordinate of the vorticies
+c   vortK   = strength of the vorticies
 c
 c***********************************************************************
 c
@@ -178,7 +183,7 @@ c     stop if the parameter in the PDE is less than 1/2
 c     Our fundamental solution changes to the other associated
 c     Legendre function when this is the case ... future work
       if (freq .le. 5.d-1) then
-        call PRIN2 (' freq must be less than one half *', freq, 1)
+        call PRIN2 (' freq must be greater than one half *', freq, 1)
         stop
       endif
 
@@ -601,6 +606,7 @@ c
 c   k         = number of connected componenets in geometry
 c   nd        = number of points per connected component
 c   nbk       = total number of points k*nd
+c   freq      = constant in the pde (\Delta - freq^2)u = 0
 c   nth       = number of points in theta direction for meshgrid
 c   nphi      = number of points in phi direction for meshgrid
 c   ak        = parameter for ellipses on sphere
@@ -610,6 +616,10 @@ c   cy        = y-coordinate of center ellipses on sphere
 c   cz        = z-coordinate of center ellipses on sphere
 c   th_k      = parameter for ellipses on sphere
 c   phi_k     = parameter for ellipses on sphere
+c   nvort     = number of vorticies to form exact solution
+c   x1Vort    = x-coordinate of the vorticies
+c   x2Vort    = y-coordinate of the vorticies
+c   x3Vort    = z-coordinate of the vorticies
 c
 c   *** OUTPUT PARAMETERS :
 c
@@ -620,6 +630,8 @@ c   y_gr      = y-coordinate of grid on sphere
 c   z_gr      = z-coordinate of grid on sphere
 c   igrid     = flag for if a point is inside or outside of the
 c               geometry of interest
+c   uExact_gr = exact solution formed using the fundamental solution
+c               centered outside of the boundary components
 c
 c***********************************************************************
 c
@@ -652,7 +664,7 @@ c Calculate epsilon
         radmax = max(radmax, dabs(bk(kbod)))
       end do
 
-      eps = 4.d0*2.d0*pi*radmax/nd
+      eps = 1.d1*2.d0*pi*radmax/nd
 
       dth = 2.d0*pi/nth
       dphi = pi/(nphi-1)
@@ -681,6 +693,8 @@ c Check if it is inside any of the component curves
         end do
       end do 
 
+c Form the exact solution at all points that are inside the
+c geometry
       do i = 1,nphi
         do j = 1, nphi
           uExact_gr(i,j) = 0.d0    
@@ -698,9 +712,6 @@ c Check if it is inside any of the component curves
           endif
         enddo
       enddo
-
-
-
 
 
 
@@ -736,6 +747,15 @@ c
 c   k         = number of connected componenets in geometry
 c   nd        = number of points per connected component
 c   nbk       = total number of points k*nd
+c   nvort     = number of vorticies to form exact solution
+c   freq      = constant in the pde (\Delta - freq^2)u = 0
+c   xs        = x-coordinate of the ellipses
+c   ys        = y-coordinate of the ellipses
+c   zs        = z-coordinate of the ellipses
+c   x1Vort    = x-coordinate of the vorticies
+c   x2Vort    = y-coordinate of the vorticies
+c   x3Vort    = z-coordinate of the vorticies
+c   vortK     = strength of the vorticies
 c
 c   *** OUTPUT PARAMETERS :
 c
@@ -1289,18 +1309,18 @@ c********1*********2*********3*********4*********5*********6*********7**
 c
 c  *** DESCRIPTION :
 c
-c   Write a matlab file that plots the sphere with the colormap
-c   correpsonding to the solution of the PDE
+c   Compute the maximum absolute and relative errors of the
+c   solution of the PDE.  Exact solution is found by using
+c   the boundary conditions that come from taking the fundamental
+c   solution centered inside of each hole.
 c
 c   *** INPUT PARAMETERS :
 c
-c   nx       = number of points in the first coordinate
-c   ny       = number of points in the second coordinate
-c   xgrid    = x-coordinate of grid on sphere
-c   ygrid    = y-coordinate of grid on sphere
-c   zgrid    = z-coordinate of grid on sphere
-c   ugrid    = solution which is a function defined on the sphere
-c   ifile    = file ID where information is dumped
+c   nth     = number of points in the azimuthal direction
+c   nphi    = number of points in the z-uthal direction
+c   u       = numerical solution 
+c   uExact  = exact solution found using vorticies centered
+c             outside of the geometry
 c
 c   *** OUTPUT PARAMETERS :
 c
@@ -1353,6 +1373,7 @@ c   xgrid    = x-coordinate of grid on sphere
 c   ygrid    = y-coordinate of grid on sphere
 c   zgrid    = z-coordinate of grid on sphere
 c   ugrid    = solution which is a function defined on the sphere
+c   uExact   = exact solution which is a function defined on the sphere
 c   ifile    = file ID where information is dumped
 c
 c   *** OUTPUT PARAMETERS :
