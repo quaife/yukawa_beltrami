@@ -1,6 +1,6 @@
-2 64 2              number of holes  number of points per hole
-1.0                parameter in pde
-100 100             number of azimuthal and z-uthal discretization points
+2 128 2              number of holes  number of points per hole
+8.0                parameter in pde
+50 50             number of azimuthal and z-uthal discretization points
 0.8 0.4 1.0 3.0     boundary curves radius1, radius2, center1, center2
 0.2 0.4 1.0 1.0
 1.0 3.0 2.0         vortex locations (theta,phi) and strength

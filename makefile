@@ -5,6 +5,9 @@ SOURCE=yukawa_beltrami.f
 TARGET=yukawa_beltrami
 
 OBJS=\
+auxil.o\
+conic.o\
+cons.o\
 dasum.o\
 daxpy.o\
 dcfft.o\
@@ -22,19 +25,25 @@ dpigmr.o\
 drlcal.o\
 dscal.o\
 dxlcal.o\
+hyp_2F1.o\
 idamax.o\
 isdgmr.o\
 matplot.o\
 prini.o\
-auxil.o\
-conic.o\
-cons.o\
-hyp_2F1.o
-
+quad2.o
 
 yukawa_beltrami: ${OBJS} yukawa_beltrami.f
 	${FC} ${FFLAGS} yukawa_beltrami.f -o ${TARGET} \
 	  ${OBJS}
+
+auxil.o: auxil.f90
+	${FC} ${FFLAGS} -c auxil.f90
+
+conic.o: conic.f90
+	${FC} ${FFLAGS} -c conic.f90
+
+cons.o: cons.f90
+	${FC} ${FFLAGS} -c cons.f90
 
 dasum.o: dasum.f
 	${FC} ${FFLAGS} -c dasum.f
@@ -87,6 +96,9 @@ dscal.o: dscal.f
 dxlcal.o: dxlcal.f
 	${FC} ${FFLAGS} -c dxlcal.f
 
+hyp_2F1.o: hyp_2F1.f90
+	${FC} ${FFLAGS} -c hyp_2F1.f90
+
 idamax.o: idamax.f
 	${FC} ${FFLAGS} -c idamax.f
 
@@ -99,20 +111,9 @@ matplot.o: matplot.f
 prini.o: prini.f
 	${FC} ${FFLAGS} -c prini.f
 
-zufall.o: zufall.f
-	${FC} ${FFLAGS} -c zufall.f
+quad2.o: quad2.f
+	${FC} ${FFLAGS} -c quad2.f
 
-auxil.o: auxil.f90
-	${FC} ${FFLAGS} -c auxil.f90
-
-conic.o: conic.f90
-	${FC} ${FFLAGS} -c conic.f90
-
-cons.o: cons.f90
-	${FC} ${FFLAGS} -c cons.f90
-
-hyp_2F1.o: hyp_2F1.f90
-	${FC} ${FFLAGS} -c hyp_2F1.f90
 
 clean:
 	rm *.o

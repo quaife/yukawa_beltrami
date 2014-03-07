@@ -60,8 +60,6 @@ c common blocks
       common /sys_size/ k, nd, nbk
       common /sphere_int/ xs, ys, zs, xn, yn, zn, dsda, diag, freq
 c
-c Open output files
-c
 c Initial Hole Geometry is given by reading in data
       call PRINI(6,13)
       call READ_DATA (freq, k, nd, nbk, nth, nphi, ak, bk, 
@@ -149,7 +147,7 @@ c
       implicit real*8 (a-h,o-z)
       dimension ak(*), bk(*), cx(*), cy(*), cz(*), th_k(*), phi_k(*)
       dimension x1Vort(*),x2Vort(*),x3Vort(*),vortK(*)
-      complex*16 eye
+      complex *16 eye
 c
       eye = dcmplx(0.d0,1.d0)
 c
@@ -642,20 +640,8 @@ c
       dimension igrid(nth,nphi), th_gr(nth,nphi), phi_gr(nth,nphi),
      1          x_gr(nth,nphi), y_gr(nth,nphi), z_gr(nth,nphi),
      2          uExact_gr(nth,nphi)
-      complex *16 nu,a,b,c,hyp_2f1
-      complex*16 eye
 c
       pi = 4.d0*datan(1.d0)
-      eye = dcmplx(0.d0,1.d0)
-
-c     parameter if using conical or hypergeometric functions
-      tau = sqrt(4*freq**2.d0 - 1.d0)/2.d0
-c     parameter if using associated Legendre P functions
-      nu = -0.5d0 + eye*tau
-c     parameters if using hypergeometric function 2F1
-      a = nu + 1.d0
-      b = -1.d0*nu;
-      c = (1.d0,0.d0)
 c
 c Calculate epsilon
       radmax = 0.d0
@@ -698,16 +684,13 @@ c geometry
       do i = 1,nphi
         do j = 1, nphi
           uExact_gr(i,j) = 0.d0    
-          if (igrid(i,j).ne.0) then 
+          if (igrid(i,j) .ne. 0) then 
             do ivort = 1, nvort
               dist2 = (x_gr(i,j) - x1Vort(ivort))**2.d0 + 
      1                (y_gr(i,j) - x2Vort(ivort))**2.d0 + 
      2                (z_gr(i,j) - x3Vort(ivort))**2.d0 
-              z = 1.d0 - 2.5d-1*dist2
               uExact_gr(i,j) = uExact_gr(i,j) + 
-     1            vortK(ivort) * dreal(hyp_2f1(a,b,c,dcmplx(z)))
-
-
+     1            vortK(ivort)*yukawaSLP(freq,dist2)
             enddo
           endif
         enddo
@@ -770,21 +753,6 @@ c
       dimension vortK(nvort)
       dimension rhs(nbk)
 
-c
-      complex *16 nu,a,b,c,hyp_2f1
-      complex *16 eye
-
-      eye = (0.d0,1.d0)
-
-c     parameter if using conical or hypergeometric functions
-      tau = sqrt(4*freq**2.d0 - 1.d0)/2.d0
-c     parameter if using associated Legendre P functions
-      nu = -0.5d0 + eye*tau
-c     parameters if using hypergeometric function 2F1
-      a = nu + 1.d0
-      b = -1.d0*nu;
-      c = (1.d0,0.d0)
-
       istart = 0
       do kbod = 1, k
         do j = 1, nd
@@ -796,6 +764,9 @@ c     parameters if using hypergeometric function 2F1
         end do
         istart = istart+nd
       end do
+c     if there are no vorticies, then take a simple boundary
+c     condition.  Otherwise, initialize the boundary condition
+c     to zero
 
       istart = 0
       do kbod = 1,k
@@ -804,18 +775,17 @@ c     parameters if using hypergeometric function 2F1
             dist2 = (xs(istart+j) - x1Vort(ivort))**2.d0 + 
      1              (ys(istart+j) - x2Vort(ivort))**2.d0 + 
      2              (zs(istart+j) - x3Vort(ivort))**2.d0 
-            z = 1.d0 - 2.5d-1*dist2
-            rhs(istart+j) = rhs(istart+j) + 
-     1           vortK(ivort)*dreal(hyp_2f1(a,b,c,dcmplx(z)))
+            rhs(istart+j) = rhs(istart+j) + vortK(ivort)*
+     1            yukawaSLP(freq,dist2)
           enddo
         enddo
         istart = istart + nd
       enddo
+c     Sum up the fundamental solution centered at various points
+c     outside of the geometry.
 
 
-
-
-c Dump it out
+c     Dump Dirichlet boundary condition to dat file
       open (unit = 24, file = 'rhs.dat')
       do i = 1, nbk
         write(24,'(e20.13,$)')(rhs(i))
@@ -868,12 +838,7 @@ c
 c  Timings
 c
       real*4 timep(2), etime
-c
-      pi = 4.d0*datan(1.d0)
-c
-c  solve linear system using GMRES.
-c
-c
+
 c     parameters for DGMRES
       itol = 0
       tol = 1.0d-11
@@ -952,8 +917,6 @@ c   yy       = output yy in yy = A*xx
 c
 c***********************************************************************
 c
-      use someconstants
-      use hyp_2f1_module
       implicit double precision (a-h,o-z)
       dimension xx(n), yy(n)
       parameter (kmax = 15, npmax = 512, nmax = kmax*npmax)
@@ -970,13 +933,74 @@ c Geometry of holes
       dimension dsda(nmax), diag(nmax) 
 
       complex *16 nu,a,b,c,hyp_2f1,hyperGeom,cdlp
-      complex*16 eye
-
-      eye = dcmplx(0.d0,1.d0)
+      complex *16 eye
 c
+      pi = 4.d0*datan(1.d0)
       dalph = 2.d0*pi/nd
-c     parameter if using conical or hypergeometric functions
-      tau = sqrt(4*freq**2.d0 - 1.d0)/2.d0
+
+c     flag for deciding if we do Alpert corrections or not
+      ialpert = 0
+      call AlpertQuadrature(k,nd,xs,ys,zs,xn,yn,zn,
+     1        dsda,freq,xx,ialpert,yy)
+
+c     loop over target points
+      do i = 1, nbk
+c       loop over source points
+        do j = 1, nbk
+          if (i .ne. j) then
+c  distance squared between source and target
+            dist2 = (xs(i) - xs(j))**2.d0 + 
+     1              (ys(i) - ys(j))**2.d0 + 
+     2              (zs(i) - zs(j))**2.d0 
+c  dot product of difference vector with normal
+            rdotn = (xs(i) - xs(j))*xn(j) + 
+     1              (ys(i) - ys(j))*yn(j) + 
+     2              (zs(i) - zs(j))*zn(j)
+
+c  argument required by hypergeometric representation
+            yy(i) = yy(i) + yukawaDLP(freq,dist2,rdotn)*
+     1          xx(j)*dsda(j)*dalph
+c           update solution
+          endif
+        end do !j
+        
+c       jump term
+        yy(i) = yy(i) + 5.d-1*xx(i)
+        if (ialpert .eq. 0) then
+c         diagonal term
+          yy(i) = yy(i) + diag(i)*dalph*xx(i)
+        endif
+      end do !i
+c
+      return
+      end
+
+c********1*********2*********3*********4*********5*********6*********7**
+      real *8 function yukawaDLP(freq,dist2,rdotn)
+c
+c  *** DESCRIPTION :
+c
+c   A descritpion
+c
+c   *** INPUT PARAMETERS :
+c
+c
+c   *** OUTPUT PARAMETERS :
+c
+c
+c***********************************************************************
+c
+      use someconstants
+      use hyp_2f1_module
+      implicit real*8 (a-h,o-z)
+
+      complex *16 nu,a,b,c,hyp_2f1,hyperGeom,cdlp
+      complex *16 eye
+
+      eye = (0.d0,1.d0)
+
+c     parameter for using hypergeometric functions
+      tau = dsqrt(4*freq**2.d0 - 1.d0)/2.d0
 c     parameter if using associated Legendre P functions
       nu = -0.5d0 + eye*tau
 c     parameters if using hypergeometric function 2F1
@@ -987,51 +1011,212 @@ c     scaling that multiplies the fundamental solution so
 c     that assymptotically it looks like 1/(2*Pi)*log||x-x_{0}||
       fundConst = 0.25d0/dcosh(pi*tau)
 
+c     argument required by hypergeometric representation
+      z = 1.d0 - 2.5d-1*dist2
+      hyperGeom = hyp_2f1(a,b,c,dcmplx(z))
+      cdlp = (nu+1.d0)*(-1.d0 + 5.d-1*dist2)*hyperGeom
+      hyperGeom = hyp_2f1(a+1,b-1,c,dcmplx(z))
+      cdlp = cdlp - (nu+1.d0)*hyperGeom
+      cdlp = cdlp/((-1.d0 + 5.d-1*dist2)**2.d0 - 1.d0)
+      cdlp = cdlp * rdotn
+c     cdlp is the double-layer potential.  If it has an imaginary
+c     component, there is a bug
 
-c     loop over target points
-      do i = 1, nbk
-c       jump condition
-        yy(i) = 0.d0
-c       loop over source points
-        do j = 1, nbk
-c         distance squared between source and target
-          dist2 = (xs(i) - xs(j))**2.d0 + 
-     1            (ys(i) - ys(j))**2.d0 + 
-     2            (zs(i) - zs(j))**2.d0 
-c         dot product of difference vector with normal
-          rdotn = (xs(i) - xs(j))*xn(j) + 
-     1            (ys(i) - ys(j))*yn(j) + 
-     2            (zs(i) - zs(j))*zn(j)
+c     multiply by the constant so that the jump is 1
+c     across the boundary
+      yukawaDLP = fundConst*dreal(cdlp)
 
-          if (i .ne. j) then
-c  argument required by hypergeometric representation
-            z = 1.d0 - 2.5d-1*dist2
-            hyperGeom = hyp_2f1(a,b,c,dcmplx(z))
-            cdlp = (nu+1.d0)*(-1.d0 + 5.d-1*dist2)*hyperGeom
-            hyperGeom = hyp_2f1(a+1,b-1,c,dcmplx(z))
-            cdlp = cdlp - (nu+1.d0)*hyperGeom
-            cdlp = cdlp/((-1.d0 + 5.d-1*dist2)**2.d0 - 1.d0)
-            cdlp = cdlp * rdotn
-c  cdlp is the double-layer potential.  If it has an imaginary
-c  component, there is a bug
 
-c           update solution
-            yy(i) = yy(i) + dreal(cdlp)*xx(j)*dsda(j)*dalph 
-          endif
-        end do !j
-        yy(i) = yy(i)*fundConst
-c       multiply by the constant so that the jump is 1
-c       across the boundary
-        
-c       jump term
-        yy(i) = yy(i) + 5.d-1*xx(i)
-c       diagonal term
-        yy(i) = yy(i) + diag(i)*dalph*xx(i)
-      end do !i
-c
       return
       end
 
+c********1*********2*********3*********4*********5*********6*********7**
+      real *8 function yukawaSLP(freq,dist2)
+c
+c  *** DESCRIPTION :
+c
+c   A descritpion
+c
+c   *** INPUT PARAMETERS :
+c
+c
+c   *** OUTPUT PARAMETERS :
+c
+c
+c***********************************************************************
+c
+      use someconstants
+      use hyp_2f1_module
+      implicit real*8 (a-h,o-z)
+
+      complex *16 nu,a,b,c,hyp_2f1,hyperGeom,cdlp
+      complex *16 eye
+
+      eye = (0.d0,1.d0)
+
+c     parameter for using hypergeometric functions
+      tau = dsqrt(4*freq**2.d0 - 1.d0)/2.d0
+c     parameter if using associated Legendre P functions
+      nu = -0.5d0 + eye*tau
+c     parameters if using hypergeometric function 2F1
+      a = nu + 1.d0
+      b = -1.d0*nu;
+      c = (1.d0,0.d0)
+c     scaling that multiplies the fundamental solution so
+c     that assymptotically it looks like 1/(2*Pi)*log||x-x_{0}||
+      fundConst = 0.25d0/dcosh(pi*tau)
+
+c     argument required by hypergeometric representation
+      z = 1.d0 - 2.5d-1*dist2
+      yukawaSLP = fundConst*dreal(hyp_2f1(a,b,c,dcmplx(z)))
+
+
+      return
+      end
+
+c********1*********2*********3*********4*********5*********6*********7**
+      subroutine AlpertQuadrature(nhole,nd,xs,ys,zs,xn,yn,zn,
+     1        dsda,freq,xx,ialpert,yy)
+c
+c  *** DESCRIPTION :
+c
+c   A descritpion
+c
+c   *** INPUT PARAMETERS :
+c
+c   nhole   = number of connected componenets in geometry
+c   nd      = number of points per connected component
+c   xs      = x-coordinate of the ellipses
+c   ys      = y-coordinate of the ellipses
+c   zs      = z-coordinate of the ellipses
+c   xn      = x-coordinate of the vector normal to the curve, but
+c             tangent to the sphere
+c   yn      = y-coordinate of the vector normal to the curve, but
+c             tangent to the sphere
+c   zn      = z-coordinate of the vector normal to the curve, but
+c             tangent to the sphere
+c   dsda    = arclength term
+c   freq    = constant in the pde (\Delta - freq^2)u = 0
+c   xx      = density function
+c   ialpert = flag to determine if Alpert's rules are used or not
+c
+c   *** OUTPUT PARAMETERS :
+c
+c   yy      = layer potential due to the Alpert quadrature rules
+c             This includes subtracting the terms around the singularity
+c             which are added in by doing the usual trapezoid rule
+c
+c***********************************************************************
+c
+      implicit real*8 (a-h,o-z)
+      dimension xs(nhole*nd), ys(nhole*nd), zs(nhole*nd)
+      dimension xn(nhole*nd), yn(nhole*nd), zn(nhole*nd)
+      dimension density(nhole*nd), dsda(nhole*nd)
+      dimension xx(nhole*nd),yy(nhole*nd)
+
+c Alpert quadrature rule nodes and weights
+      dimension u(15),v(15)
+
+      complex *16, allocatable :: xxComp(:)
+      complex *16, allocatable :: wsave(:)
+      complex *16, allocatable :: alpha(:)
+      complex *16, allocatable :: alphaVec1(:,:)
+      complex *16, allocatable :: alphaVec2(:,:)
+
+      complex *16 eye
+c
+      allocate(xxComp(nd),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(wsave(4*nhole*nd+15),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(alpha(nd),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(alphaVec1(nd,15),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(alphaVec2(nd,15),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+
+      eye = (0.d0,1.d0)
+      twopi = 8.d0*datan(1.d0)
+      dx = twopi/dble(nd)
+
+      do i = 1,nhole*nd
+        yy(i) = 0.d0
+      enddo
+      if (ialpert .eq. 0) return
+c     Initialize to zero.  If we are not using Alpert, this the routine
+c     ends here
+
+      call quad2(v,u,numquad,nshift,norder,6)
+c     Get quadrature nodes, weights, and region around singularity
+c     that is excluded
+
+      call DCFFTI(nd,wsave)
+c     initialize work array wsave for doing FFT and IFFT
+      istart = 0
+      do ihole = 1,nhole
+        do i = 1,nd
+          xxComp(i) = dcmplx(xx(i+istart))
+        enddo
+c       Need density function as a complex-valued function
+        call DCFFTF(nd,xxComp,wsave)
+c       Fourier series of the density function
+
+        do k=1,numquad
+          do j=1,nd
+            if (j .le. nd/2) then
+              alpha(j) = xxComp(j)*exp(dble(j-1)*eye*v(k)*dx)
+            else
+              alpha(j) = xxComp(j)*exp(dble(j-nd-1)*eye*v(k)*dx)
+            endif
+          enddo
+          call DCFFTB(nd,alpha,wsave)
+          do j = 1,nd
+            alphaVec1(j,k) = alpha(j)/dble(nd)
+          enddo
+c         Compute xx on the grid centered forwards by distances v            
+
+          do j=1,nd
+            if (j .le. nd/2) then
+              alpha(j) = xxComp(j)*exp(-dble(j-1)*eye*v(k)*dx)
+            else
+              alpha(j) = xxComp(j)*exp(-dble(j-nd-1)*eye*v(k)*dx)
+            endif
+          enddo
+          call DCFFTB(nd,alpha,wsave)
+          do j = 1,nd
+            alphaVec2(j,k) = alpha(j)/dble(nd)
+          enddo
+c         Compute xx on the grid centered backwards by distances v            
+        enddo
+c       Now have values for xx at all the quadrature points required by
+c       Alpert's quadrature rule for each regular quadrature point
+
+c       START OF FIRST TERM IN ALPERT'S PAPER
+
+
+
+
+
+
+c       END OF FIRST TERM IN ALPERT'S PAPER
+
+        istart = istart + nd
+      enddo !ihole
+
+
+      return
+      end
 
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine SOL_GRID (freq, nd, k, nbk, nth, nphi, density, 
@@ -1074,9 +1259,6 @@ c   u_gr    = solution of the PDE at points in the geometry
 c
 c***********************************************************************
 c
-      use conical
-      use someconstants
-      use hyp_2f1_module
       implicit real*8 (a-h,o-z)
       dimension xs(nbk), ys(nbk), zs(nbk)
       dimension xn(nbk), yn(nbk), zn(nbk)
@@ -1084,81 +1266,13 @@ c
       dimension x_gr(nth,nphi), y_gr(nth,nphi), z_gr(nth,nphi)
       dimension igrid(nth,nphi), u_gr(nth,nphi)
       real*4 timep(2), etime
-      complex *16 nu,a,b,c,hyp_2f1,hyperGeom,cdlp
-      complex *16 eye
 c
+      pi = 4.d0*datan(1.d0)
       dalph = 2.d0*pi/nd
-      eye = (0.d0,1.d0)
 c
-c     parameter if using conical or hypergeometric functions
-      tau = sqrt(4*freq**2.d0 - 1.d0)/2.d0
-c     parameter if using associated Legendre P functions
-      nu = -0.5d0 + eye*tau
-c     parameters if using hypergeometric function 2F1
-      a = nu + 1.d0
-      b = -1.d0*nu;
-      c = (1.d0,0.d0)
-c     scaling that multiplies the fundamental solution so
-c     that assymptotically it looks like 1/(2*Pi)*log||x-x_{0}||
-      fundConst = 0.25d0/dcosh(pi*tau)
-
-c     Representation of special functions to use
-c     Note that double-layer potential is not a
-c     Conical function and irep = 1 must be used
-c         irep = 0 => Conical functions
-c         irep = 1 => Hypergeometric functions
-      irep = 1
-
-cc     Compute the single-layer potential at the target
-cc     points using either conical functions or hypergeometric
-cc     functions.  Preliminary results indicate that 
-cc     hypergeometric functions are computed much faster
-c      tbeg = etime(timep)
-cc     loop over target points
-c      do i = 1, nth
-c        do j = 1, nphi
-c          u_gr(i,j) = 0.d0
-c          if (igrid(i,j).ne.0) then 
-cc           loop over source points
-c            do ip = 1, nbk
-cc             distance squared between source and target
-c              dist2 = (x_gr(i,j) - xs(ip))**2.d0 + 
-c     1                (y_gr(i,j) - ys(ip))**2.d0 + 
-c     2                (z_gr(i,j) - zs(ip))**2.d0 
-c              if (irep .eq. 0) then
-c                call conic(-1.d0 + 5.0d-1*dist2,0,
-c     1                tau,pLegendre,ierr)
-cc               check for errors in conic function evaulation
-c                if (ierr .eq. 1) then
-c                  call PRINF (' OVER/UNDER FLOW IN CONICAL',ierr,1)
-c                elseif (ierr .eq. 2) then
-c                  call PRINF (' PARAMETERS OUT OF RANGE IN CONICAL',
-c     1                      ierr,1)
-c                endif
-cc                update solution
-c                u_gr(i,j) = u_gr(i,j) +
-c     1               pLegendre*density(ip)*dsda(ip)*dalph
-c              elseif (irep .eq. 1) then
-cc               argument required by hypergeometric representation
-c                z = 1.d0 - 2.5d-1*dist2
-c                hyperGeom = hyp_2f1(a,b,c,dcmplx(z))
-c                u_gr(i,j) = u_gr(i,j) +
-c     1               dreal(hyperGeom)*density(ip)*dsda(ip)*dalph
-c              endif
-c            end do !ip
-c            u_gr(i,j) = u_gr(i,j)*fundConst
-cc           multiply by the constant so that the jump is 1
-cc           across the boundary
-c          end if
-c        end do !j
-c      end do !i
-c      tend = etime(timep)
-
 
 c     Compute the double-layer potential at the target
-c     points using either conical functions or hypergeometric
-c     functions.  Preliminary results indicate that 
-c     hypergeometric functions are computed much faster
+c     points using hypergeometric functions.
       tbeg = etime(timep)
 c     loop over target points
       do i = 1, nth
@@ -1175,24 +1289,11 @@ c             distance squared between source and target
      1                (y_gr(i,j) - ys(ip))*yn(ip) + 
      2                (z_gr(i,j) - zs(ip))*zn(ip)
 
-c             argument required by hypergeometric representation
-              z = 1.d0 - 2.5d-1*dist2
-              hyperGeom = hyp_2f1(a,b,c,dcmplx(z))
-              cdlp = (nu+1.d0)*(-1.d0 + 5.d-1*dist2)*hyperGeom
-              hyperGeom = hyp_2f1(a+1,b-1,c,dcmplx(z))
-              cdlp = cdlp - (nu+1.d0)*hyperGeom
-              cdlp = cdlp/((-1.d0 + 5.d-1*dist2)**2.d0 - 1.d0)
-              cdlp = cdlp * rdotn
-c  cdlp is the double-layer potential.  If it has an imaginary
-c  component, there is a bug
-
 c  update solution
-              u_gr(i,j) = u_gr(i,j) + 
-     1              dreal(cdlp)*density(ip)*dsda(ip)*dalph 
+              u_gr(i,j) = u_gr(i,j) + yukawaDLP(freq,dist2,rdotn)*
+     1            density(ip)*dsda(ip)*dalph
+
             end do !ip
-            u_gr(i,j) = u_gr(i,j)*fundConst
-c           multiply by the constant so that the jump is 1
-c           across the boundary
           end if
         end do !j
       end do !i
