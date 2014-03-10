@@ -5,7 +5,8 @@ c
 c  Solves integral equation for Yukawa-Beltrami on the Sphere 
 c
 c  this solves the Dirichlet bvp in multiply connected domains
-c  All layer potentials are evaluated directly
+c  All layer potentials are evaluated directly which means that it
+c  requires quadratic CPU time
 c
 c
 c     ------------------------------------------------------------------
@@ -43,11 +44,11 @@ c Density function
       dimension density(nmax)
 c
 c  Matrix equation variables for GMRES
-c  MAXL is the maximum nubmer of GMRES iterations performed
+c  maxl is the maximum nubmer of GMRES iterations performed
 c       before restarting.
-c  LRWORK is the dimension of a real workspace needed by DGMRES.
-c  LIWORK is the dimension of an integer workspace needed by DGMRES.
-c  GMWORK and IWORK are work arrays used by DGMRES
+c  lrwork is the dimension of a real workspace needed by DGMRES.
+c  liwork is the dimension of an integer workspace needed by DGMRES.
+c  gmwork and iwork are work arrays used by DGMRES
       parameter (maxl = 50,liwork=30,  
      1           lrwork=10+(nmax+kmax)*(maxl+6)+maxl*(maxl+3))
       dimension gmwork(lrwork), igwork(liwork)
@@ -939,7 +940,7 @@ c
       dalph = 2.d0*pi/nd
 
 c     flag for deciding if we do Alpert corrections or not
-      ialpert = 0
+      ialpert = 1
       call AlpertQuadrature(k,nd,xs,ys,zs,xn,yn,zn,
      1        dsda,freq,xx,ialpert,yy)
 
@@ -966,10 +967,10 @@ c           update solution
         
 c       jump term
         yy(i) = yy(i) + 5.d-1*xx(i)
-        if (ialpert .eq. 0) then
+c        if (ialpert .eq. 0) then
 c         diagonal term
           yy(i) = yy(i) + diag(i)*dalph*xx(i)
-        endif
+c        endif
       end do !i
 c
       return
@@ -980,13 +981,19 @@ c********1*********2*********3*********4*********5*********6*********7**
 c
 c  *** DESCRIPTION :
 c
-c   A descritpion
+c   Compute the term in the integrand of the double-layer potential
+c   This does not include the arclength or density function terms
 c
-c   *** INPUT PARAMETERS :
+c   *** INPUT PARAMETERS 
 c
+c   freq       = constant in the pde (\Delta - freq^2)u = 0
+c   dist2      = distance squared between the source and target
+c   rdotn      = dot product of the difference between the source
+c                and target with the normal
 c
 c   *** OUTPUT PARAMETERS :
 c
+c   yukawaDLP  = the double-layer potential kernel
 c
 c***********************************************************************
 c
@@ -1035,13 +1042,19 @@ c********1*********2*********3*********4*********5*********6*********7**
 c
 c  *** DESCRIPTION :
 c
-c   A descritpion
+c   Compute the term in the integrand of the single-layer potential
+c   This does not include the arclength or density function terms
 c
-c   *** INPUT PARAMETERS :
+c   *** INPUT PARAMETERS 
 c
+c   freq       = constant in the pde (\Delta - freq^2)u = 0
+c   dist2      = distance squared between the source and target
+c   rdotn      = dot product of the difference between the source
+c                and target with the normal
 c
 c   *** OUTPUT PARAMETERS :
 c
+c   yukawaSLP  = the single-layer potential kernel
 c
 c***********************************************************************
 c
@@ -1080,7 +1093,9 @@ c********1*********2*********3*********4*********5*********6*********7**
 c
 c  *** DESCRIPTION :
 c
-c   A descritpion
+c   Do modification to trapeziod rule that corresponds to Alpert's
+c   quadrature rule.  If ialpert=0, this routine simple sets yy to
+c   zero and then exits
 c
 c   *** INPUT PARAMETERS :
 c
@@ -1111,44 +1126,32 @@ c
       implicit real*8 (a-h,o-z)
       dimension xs(nhole*nd), ys(nhole*nd), zs(nhole*nd)
       dimension xn(nhole*nd), yn(nhole*nd), zn(nhole*nd)
-      dimension density(nhole*nd), dsda(nhole*nd)
+      dimension dsda(nhole*nd)
       dimension xx(nhole*nd),yy(nhole*nd)
 
 c Alpert quadrature rule nodes and weights
-      dimension u(15),v(15)
+      dimension u(15),v(15),vv(30)
 
-      complex *16, allocatable :: xxComp(:)
+      complex *16, allocatable :: zfn(:),zInterp(:,:)
+c     temporary space to store the functions that need
+c     Fourier interpolation
       complex *16, allocatable :: wsave(:)
-      complex *16, allocatable :: alpha(:)
-      complex *16, allocatable :: alphaVec1(:,:)
-      complex *16, allocatable :: alphaVec2(:,:)
+c     workspace for FFT and IFFT
+      real *8, allocatable :: xsShift(:,:)
+      real *8, allocatable :: ysShift(:,:)
+      real *8, allocatable :: zsShift(:,:)
+      real *8, allocatable :: xnShift(:,:)
+      real *8, allocatable :: ynShift(:,:)
+      real *8, allocatable :: znShift(:,:)
+      real *8, allocatable :: dsdaShift(:,:)
+      real *8, allocatable :: xxShift(:,:)
+c     shifted versions of the different periodic variables
 
       complex *16 eye
 c
-      allocate(xxComp(nd),stat=ierr)
-      if (ierr .ne. 0) then
-        print*,'ERROR WITH ALLOCATING ERROR'
-      endif
-      allocate(wsave(4*nhole*nd+15),stat=ierr)
-      if (ierr .ne. 0) then
-        print*,'ERROR WITH ALLOCATING ERROR'
-      endif
-      allocate(alpha(nd),stat=ierr)
-      if (ierr .ne. 0) then
-        print*,'ERROR WITH ALLOCATING ERROR'
-      endif
-      allocate(alphaVec1(nd,15),stat=ierr)
-      if (ierr .ne. 0) then
-        print*,'ERROR WITH ALLOCATING ERROR'
-      endif
-      allocate(alphaVec2(nd,15),stat=ierr)
-      if (ierr .ne. 0) then
-        print*,'ERROR WITH ALLOCATING ERROR'
-      endif
-
       eye = (0.d0,1.d0)
-      twopi = 8.d0*datan(1.d0)
-      dx = twopi/dble(nd)
+      pi = 4.d0*datan(1.d0)
+      dalph = pi/dble(nd)
 
       do i = 1,nhole*nd
         yy(i) = 0.d0
@@ -1157,66 +1160,244 @@ c
 c     Initialize to zero.  If we are not using Alpert, this the routine
 c     ends here
 
-      call quad2(v,u,numquad,nshift,norder,6)
+      call quad2(v,u,numquad,nbuffer,norder,6)
 c     Get quadrature nodes, weights, and region around singularity
 c     that is excluded
 
+      allocate(zfn(nd),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(zInterp(nd,2*numquad),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(wsave(4*nhole*nd+15),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(xsShift(nd,2*numquad),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(ysShift(nd,2*numquad),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(zsShift(nd,2*numquad),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(xnShift(nd,2*numquad),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(ynShift(nd,2*numquad),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(znShift(nd,2*numquad),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(dsdaShift(nd,2*numquad),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(xxShift(nd,2*numquad),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+
+      do i = 1,numquad
+        vv(i) = v(i)
+        vv(i+numquad) = -v(i)
+      enddo
+c     want to compute the forward and backward shift all
+c     at once
+
       call DCFFTI(nd,wsave)
 c     initialize work array wsave for doing FFT and IFFT
+
       istart = 0
       do ihole = 1,nhole
+c       START OF FORMING PERIODIC FUNCTIONS ON THE SHIFTED GRID
+c       FOR USING ALPERT QUADRATURE RULES
+c       shift the first two components of the normal vector
         do i = 1,nd
-          xxComp(i) = dcmplx(xx(i+istart))
+          zfn(i) = xn(i + istart) + eye*yn(i + istart)
         enddo
-c       Need density function as a complex-valued function
-        call DCFFTF(nd,xxComp,wsave)
-c       Fourier series of the density function
+        call fourierInterp(nd,zfn,2*numquad,vv,wsave,zInterp)
+        do k = 1,2*numquad
+          do i = 1,nd
+            xnShift(i,k) = dreal(zInterp(i,k))
+            ynShift(i,k) = dimag(zInterp(i,k))
+          enddo
+         enddo
 
-        do k=1,numquad
-          do j=1,nd
-            if (j .le. nd/2) then
-              alpha(j) = xxComp(j)*exp(dble(j-1)*eye*v(k)*dx)
-            else
-              alpha(j) = xxComp(j)*exp(dble(j-nd-1)*eye*v(k)*dx)
-            endif
-          enddo
-          call DCFFTB(nd,alpha,wsave)
-          do j = 1,nd
-            alphaVec1(j,k) = alpha(j)/dble(nd)
-          enddo
-c         Compute xx on the grid centered forwards by distances v            
-
-          do j=1,nd
-            if (j .le. nd/2) then
-              alpha(j) = xxComp(j)*exp(-dble(j-1)*eye*v(k)*dx)
-            else
-              alpha(j) = xxComp(j)*exp(-dble(j-nd-1)*eye*v(k)*dx)
-            endif
-          enddo
-          call DCFFTB(nd,alpha,wsave)
-          do j = 1,nd
-            alphaVec2(j,k) = alpha(j)/dble(nd)
-          enddo
-c         Compute xx on the grid centered backwards by distances v            
+c       shift the first two components of the position vector
+        do i = 1,nd
+          zfn(i) = xs(i + istart) + eye*ys(i + istart)
         enddo
-c       Now have values for xx at all the quadrature points required by
-c       Alpert's quadrature rule for each regular quadrature point
+        call fourierInterp(nd,zfn,2*numquad,vv,wsave,zInterp)
+        do k = 1,2*numquad
+          do i = 1,nd
+            xsShift(i,k) = dreal(zInterp(i,k))
+            ysShift(i,k) = dimag(zInterp(i,k))
+          enddo
+        enddo
 
-c       START OF FIRST TERM IN ALPERT'S PAPER
+c       shift the third component of the position and 
+c       normal vector
+        do i = 1,nd
+          zfn(i) = zs(i + istart) + eye*zn(i + istart)
+        enddo
+        call fourierInterp(nd,zfn,2*numquad,vv,wsave,zInterp)
+        do k = 1,2*numquad
+          do i = 1,nd
+            zsShift(i,k) = dreal(zInterp(i,k))
+            znShift(i,k) = dimag(zInterp(i,k))
+          enddo
+        enddo
+
+c       shift the arclength component and the density function
+        do i = 1,nd
+          zfn(i) = dsda(i + istart) + eye*xx(i + istart)
+        enddo
+        call fourierInterp(nd,zfn,2*numquad,vv,wsave,zInterp)
+        do k = 1,2*numquad
+          do i = 1,nd
+            dsdaShift(i,k) = dreal(zInterp(i,k))
+            xxShift(i,k) = dimag(zInterp(i,k))
+          enddo
+        enddo
+c       START OF FORMING PERIODIC FUNCTIONS ON THE SHIFTED GRID
+c       FOR USING ALPERT QUADRATURE RULES
 
 
+c       START OF FIRST AND THIRD TERM IN ALPERT'S CORRECTION
+        do i = 1,nd
+          do k = 1,numquad
+c  distance squared between source and Alpert quadrature point
+c  forward from the target point
+            dist2F = (xs(i+istart) - xsShift(i,k))**2.d0 + 
+     1               (ys(i+istart) - ysShift(i,k))**2.d0 + 
+     2               (zs(i+istart) - zsShift(i,k))**2.d0
+c  distance squared between source and Alpert quadrature point
+c  backward from the target point
+            dist2B = (xs(i+istart) - xsShift(i,k+numquad))**2.d0 + 
+     1               (ys(i+istart) - ysShift(i,k+numquad))**2.d0 + 
+     2               (zs(i+istart) - zsShift(i,k+numquad))**2.d0
+c  dot product of difference vector with normal at Alpert quadrature
+c  point forward from the target point
+            rdotnF = (xs(i+istart) - xsShift(i,k))*xnShift(i,k) + 
+     1               (ys(i+istart) - ysShift(i,k))*ynShift(i,k) + 
+     2               (zs(i+istart) - zsShift(i,k))*znShift(i,k)
+c  dot product of difference vector with normal at Alpert quadrature
+c  point backward from the target point
+            rdotnB = (xs(i+istart) - xsShift(i,k+numquad))*
+     1               xnShift(i,k+numquad) + 
+     2               (ys(i+istart) - ysShift(i,k+numquad))*
+     3               ynShift(i,k+numquad) + 
+     4               (zs(i+istart) - zsShift(i,k+numquad))*
+     5               znShift(i,k+numquad)
 
+c  argument required by hypergeometric representation
+            yy(i) = yy(i) + u(k)*yukawaDLP(freq,dist2F,rdotnF)*
+     1          xxShift(i,k)*dsdaShift(i,k)*dalph
+c           first term update
+            yy(i) = yy(i) + u(k)*yukawaDLP(freq,dist2B,rdotnB)*
+     1          xxShift(i,k+numquad)*dsdaShift(i,k+numquad)*dalph
+c           third term update
 
-
-
-c       END OF FIRST TERM IN ALPERT'S PAPER
+          enddo
+        enddo
+c       END OF FIRST AND THIRD TERM IN ALPERT'S CORRECTION
 
         istart = istart + nd
       enddo !ihole
 
+      deallocate(zfn)
+      deallocate(zInterp)
+      deallocate(wsave)
+      deallocate(xsShift)
+      deallocate(ysShift)
+      deallocate(zsShift)
+      deallocate(xnShift)
+      deallocate(ynShift)
+      deallocate(znShift)
+      deallocate(dsdaShift)
+      deallocate(xxShift)
 
       return
       end
+
+c********1*********2*********3*********4*********5*********6*********7**
+      subroutine fourierInterp(nd,zfn,nshifts,shift,wsave,zInterp)
+c
+c  *** DESCRIPTION :
+c
+c   Translate a complex valued function zfn by amounts in v so that
+c   Alpert's quadrature can be used
+c
+c   *** INPUT PARAMETERS :
+c
+c   nd        = number of points per connected component
+c   zfn       = periodic function that needs to be shited
+c   nshifts   = number of periodic shifts to be done
+c   shift     = amounts periodic functions are to be shifted
+c   wsave     = precomputed work array for doing fft and ifft
+c
+c   *** OUTPUT PARAMETERS :
+c
+c   zInterp   = shited periodic function 
+c
+c***********************************************************************
+c
+      implicit real*8 (a-h,o-z)
+      complex *16 zfn(nd)
+      real *8 shift(nshifts) 
+      complex *16 zInterp(nd,nshifts)
+
+      complex *16, allocatable :: alpha(:)
+      complex *16 eye
+
+      allocate (alpha(nd),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+
+      twopi = 8.d0*datan(1.0d0)
+      dx = twopi/dble(nd)
+      eye = (0.d0,1.0d0)
+
+      call DCFFTF(nd,zfn,wsave)
+c     Fourier series of the density function
+
+      do k=1,nshifts
+        do j=1,nd
+          if (j .le. nd/2) then
+            alpha(j) = zfn(j)*exp(dble(j-1)*eye*shift(k)*dx)
+          else
+            alpha(j) = zfn(j)*exp(dble(j-nd-1)*eye*shift(k)*dx)
+          endif
+        enddo
+        call DCFFTB(nd,alpha,wsave)
+        do j = 1,nd
+          zInterp(j,k) = alpha(j)/dble(nd)
+        enddo
+c       Compute xx on the grid centered forwards by distances        
+      enddo
+
+c      call DCFFTB(nd,zfn,wsave)
+c      do j = 1,nd
+c        zfn(j) = zfn(j)/dble(nd)
+c      enddo
+cc     Change zfn back to its original form
+
+      return
+      end
+
 
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine SOL_GRID (freq, nd, k, nbk, nth, nphi, density, 
