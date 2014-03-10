@@ -940,7 +940,7 @@ c
       dalph = 2.d0*pi/nd
 
 c     flag for deciding if we do Alpert corrections or not
-      ialpert = 1
+      ialpert = 0
       call AlpertQuadrature(k,nd,xs,ys,zs,xn,yn,zn,
      1        dsda,freq,xx,ialpert,yy)
 
@@ -967,10 +967,10 @@ c           update solution
         
 c       jump term
         yy(i) = yy(i) + 5.d-1*xx(i)
-c        if (ialpert .eq. 0) then
+        if (ialpert .eq. 0) then
 c         diagonal term
           yy(i) = yy(i) + diag(i)*dalph*xx(i)
-c        endif
+        endif
       end do !i
 c
       return
@@ -1151,7 +1151,7 @@ c     shifted versions of the different periodic variables
 c
       eye = (0.d0,1.d0)
       pi = 4.d0*datan(1.d0)
-      dalph = pi/dble(nd)
+      dalph = 2.d0*pi/dble(nd)
 
       do i = 1,nhole*nd
         yy(i) = 0.d0
@@ -1160,7 +1160,7 @@ c
 c     Initialize to zero.  If we are not using Alpert, this the routine
 c     ends here
 
-      call quad2(v,u,numquad,nbuffer,norder,6)
+      call quad2(v,u,numquad,nbuffer,norder,5)
 c     Get quadrature nodes, weights, and region around singularity
 c     that is excluded
 
@@ -1271,9 +1271,8 @@ c       shift the arclength component and the density function
             xxShift(i,k) = dimag(zInterp(i,k))
           enddo
         enddo
-c       START OF FORMING PERIODIC FUNCTIONS ON THE SHIFTED GRID
+c       END OF FORMING PERIODIC FUNCTIONS ON THE SHIFTED GRID
 c       FOR USING ALPERT QUADRATURE RULES
-
 
 c       START OF FIRST AND THIRD TERM IN ALPERT'S CORRECTION
         do i = 1,nd
@@ -1303,16 +1302,46 @@ c  point backward from the target point
      5               znShift(i,k+numquad)
 
 c  argument required by hypergeometric representation
-            yy(i) = yy(i) + u(k)*yukawaDLP(freq,dist2F,rdotnF)*
-     1          xxShift(i,k)*dsdaShift(i,k)*dalph
+            yy(i+istart) = yy(i+istart) + 
+     1          u(k)*yukawaDLP(freq,dist2F,rdotnF)*
+     2          xxShift(i,k)*dsdaShift(i,k)*dalph
 c           first term update
-            yy(i) = yy(i) + u(k)*yukawaDLP(freq,dist2B,rdotnB)*
-     1          xxShift(i,k+numquad)*dsdaShift(i,k+numquad)*dalph
+            yy(i+istart) = yy(i+istart) + 
+     1          u(k)*yukawaDLP(freq,dist2B,rdotnB)*
+     2          xxShift(i,k+numquad)*dsdaShift(i,k+numquad)*dalph
 c           third term update
 
           enddo
         enddo
 c       END OF FIRST AND THIRD TERM IN ALPERT'S CORRECTION
+
+c       START OF SECOND TERM IN ALPERT'S CORRECTION
+        do i = 1,nd
+          midSum = nd - 2*nbuffer + 1
+          do k = midSum,nd-1
+            index = mod(i+nbuffer+k,nd)
+            if (index .eq. 0) index = nd
+            if (index .ne. i) then
+c  distance squared between source and target point
+              dist2 = (xs(i+istart) - xs(index+istart))**2.d0 + 
+     1                (ys(i+istart) - ys(index+istart))**2.d0 + 
+     2                (zs(i+istart) - zs(index+istart))**2.d0
+c  dot product of difference vector with normal vector 
+              rdotn = (xs(i+istart) - xs(index+istart))*
+     1                xn(index+istart) + 
+     2                (ys(i+istart) - ys(index+istart))*
+     3                yn(index+istart) + 
+     4                (zs(i+istart) - zs(index+istart))*
+     5                zn(index+istart)
+
+              yy(i+istart) = yy(i+istart) - yukawaDLP(freq,dist2,rdotn)*
+     1              xx(index+istart)*dsda(index+istart)*dalph 
+            endif
+          enddo
+        enddo
+c       END OF SECOND TERM IN ALPERT'S CORRECTION
+
+
 
         istart = istart + nd
       enddo !ihole
@@ -1388,12 +1417,6 @@ c     Fourier series of the density function
         enddo
 c       Compute xx on the grid centered forwards by distances        
       enddo
-
-c      call DCFFTB(nd,zfn,wsave)
-c      do j = 1,nd
-c        zfn(j) = zfn(j)/dble(nd)
-c      enddo
-cc     Change zfn back to its original form
 
       return
       end
