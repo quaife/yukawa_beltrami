@@ -229,7 +229,7 @@ c        minimum value of a is 9, order of convergence is h^14*log(h)
          u(15)=1.000007149422537d0
          a=10
          order=16
-c        minimum value of a is 9, order of convergence is h^16ç*log(h)
+c        minimum value of a is 9, order of convergence is h^16*log(h)
       endif
 
       return

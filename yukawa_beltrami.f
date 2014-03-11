@@ -940,7 +940,7 @@ c
       dalph = 2.d0*pi/nd
 
 c     flag for deciding if we do Alpert corrections or not
-      ialpert = 0
+      ialpert = 1
       call AlpertQuadrature(k,nd,xs,ys,zs,xn,yn,zn,
      1        dsda,freq,xx,ialpert,yy)
 
@@ -997,6 +997,8 @@ c   yukawaDLP  = the double-layer potential kernel
 c
 c***********************************************************************
 c
+c     TODO: need to use an asymptotic rule here one dist2 is
+c           sufficiently small to elmiminate possible round-off error
       use someconstants
       use hyp_2f1_module
       implicit real*8 (a-h,o-z)
@@ -1160,7 +1162,7 @@ c
 c     Initialize to zero.  If we are not using Alpert, this the routine
 c     ends here
 
-      call quad2(v,u,numquad,nbuffer,norder,5)
+      call quad2(v,u,numquad,nbuffer,norder,3)
 c     Get quadrature nodes, weights, and region around singularity
 c     that is excluded
 
