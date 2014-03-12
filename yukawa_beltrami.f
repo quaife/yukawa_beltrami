@@ -932,9 +932,6 @@ c Geometry of holes
       dimension xs(nmax), ys(nmax), zs(nmax)
       dimension xn(nmax), yn(nmax), zn(nmax)
       dimension dsda(nmax), diag(nmax) 
-
-      complex *16 nu,a,b,c,hyp_2f1,hyperGeom,cdlp
-      complex *16 eye
 c
       pi = 4.d0*datan(1.d0)
       dalph = 2.d0*pi/nd
@@ -947,6 +944,7 @@ c     flag for deciding if we do Alpert corrections or not
 c     loop over target points
       do i = 1, nbk
 c       loop over source points
+c       START OF TRAPEZOID RULE
         do j = 1, nbk
           if (i .ne. j) then
 c  distance squared between source and target
@@ -964,11 +962,12 @@ c  argument required by hypergeometric representation
 c           update solution
           endif
         end do !j
+c       END OF TRAPEZOID RULE
         
 c       jump term
         yy(i) = yy(i) + 5.d-1*xx(i)
         if (ialpert .eq. 0) then
-c         diagonal term
+c         diagonal term if not using Alpert's quadrature
           yy(i) = yy(i) + diag(i)*dalph*xx(i)
         endif
       end do !i
@@ -997,13 +996,11 @@ c   yukawaDLP  = the double-layer potential kernel
 c
 c***********************************************************************
 c
-c     TODO: need to use an asymptotic rule here one dist2 is
-c           sufficiently small to elmiminate possible round-off error
       use someconstants
       use hyp_2f1_module
       implicit real*8 (a-h,o-z)
 
-      complex *16 nu,a,b,c,hyp_2f1,hyperGeom,cdlp
+      complex *16 nu,a,b,c,hyp_2f1,cdlp
       complex *16 eye
 
       eye = (0.d0,1.d0)
@@ -1022,11 +1019,9 @@ c     that assymptotically it looks like 1/(2*Pi)*log||x-x_{0}||
 
 c     argument required by hypergeometric representation
       z = 1.d0 - 2.5d-1*dist2
-      hyperGeom = hyp_2f1(a,b,c,dcmplx(z))
-      cdlp = (nu+1.d0)*(-1.d0 + 5.d-1*dist2)*hyperGeom
-      hyperGeom = hyp_2f1(a+1,b-1,c,dcmplx(z))
-      cdlp = cdlp - (nu+1.d0)*hyperGeom
-      cdlp = cdlp/((-1.d0 + 5.d-1*dist2)**2.d0 - 1.d0)
+      cdlp = (-1.d0 + 5.d-1*dist2) * hyp_2f1(a,b,c,dcmplx(z))
+      cdlp = cdlp - hyp_2f1(a+1,b-1,c,dcmplx(z))
+      cdlp = a * cdlp/((-1.d0 + 5.d-1*dist2)**2.d0 - 1.d0)
       cdlp = cdlp * rdotn
 c     cdlp is the double-layer potential.  If it has an imaginary
 c     component, there is a bug
@@ -1064,7 +1059,7 @@ c
       use hyp_2f1_module
       implicit real*8 (a-h,o-z)
 
-      complex *16 nu,a,b,c,hyp_2f1,hyperGeom,cdlp
+      complex *16 nu,a,b,c,hyp_2f1,cdlp
       complex *16 eye
 
       eye = (0.d0,1.d0)
@@ -1158,9 +1153,10 @@ c
       do i = 1,nhole*nd
         yy(i) = 0.d0
       enddo
+c     Initialize to zero
+
       if (ialpert .eq. 0) return
-c     Initialize to zero.  If we are not using Alpert, this the routine
-c     ends here
+c     If we are not using Alpert, this the subroutine ends here
 
       call quad2(v,u,numquad,nbuffer,norder,3)
 c     Get quadrature nodes, weights, and region around singularity
@@ -1210,6 +1206,8 @@ c     that is excluded
       if (ierr .ne. 0) then
         print*,'ERROR WITH ALLOCATING ERROR'
       endif
+c     Allocate memory to store all required functions at
+c     the quadrature points using Fourier interpolation
 
       do i = 1,numquad
         vv(i) = v(i)
