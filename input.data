@@ -1,5 +1,5 @@
-2 32 2            number of holes  number of points per hole
-10               parameter in pde
+2 128 2            number of holes  number of points per hole
+1               parameter in pde
 50 50             number of azimuthal and z-uthal discretization points
 0.8 0.4 1.0 3.0     boundary curves radius1, radius2, center1, center2
 0.2 0.4 1.0 1.0
