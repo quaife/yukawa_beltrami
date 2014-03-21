@@ -12,7 +12,7 @@ c
 c     ------------------------------------------------------------------
       implicit real*8 (a-h, o-z)
 c Maximum number of holes and points per hole
-      parameter (kmax = 15, npmax = 512, nmax = kmax*npmax)
+      parameter (kmax = 25, npmax = 1024, nmax = kmax*npmax)
       parameter (nvortmax = 10)
 c
 c Geometry of holes
@@ -576,7 +576,7 @@ c
       call dot (p, y_ax, y1)
       call dot (p, z_ax, z1)
       rad = dsqrt((x1/ak)**2 + (y1/bk)**2)
-      if ((rad<=1.0d0 + 1.d-1*eps) .and. (z1>0.d0)) then 
+      if ((rad<=1.0d0 + 1.d-2*eps) .and. (z1>0.d0)) then 
 c point is inside (or almost) the curve (outside the geometry)
         itest = 1
       elseif ((rad<=1.d0 + eps) .and. (z1>0.d0)) then 
@@ -663,6 +663,7 @@ c Calculate epsilon
         radmax = max(radmax, dabs(ak(kbod)))
         radmax = max(radmax, dabs(bk(kbod)))
       end do
+
 
 c      eps = 1.d0*2.d0*pi*radmax/nd
       eps = 1.d1*2.d0*pi*radmax/nd
@@ -936,7 +937,7 @@ c***********************************************************************
 c
       implicit double precision (a-h,o-z)
       dimension xx(n), yy(n)
-      parameter (kmax = 15, npmax = 512, nmax = kmax*npmax)
+      parameter (kmax = 25, npmax = 1024, nmax = kmax*npmax)
       parameter (nth_max = 1000, nphi_max = 1000, 
      1          ng_max = nth_max*nphi_max)
 
@@ -1547,7 +1548,7 @@ c
       dalph = 2.d0*pi/nd
       eye = (0.d0,1.0d0)
 
-      nup = 4 
+      nup = 1 
 c     upscaling factor
 
       allocate(zIn(nd),stat=ierr)
