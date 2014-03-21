@@ -73,7 +73,7 @@ C
       write (iw,1400) x(1),y(1),z(1)
       WRITE(IW,*) '];'
 1300  FORMAT(D15.6)
-1400  FORMAT(3D15.6)
+1400  FORMAT(3D25.16)
       write(iw,*) ' xx = x(:,1);'
       write(iw,*) ' yy = x(:,2);'
       write(iw,*) ' zz = x(:,3);'

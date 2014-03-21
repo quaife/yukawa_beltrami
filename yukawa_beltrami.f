@@ -93,7 +93,7 @@ c Construct solution on surface grid
      2        x_gr, y_gr, z_gr, igrid, u_gr)
 c
 
-       call CHECK_ERROR (nth, nphi, u_gr, uExact_gr)
+       call CHECK_ERROR (nth, nphi, igrid, u_gr, uExact_gr)
 
 c Create a matlab file that plots the solution on the surface
 c of the sphere
@@ -576,14 +576,27 @@ c
       call dot (p, y_ax, y1)
       call dot (p, z_ax, z1)
       rad = dsqrt((x1/ak)**2 + (y1/bk)**2)
-      if ((rad<1.d0+eps).and.(z1>0.d0)) then 
-c point is inside the curve (outside the geometry)
+      if ((rad<=1.0d0 + 1.d-1*eps) .and. (z1>0.d0)) then 
+c point is inside (or almost) the curve (outside the geometry)
         itest = 1
+      elseif ((rad<=1.d0 + eps) .and. (z1>0.d0)) then 
+        itest = -1
+c point is outside the curve (inside the geometry), but near
       else
-c point is outside the curve (inside the geometry)
         itest = 0
+c point is outside the curve (inside the geometry) and well-separated
       end if
-c
+
+
+
+c      if ((rad<1.d0+eps).and.(z1>0.d0)) then 
+cc point is inside the curve (outside the geometry)
+c        itest = 1
+c      else
+cc point is outside the curve (inside the geometry)
+c        itest = 0
+c      end if
+
       return
       end      
 c
@@ -651,6 +664,7 @@ c Calculate epsilon
         radmax = max(radmax, dabs(bk(kbod)))
       end do
 
+c      eps = 1.d0*2.d0*pi*radmax/nd
       eps = 1.d1*2.d0*pi*radmax/nd
 
       dth = 2.d0*pi/nth
@@ -674,8 +688,10 @@ c Check if it is inside any of the component curves
           end do
           if (in_out>0) then
             igrid(i,j) = 0
-          else
+          elseif (in_out .eq. 0) then
             igrid(i,j) = 1
+          else
+            igrid(i,j) = -1
           end if
         end do
       end do 
@@ -685,7 +701,7 @@ c geometry
       do i = 1,nphi
         do j = 1, nphi
           uExact_gr(i,j) = 0.d0    
-          if (igrid(i,j) .ne. 0) then 
+          if (abs(igrid(i,j)) .eq. 1) then 
             do ivort = 1, nvort
               dist2 = (x_gr(i,j) - x1Vort(ivort))**2.d0 + 
      1                (y_gr(i,j) - x2Vort(ivort))**2.d0 + 
@@ -1170,7 +1186,7 @@ c     that is excluded
       if (ierr .ne. 0) then
         print*,'ERROR WITH ALLOCATING ERROR'
       endif
-      allocate(wsave(4*nhole*nd+15),stat=ierr)
+      allocate(wsave(4*nd+15),stat=ierr)
       if (ierr .ne. 0) then
         print*,'ERROR WITH ALLOCATING ERROR'
       endif
@@ -1362,6 +1378,53 @@ c       END OF SECOND TERM IN ALPERT'S CORRECTION
       end
 
 c********1*********2*********3*********4*********5*********6*********7**
+      subroutine fourierUpsample(nIn,wsaveIn,zIn,nOut,wsaveOut,zOut)
+c
+c  *** DESCRIPTION :
+c
+c  Upsample a complex valued periodic function by padding the spectrum
+c  with zeros
+c
+c   *** INPUT PARAMETERS :
+c
+c   nIn       = number of input points
+c   wsaveIn   = precomputed work array for doing fft at input grid
+c   zIn       = periodic function that needs to be interpolated
+c   nOut      = number of output points
+c   wsaveOut  = precomputed work array for doing ifft at output grid
+c
+c   *** OUTPUT PARAMETERS :
+c
+c   zOut      = output interpolated periodic function
+c
+c***********************************************************************
+c
+      implicit real *8 (a-h,o-z)
+      complex *16 zIn(nIn)
+      complex *16 wsaveIn(*)
+      complex *16 wsaveOut(*)
+
+      complex *16 zOut(nOut)
+
+      do i = 1,nOut
+        zOut(i) = (0.d0,0.d0)
+      enddo
+
+      call DCFFTF(nIn,zIn,wsaveIn)
+
+      do i = 1,nIn/2
+        zOut(i) = zIn(i)/dble(nIn)
+        zOut(nOut - i + 1) = zIn(nIn - i + 1)/dble(nIn)
+      enddo
+
+      call DCFFTB(nOut,zOut,wsaveOut)
+
+      return
+      end
+
+
+
+c********1*********2*********3*********4*********5*********6*********7**
       subroutine fourierInterp(nd,zfn,nshifts,shift,wsave,zInterp)
 c
 c  *** DESCRIPTION :
@@ -1372,20 +1435,22 @@ c
 c   *** INPUT PARAMETERS :
 c
 c   nd        = number of points per connected component
-c   zfn       = periodic function that needs to be shited
+c   zfn       = periodic function that needs to be shifted
 c   nshifts   = number of periodic shifts to be done
 c   shift     = amounts periodic functions are to be shifted
 c   wsave     = precomputed work array for doing fft and ifft
 c
 c   *** OUTPUT PARAMETERS :
 c
-c   zInterp   = shited periodic function 
+c   zInterp   = shifted periodic function 
 c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
       complex *16 zfn(nd)
       real *8 shift(nshifts) 
+      complex *16 wsave(*)
+
       complex *16 zInterp(nd,nshifts)
 
       complex *16, allocatable :: alpha(:)
@@ -1429,7 +1494,7 @@ c********1*********2*********3*********4*********5*********6*********7**
 c
 c  *** DESCRIPTION :
 c
-c   Evaluate the single-layer potential representation at 
+c   Evaluate the double-layer potential representation at 
 c   a collection of points that are inside the geometry of interest.
 c   Have to extend this to the double-layer potential
 c
@@ -1470,9 +1535,121 @@ c
       dimension x_gr(nth,nphi), y_gr(nth,nphi), z_gr(nth,nphi)
       dimension igrid(nth,nphi), u_gr(nth,nphi)
       real*4 timep(2), etime
+      complex *16 eye
+
+      complex *16, allocatable :: wsaveIn(:),wsaveOut(:)
+      complex *16, allocatable :: zIn(:),zOut(:)
+      real *8, allocatable :: xsUp(:),ysUp(:),zsUp(:)
+      real *8, allocatable :: xnUp(:),ynUp(:),znUp(:)
+      real *8, allocatable :: densityUp(:), dsdaUp(:)
 c
       pi = 4.d0*datan(1.d0)
       dalph = 2.d0*pi/nd
+      eye = (0.d0,1.0d0)
+
+      nup = 4 
+c     upscaling factor
+
+      allocate(zIn(nd),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(zOut(nup*nd),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(wsaveIn(4*nd+15),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(wsaveOut(4*nup*nd+15),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(xsUp(nup*nbk),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(ysUp(nup*nbk),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(zsUp(nup*nbk),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(xnUp(nup*nbk),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(ynUp(nup*nbk),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(znUp(nup*nbk),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(dsdaUp(nup*nbk),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+      allocate(densityUp(nup*nbk),stat=ierr)
+      if (ierr .ne. 0) then
+        print*,'ERROR WITH ALLOCATING ERROR'
+      endif
+
+      call DCFFTI(nd,wsaveIn)
+      call DCFFTI(nd*nup,wsaveOut)
+
+      nhole = nbk/nd
+      istartIn = 0
+      istartOut = 0
+      do ihole = 1,nhole
+
+        do k = 1,nd
+          zIn(k) = xs(istartIn + k) + eye*xn(istartIn + k)
+        enddo
+        call fourierUpsample(nd,wsaveIn,zIn,nd*nup,wsaveOut,zOut)
+        do k = 1,nup*nd
+          xsUp(istartOut + k) = dreal(zOut(k))
+          xnUp(istartOut + k) = dimag(zOut(k))
+        enddo
+
+        do k = 1,nd
+          zIn(k) = ys(istartIn + k) + eye*yn(istartIn + k)
+        enddo
+        call fourierUpsample(nd,wsaveIn,zIn,nd*nup,wsaveOut,zOut)
+        do k = 1,nup*nd
+          ysUp(istartOut + k) = dreal(zOut(k))
+          ynUp(istartOut + k) = dimag(zOut(k))
+        enddo
+
+        do k = 1,nd
+          zIn(k) = zs(istartIn + k) + eye*zn(istartIn + k)
+        enddo
+        call fourierUpsample(nd,wsaveIn,zIn,nd*nup,wsaveOut,zOut)
+        do k = 1,nup*nd
+          zsUp(istartOut + k) = dreal(zOut(k))
+          znUp(istartOut + k) = dimag(zOut(k))
+        enddo
+
+        do k = 1,nd
+          zIn(k) = density(istartIn + k) + eye*dsda(istartIn + k)
+        enddo
+        call fourierUpsample(nd,wsaveIn,zIn,nd*nup,wsaveOut,zOut)
+        do k = 1,nup*nd
+          densityUp(istartOut + k) = dreal(zOut(k))
+          dsdaUp(istartOut + k) = dimag(zOut(k))
+        enddo
+
+        istartIn = istartIn + nd
+        istartOut = istartOut + nd*nup
+      enddo
+c     Upsample the boundary and density function for handling near
+c     points
+
+      
 c
 
 c     Compute the double-layer potential at the target
@@ -1482,7 +1659,7 @@ c     loop over target points
       do i = 1, nth
         do j = 1, nphi
           u_gr(i,j) = 0.d0
-          if (igrid(i,j).ne.0) then 
+          if (igrid(i,j) .eq. 1) then 
 c           loop over source points
             do ip = 1, nbk
 c             distance squared between source and target
@@ -1496,7 +1673,22 @@ c             distance squared between source and target
 c  update solution
               u_gr(i,j) = u_gr(i,j) + yukawaDLP(freq,dist2,rdotn)*
      1            density(ip)*dsda(ip)*dalph
+            end do !ip
 
+          elseif (igrid(i,j) .eq. -1) then
+c           loop over source points
+            do ip = 1, nbk*nup
+c             distance squared between source and target
+              dist2 = (x_gr(i,j) - xsUp(ip))**2.d0 + 
+     1                (y_gr(i,j) - ysUp(ip))**2.d0 + 
+     2                (z_gr(i,j) - zsUp(ip))**2.d0 
+              rdotn = (x_gr(i,j) - xsUp(ip))*xnUp(ip) + 
+     1                (y_gr(i,j) - ysUp(ip))*ynUp(ip) + 
+     2                (z_gr(i,j) - zsUp(ip))*znUp(ip)
+
+c  update solution
+              u_gr(i,j) = u_gr(i,j) + yukawaDLP(freq,dist2,rdotn)*
+     1            densityUp(ip)*dsdaUp(ip)*dalph/nup
             end do !ip
           end if
         end do !j
@@ -1507,7 +1699,7 @@ c  update solution
 c
 c  write solution on meshgrid to a dat file
       open (unit=43, file = 'ugrid.dat')
-      call DUMP (nth, nphi, u_gr, igrid, 1, 43)
+      call dump (nth, nphi, u_gr, igrid, 1, 43)
       close (43)
 
       return
@@ -1610,7 +1802,7 @@ c
       end
 
 c********1*********2*********3*********4*********5*********6*********7**
-      subroutine CHECK_ERROR (nth, nphi, u, uExact)
+      subroutine CHECK_ERROR (nth, nphi, igrid ,u, uExact)
 c
 c  *** DESCRIPTION :
 c
@@ -1623,6 +1815,7 @@ c   *** INPUT PARAMETERS :
 c
 c   nth     = number of points in the azimuthal direction
 c   nphi    = number of points in the z-uthal direction
+c   igrid   = want to check error in different regions independently
 c   u       = numerical solution 
 c   uExact  = exact solution found using vorticies centered
 c             outside of the geometry
@@ -1635,25 +1828,41 @@ c***********************************************************************
 c
       implicit real *8 (a-h,o-z)
 
+      dimension igrid(nth,nphi)
       dimension u(nth,nphi), uExact(nth,nphi)
 
-      uExactMax = 0.d0
+      uExactFarMax = 0.d0
+      uExactNearMax = 0.d0
       do i = 1,nth
         do j = 1,nphi
-          uExactMax = max(uExactMax, dabs(uExact(i,j)))
+          if (igrid(i,j) .eq. 1) then
+            uExactFarMax = max(uExactFarMax, dabs(uExact(i,j)))
+          elseif (igrid(i,j) .eq. -1) then
+            uExactNearMax = max(uExactNearMax, dabs(uExact(i,j)))
+          endif
         enddo
       enddo
 
-      absError = 0.d0
+      absErrorFar = 0.d0
+      absErrorNear = 0.d0
       do i = 1,nth
         do j = 1,nphi  
-          absError = max(absError,dabs(uExact(i,j) - u(i,j)))
+          if (igrid(i,j) .eq. 1) then
+            absErrorFar = max(absErrorFar,
+     1          dabs(uExact(i,j) - u(i,j)))
+          elseif (igrid(i,j) .eq. -1) then
+            absErrorNear = max(absErrorNear,
+     1          dabs(uExact(i,j) - u(i,j)))
+          endif
         enddo
       enddo
 
-      relError = absError/uExactMax
-      call PRIN2(' Absolute Error = *', absError, 1)
-      call PRIN2(' Relative Error = *', relError, 1)
+      relErrorFar = absErrorFar/uExactFarMax
+      relErrorNear = absErrorNear/uExactNearMax
+      call PRIN2(' Absolute Error (Far) = *',absErrorFar, 1)
+      call PRIN2(' Relative Error (Far)= *', relErrorFar, 1)
+      call PRIN2(' Absolute Error (Near) = *',absErrorNear, 1)
+      call PRIN2(' Relative Error (Near)= *', relErrorNear, 1)
 
 
 
