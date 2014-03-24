@@ -12,7 +12,7 @@ c
 c     ------------------------------------------------------------------
       implicit real*8 (a-h, o-z)
 c Maximum number of holes and points per hole
-      parameter (kmax = 25, npmax = 1024, nmax = kmax*npmax)
+      parameter (kmax = 50, npmax = 512, nmax = kmax*npmax)
       parameter (nvortmax = 10)
 c
 c Geometry of holes
@@ -937,7 +937,7 @@ c***********************************************************************
 c
       implicit double precision (a-h,o-z)
       dimension xx(n), yy(n)
-      parameter (kmax = 25, npmax = 1024, nmax = kmax*npmax)
+      parameter (kmax = 50, npmax = 512, nmax = kmax*npmax)
       parameter (nth_max = 1000, nphi_max = 1000, 
      1          ng_max = nth_max*nphi_max)
 
