@@ -1,6 +1,7 @@
-FC=gfortran
+#FC=gfortran
+FC = ifort
 
-FFLAGS=-02 
+FFLAGS=-O3 
 SOURCE=yukawa_beltrami.f
 TARGET=yukawa_beltrami
 

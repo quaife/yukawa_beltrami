@@ -49,7 +49,7 @@ c       before restarting.
 c  lrwork is the dimension of a real workspace needed by DGMRES.
 c  liwork is the dimension of an integer workspace needed by DGMRES.
 c  gmwork and iwork are work arrays used by DGMRES
-      parameter (maxl = 50,liwork=30,  
+      parameter (maxl = 200,liwork=30,  
      1           lrwork=10+(nmax+kmax)*(maxl+6)+maxl*(maxl+3))
       dimension gmwork(lrwork), igwork(liwork)
       dimension rhs(nmax)
@@ -775,7 +775,17 @@ c
       do kbod = 1, k
         do j = 1, nd
           if (nvort .eq. 0) then
-            rhs(istart+j) = 1.d0
+            if (kbod .le. 6) then
+              rhs(istart+j) = 1.d0
+            elseif (kbod .le. 12) then
+              rhs(istart+j) = 1.d0
+            elseif (kbod .le. 24) then
+              rhs(istart+j) = 1.d0
+            elseif (kbod .le. 30) then
+              rhs(istart+j) = 1.d0
+            else
+              rhs(istart+j) = 1.d0
+            endif
           else
             rhs(istart+j) = 0.d0
           endif
@@ -954,7 +964,7 @@ c
       dalph = 2.d0*pi/nd
 
 c     flag for deciding if we do Alpert corrections or not
-      ialpert = 0
+      ialpert = 1
       call AlpertQuadrature(k,nd,xs,ys,zs,xn,yn,zn,
      1        dsda,freq,xx,ialpert,yy)
 
@@ -1175,7 +1185,7 @@ c     Initialize to zero
       if (ialpert .eq. 0) return
 c     If we are not using Alpert, this the subroutine ends here
 
-      call quad2(v,u,numquad,nbuffer,norder,3)
+      call quad2(v,u,numquad,nbuffer,norder,6)
 c     Get quadrature nodes, weights, and region around singularity
 c     that is excluded
 
@@ -1548,7 +1558,7 @@ c
       dalph = 2.d0*pi/nd
       eye = (0.d0,1.0d0)
 
-      nup = 1 
+      nup = nd 
 c     upscaling factor
 
       allocate(zIn(nd),stat=ierr)
@@ -1691,6 +1701,14 @@ c  update solution
               u_gr(i,j) = u_gr(i,j) + yukawaDLP(freq,dist2,rdotn)*
      1            densityUp(ip)*dsdaUp(ip)*dalph/nup
             end do !ip
+            if (u_gr(i,j) .gt. 1.d0) then
+              u_gr(i,j) = 1.d0
+            elseif (u_gr(i,j) .le. -1.d0) then
+              u_gr(i,j) = -1.d0
+            endif
+c           hack to avoid near-singular integration           
+          else
+            u_gr(i,j) = 1.d0
           end if
         end do !j
       end do !i
