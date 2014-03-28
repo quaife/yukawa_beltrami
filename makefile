@@ -1,5 +1,5 @@
-FC=gfortran
-#FC = ifort
+#FC=gfortran
+FC = ifort
 
 FFLAGS=-O3 
 SOURCE=yukawa_beltrami.f

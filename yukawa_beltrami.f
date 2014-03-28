@@ -91,7 +91,7 @@ c geometry
 
 c Construct solution on surface grid
        call SOL_GRID (freq, nd, k, nbk, nth, nphi, density, 
-     1        xs, ys, zs, xn, yn, zn, dsda, 
+     1        xs, ys, zs, xn, yn, zn, dsda, arcLength, 
      2        x_gr, y_gr, z_gr, igrid, near_gr, u_gr)
 c
        call CHECK_ERROR (k, nth, nphi, near_gr, u_gr, uExact_gr)
@@ -1044,7 +1044,7 @@ c
       dalph = 2.d0*pi/nd
 
 c     flag for deciding if we do Alpert corrections or not
-      ialpert = 1
+      ialpert = 0
       call AlpertQuadrature(k,nd,xs,ys,zs,xn,yn,zn,
      1        dsda,freq,xx,ialpert,yy)
 
@@ -1583,7 +1583,7 @@ c
 c
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine SOL_GRID (freq, nd, nhole, nbk, nth, nphi, density, 
-     1        xs, ys, zs, xn, yn, zn, dsda, 
+     1        xs, ys, zs, xn, yn, zn, dsda, arcLength, 
      2        x_gr, y_gr, z_gr, igrid, near_gr, u_gr)
 c
 c  *** DESCRIPTION :
@@ -1594,32 +1594,33 @@ c   Have to extend this to the double-layer potential
 c
 c   *** INPUT PARAMETERS :
 c
-c   freq    = constant in the pde (\Delta - freq^2)u = 0
-c   nd      = number of points per connected component
-c   k       = number of connected componenets in geometry
-c   nbk     = total number of points k*nd
-c   nth     = number of points in the azimuthal direction
-c   nphi    = number of points in the z-uthal direction
-c   density = density function defined on the boundary of the ellipses
-c   xs      = x-coordinate of the ellipses
-c   ys      = y-coordinate of the ellipses
-c   zs      = z-coordinate of the ellipses
-c   xn      = x-coordinate of the vector normal to the curve, but
-c             tangent to the sphere
-c   yn      = y-coordinate of the vector normal to the curve, but
-c             tangent to the sphere
-c   zn      = z-coordinate of the vector normal to the curve, but
-c             tangent to the sphere
-c   dsda    = arclength term
-c   x_gr    = x-coordinate of grid on sphere
-c   y_gr    = y-coordinate of grid on sphere
-c   z_gr    = z-coordinate of grid on sphere
-c   igrid   = flag to determine if a point is inside or outside
-c   near_gr = flag to determine if point is near, intermediate or far
+c   freq      = constant in the pde (\Delta - freq^2)u = 0
+c   nd        = number of points per connected component
+c   k         = number of connected componenets in geometry
+c   nbk       = total number of points k*nd
+c   nth       = number of points in the azimuthal direction
+c   nphi      = number of points in the z-uthal direction
+c   density   = density function defined on the boundary of the ellipses
+c   xs        = x-coordinate of the ellipses
+c   ys        = y-coordinate of the ellipses
+c   zs        = z-coordinate of the ellipses
+c   xn        = x-coordinate of the vector normal to the curve, but
+c               tangent to the sphere
+c   yn        = y-coordinate of the vector normal to the curve, but
+c               tangent to the sphere
+c   zn        = z-coordinate of the vector normal to the curve, but
+c               tangent to the sphere
+c   dsda      = arclength term
+c   arcLength = infintesimal arclength term
+c   x_gr      = x-coordinate of grid on sphere
+c   y_gr      = y-coordinate of grid on sphere
+c   z_gr      = z-coordinate of grid on sphere
+c   igrid     = flag to determine if a point is inside or outside
+c   near_gr   = flag to determine if point is near, intermediate or far
 c
 c   *** OUTPUT PARAMETERS :
 c
-c   u_gr    = solution of the PDE at points in the geometry
+c   u_gr      = solution of the PDE at points in the geometry
 c
 c***********************************************************************
 c
@@ -1627,6 +1628,7 @@ c
       dimension xs(nbk), ys(nbk), zs(nbk)
       dimension xn(nbk), yn(nbk), zn(nbk)
       dimension density(nbk), dsda(nbk)
+      dimension arcLength(nhole)
       dimension x_gr(nth,nphi), y_gr(nth,nphi), z_gr(nth,nphi)
       dimension igrid(nth,nphi), near_gr(nth,nphi,nhole)
       dimension u_gr(nth,nphi)
@@ -1762,23 +1764,20 @@ c     initialize solution to be 0
 c     loop over source points
 
 
-      if (0 .eq. 1) then
-      do i = 1,nth
-        do j = 1,nphi
-          if (near_gr(i,j,1) .eq. 2 .and. near_gr(i,j,2) .eq. 2) then
-            u_gr(i,j) = 3.d0
-          elseif (near_gr(i,j,1) .eq. 1 .or. near_gr(i,j,2) .eq. 1) then
-            u_gr(i,j) = 2.d0
-          elseif (near_gr(i,j,1) .eq. 0 .or. near_gr(i,j,2) .eq. 0) then
-            u_gr(i,j) = 1.d0
-          else
-            u_gr(i,j) = 0.d0
-          endif
-        enddo
-      enddo
-      endif
+c      do i = 1,nth
+c        do j = 1,nphi
+c          if (near_gr(i,j,1) .eq. 2 .and. near_gr(i,j,2) .eq. 2) then
+c            u_gr(i,j) = 3.d0
+c          elseif (near_gr(i,j,1) .eq. 1 .or. near_gr(i,j,2) .eq. 1) then
+c            u_gr(i,j) = 2.d0
+c          elseif (near_gr(i,j,1) .eq. 0 .or. near_gr(i,j,2) .eq. 0) then
+c            u_gr(i,j) = 1.d0
+c          else
+c            u_gr(i,j) = 0.d0
+c          endif
+c        enddo
+c      enddo
 
-      if (1 .eq. 1) then
       do ihole = 1,nhole
         do i = 1,nth
           do j = 1,nphi
@@ -1814,18 +1813,19 @@ c     loop over source points
               enddo !k
             elseif (near_gr(i,j,ihole) .eq. 0 .and. 
      1          igrid(i,j) .ne. 0) then
+              u_gr(i,j) = 1.d-5
+
               call nearInterp(freq,nd*nup,
      1          x_gr(i,j),y_gr(i,j),z_gr(i,j),
      2          xsUp(istartUp+1),ysUp(istartUp+1),zsUp(istartUp+1),
      3          xnUp(istartUp+1),ynUp(istartUp+1),znUp(istartUp+1),
      4          densityUp(istartUp+1),dsdaUp(istartUp+1),
-     5          valNear)
+     5          arcLength(ihole), valNear)
 
               u_gr(i,j) = u_gr(i,j) + valNear
 
-
-              u_gr(i,j) = 1.d-5
             else
+c              u_gr(i,j) = 1.d0
               u_gr(i,j) = 0.d0
             endif
           enddo !j
@@ -1834,18 +1834,17 @@ c     loop over source points
         istartUp = istartUp + nd*nup
       enddo !ihole
       tend = etime(timep)
-      endif
 
 
-c      do i = 1,nth
-c        do j = 1,nphi
-c          do ihole = 1,nhole
-c            if (near_gr(i,j,ihole) .eq. 0) then
-c              u_gr(i,j) = 1.d-5
-c            endif
-c          enddo
-c        enddo
-c      enddo
+      do i = 1,nth
+        do j = 1,nphi
+          do ihole = 1,nhole
+            if (near_gr(i,j,ihole) .eq. 0) then
+              u_gr(i,j) = 1.d-5
+            endif
+          enddo
+        enddo
+      enddo
 
 
       call PRIN2 (' TIME FOR GRID = *',tend-tbeg,1)
@@ -1861,7 +1860,7 @@ c
 c
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine nearInterp(freq,nd,x_gr,y_gr,z_gr,
-     1      xs,ys,zs,xn,yn,zn,density,dsda,valNear)
+     1      xs,ys,zs,xn,yn,zn,density,dsda,arcLength,valNear)
 c
 c  *** DESCRIPTION :
 c
@@ -1894,6 +1893,72 @@ c
       dimension xs(nd),ys(nd),zs(nd)
       dimension xn(nd),yn(nd),zn(nd)
       dimension density(nd),dsda(nd)
+c
+      dimension xLag(10),yLag(10),zLag(10),valLag(10)
+
+      twopi = 8.d0*datan(1.d0)
+      dalph = twopi/dble(nd)
+
+      distMin = 10.d0
+      do k = 1,nd
+        dist2 = (xs(k)-x_gr)**2.d0 + (ys(k)-y_gr)**2.d0 + 
+     1      (zs(k) - z_gr)**2.d0
+        if (dist2 .lt. distMin) then
+          iCP = k
+          distMin = dist2
+        endif
+      enddo
+c     Find the location of the closest point
+
+      dirx = x_gr - xs(iCP)
+      diry = y_gr - ys(iCP)
+      dirz = z_gr - ys(iCP)
+      dirNorm = dsqrt(dirx**2.d0 + diry**2.d0 + dirz**2.d0)
+      dirx = dirx/dirNorm*arcLength
+      diry = diry/dirNorm*arcLength
+      dirz = dirz/dirNorm*arcLength
+c     Compute direction vector that joins the source and target point
+c     Note that these points will not be on the sphere, but this should
+c     not effect the accuracy
+
+
+      nLag = 6
+      do k = 1,nLag
+        xLag(k) = xs(iCP) + dble(k-1)*dirx
+        yLag(k) = ys(iCP) + dble(k-1)*diry 
+        zLag(k) = zs(iCP) + dble(k-1)*dirz 
+        xNorm = dsqrt(xLag(k)**2.d0 + yLag(k)**2.d0 + 
+     1        zLag(k)**2.d0)
+        xLag(k) = xLag(k)/xNorm
+        yLag(k) = yLag(k)/xNorm
+        zLag(k) = zLag(k)/xNorm
+c       Project Largrange point onto the sphere
+c        print*,xLag(k),',',yLag(k),',',zLag(k)
+      enddo
+
+      valLag(1) = 0.d0
+c     This will come from evaluting the layer potential later
+
+      do n = 2,nLag
+        valLag(n) = 0.d0
+        do k = 1,nd
+          dist2 = (xLag(n) - xs(k))**2.d0 + 
+     1            (yLag(n) - ys(k))**2.d0 + 
+     2            (zLag(n) - zs(k))**2.d0 
+          rdotn = (xLag(n) - xs(k))*xn(k) + 
+     1            (yLag(n) - ys(k))*yn(k) + 
+     2            (zLag(n) - zs(k))*zn(k)
+
+          valLag(n) = valLag(n) + 
+     1        yukawaDLP(freq,dist2,rdotn)*
+     2        density(k)*dsda(k)*dalph
+        enddo !k
+c        print*,xLag(n),yLag(n),zLag(n),valLag(n)
+
+      enddo
+
+
+
 
 
       valNear = 0.d0
@@ -2074,25 +2139,25 @@ c         flags to determine if a point is far, intermediate, or near
 
 
       if (uExactFarMax .gt. 0.d0) then
-        call PRIN2(' Absolute Error (Far) = *',absErrorFar, 1)
+c        call PRIN2(' Absolute Error (Far) = *',absErrorFar, 1)
         call PRIN2(' Relative Error (Far)= *', relErrorFar, 1)
       else
         print*,'Far region is empty'
       endif
       if (uExactIntermediateMax .gt. 0.d0) then
-        call PRIN2(' Absolute Error (Intermediate) = *',
-     1      absErrorIntermediate, 1)
+c        call PRIN2(' Absolute Error (Intermediate) = *',
+c     1      absErrorIntermediate, 1)
         call PRIN2(' Relative Error (Intermediate)= *',
      1      relErrorIntermediate, 1)
       else
         print*,'Intermediate region is empty'
       endif
-      if (uExactNearMax .gt. 0.d0) then
-        call PRIN2(' Absolute Error (Near) = *',absErrorNear, 1)
-        call PRIN2(' Relative Error (Near)= *', relErrorNear, 1)
-      else
-        print*,'Near region is empty'
-      endif
+c      if (uExactNearMax .gt. 0.d0) then
+c        call PRIN2(' Absolute Error (Near) = *',absErrorNear, 1)
+c        call PRIN2(' Relative Error (Near)= *', relErrorNear, 1)
+c      else
+c        print*,'Near region is empty'
+c      endif
 
       return ! CHECK_ERROR
       end
