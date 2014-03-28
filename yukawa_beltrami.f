@@ -20,7 +20,7 @@ c Geometry of holes
      1          cy(kmax), cz(kmax)
       dimension xs(nmax), ys(nmax), zs(nmax), dx(nmax), dy(nmax),
      1          dz(nmax), xn(nmax), yn(nmax), zn(nmax)
-      dimension dsda(nmax), diag(nmax)
+      dimension dsda(nmax), arcLength(kmax), diag(nmax)
       dimension d2x(nmax), d2y(nmax), d2z(nmax)
 c
 c  Vortex variables
@@ -33,9 +33,10 @@ c
 c  Grid variables
       parameter (nth_max = 1000, nphi_max = 1000, 
      1          ng_max = nth_max*nphi_max)
-      dimension igrid(ng_max), th_gr(ng_max), phi_gr(ng_max),
-     1          u_gr(ng_max), x_gr(ng_max), y_gr(ng_max), z_gr(ng_max),
-     1          uExact_gr(ng_max)
+      dimension igrid(ng_max), near_gr(ng_max*kmax), 
+     1          th_gr(ng_max), phi_gr(ng_max),
+     2          u_gr(ng_max), x_gr(ng_max), y_gr(ng_max), z_gr(ng_max),
+     3          uExact_gr(ng_max)
 c
 c target points are used to check accuracy
       dimension xtar(ng_max), ytar(ng_max), ztar(ng_max)
@@ -70,13 +71,14 @@ c
 c Construct hole geometry and grid on surface of sphere
       call MAKE_GEO (k, nd, nbk, ak, bk, th_k, phi_k, xs, ys, zs,
      1               dx, dy, dz, d2x, d2y, d2z, xn, yn, zn, dsda, 
-     2               diag)
+     2               arcLength, diag)
 
 c Construct grid on surface of sphere
       call SURFACE_GRID (k, nd, nbk, freq, nth, nphi, ak, bk,
      1                   cx, cy, cz, th_k, phi_k, th_gr, phi_gr, 
-     2                   nvort, x1Vort, x2Vort, x3Vort, vortK, 
-     3                   x_gr, y_gr, z_gr, igrid, uExact_gr)
+     2                   arcLength,
+     3                   nvort, x1Vort, x2Vort, x3Vort, vortK, 
+     4                   x_gr, y_gr, z_gr, igrid, near_gr, uExact_gr)
 
 c Construct the RHS and solve
       call getRHS (k, nd, nbk, nvort, freq, xs, ys, zs, 
@@ -90,10 +92,9 @@ c geometry
 c Construct solution on surface grid
        call SOL_GRID (freq, nd, k, nbk, nth, nphi, density, 
      1        xs, ys, zs, xn, yn, zn, dsda, 
-     2        x_gr, y_gr, z_gr, igrid, u_gr)
+     2        x_gr, y_gr, z_gr, igrid, near_gr, u_gr)
 c
-
-       call CHECK_ERROR (nth, nphi, igrid, u_gr, uExact_gr)
+       call CHECK_ERROR (k, nth, nphi, near_gr, u_gr, uExact_gr)
 
 c Create a matlab file that plots the solution on the surface
 c of the sphere
@@ -320,7 +321,7 @@ c
       z = xp*xaxis(3) + yp*yaxis(3) + zp*zaxis(3)
 c
       return
-      end      
+      end ! d_func
 c
 c
 c********1*********2*********3*********4*********5*********6*********7**
@@ -366,7 +367,7 @@ c
       dz = dxp*xaxis(3) + dyp*yaxis(3) + dzp*zaxis(3)
 c
       return
-      end      
+      end ! dr_func   
 c
 c
 c********1*********2*********3*********4*********5*********6*********7**
@@ -415,13 +416,13 @@ c
       d2z = d2xp*xaxis(3) + d2yp*yaxis(3) + d2zp*zaxis(3)
 c
       return
-      end      
+      end ! d2r_func   
 c
 c
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine MAKE_GEO (k, nd, nbk, ak, bk, th_k, phi_k, xs, ys, zs,
      1                     dx, dy, dz, d2x, d2y, d2z, xn, yn, zn, dsda, 
-     2                     diag)
+     2                     arcLength, diag)
 c
 c  *** DESCRIPTION :
 c
@@ -431,34 +432,35 @@ c   on the boundary of the sphere
 c
 c   *** INPUT PARAMETERS :
 c
-c   k       = number of connected componenets in geometry
-c   nd      = number of points per connected component
-c   nbk     = total number of points k*nd
-c   ak      = parameter for ellipses on sphere
-c   bk      = parameter for ellipses on sphere
-c   th_k    = parameter for ellipses on sphere
-c   phi_k   = parameter for ellipses on sphere
+c   k          = number of connected componenets in geometry
+c   nd         = number of points per connected component
+c   nbk        = total number of points k*nd
+c   ak         = parameter for ellipses on sphere
+c   bk         = parameter for ellipses on sphere
+c   th_k       = parameter for ellipses on sphere
+c   phi_k      = parameter for ellipses on sphere
 c
 c   *** OUTPUT PARAMETERS :
 c
-c   xs      = x-coordinate of the ellipses
-c   ys      = y-coordinate of the ellipses
-c   zs      = z-coordinate of the ellipses
-c   dx      = first derivative of x-coordinate of the ellipses
-c   dy      = first derivative of y-coordinate of the ellipses
-c   dz      = first derivative of z-coordinate of the ellipses
-c   d2x     = second derivative of x-coordinate of the ellipses
-c   d2y     = second derivative of y-coordinate of the ellipses
-c   d2z     = second derivative of z-coordinate of the ellipses
-c   xn      = x-coordinate of the vector normal to the curve, but
-c             tangent to the sphere
-c   yn      = y-coordinate of the vector normal to the curve, but
-c             tangent to the sphere
-c   zn      = z-coordinate of the vector normal to the curve, but
-c             tangent to the sphere
-c   dsda    = arclength term
-c   diag    = diagonal term which depends on the curvature of the
-c             ellipse
+c   xs         = x-coordinate of the ellipses
+c   ys         = y-coordinate of the ellipses
+c   zs         = z-coordinate of the ellipses
+c   dx         = first derivative of x-coordinate of the ellipses
+c   dy         = first derivative of y-coordinate of the ellipses
+c   dz         = first derivative of z-coordinate of the ellipses
+c   d2x        = second derivative of x-coordinate of the ellipses
+c   d2y        = second derivative of y-coordinate of the ellipses
+c   d2z        = second derivative of z-coordinate of the ellipses
+c   xn         = x-coordinate of the vector normal to the curve, but
+c                tangent to the sphere
+c   yn         = y-coordinate of the vector normal to the curve, but
+c                tangent to the sphere
+c   zn         = z-coordinate of the vector normal to the curve, but
+c                tangent to the sphere
+c   dsda       = arclength term
+c   arcLength  = ds term of each component curve
+c   diag       = diagonal term which depends on the curvature of the
+c                ellipse
 c
 c***********************************************************************
 c
@@ -466,7 +468,7 @@ c
       dimension ak(k), bk(k), th_k(k), phi_k(k), r(3), t(3), pn(3),
      1          vn(3), diag(nbk), d2x(nbk), d2y(nbk), d2z(nbk)
       dimension xs(nbk), ys(nbk), zs(nbk), dx(nbk), dy(nbk), dz(nbk),
-     1          xn(nbk), yn(nbk), zn(nbk), dsda(nbk)
+     1          xn(nbk), yn(nbk), zn(nbk), dsda(nbk), arcLength(k)
 c
       pi = 4.d0*datan(1.d0)
 c
@@ -519,6 +521,20 @@ c Construct the diagonal entry
         end do
         istart = istart + nd
       end do
+
+      istart = 0
+      do kbod = 1, k
+        arcLength(kbod) = 0.d0
+        do i = 1, nd
+          arcLength(kbod) = arcLength(kbod) + dsda(istart + i)*dalph
+        enddo
+        arcLength(kbod) = arcLength(kbod)/dble(nd)
+        istart = istart + nd
+      enddo
+c find arclength of each componenet curve for doing near-singular
+c integration
+
+
       is = 1
 c make a Matlab file that can plot the geometry
       open (unit = 42, file = 'geo_3d.m')
@@ -528,9 +544,65 @@ c make a Matlab file that can plot the geometry
       end do
       close (42)
 c
+
       return
-      end      
+      end ! MAKE_GEO 
 c
+c
+c********1*********2*********3*********4*********5*********6*********7**
+      subroutine findZone(x, y, z, ak, bk, th_k, phi_k, 
+     1      nd, arcLength, izone)
+c
+c  *** DESCRIPTION :
+c
+c  A description
+c
+c   *** INPUT PARAMETERS :
+c
+c   x         = x-coordinate of point on sphere
+c   y         = y-coordinate of point on sphere
+c   z         = z-coordinate of point on sphere
+c   ak        = parameter for ellipses on sphere
+c   bk        = parameter for ellipses on sphere
+c   th_k      = parameter for ellipses on sphere
+c   phi_k     = parameter for ellipses on sphere
+c   nd        = number of points on curve
+c   arcLength = arclength term of curve
+c
+c   *** OUTPUT PARAMETERS :
+c
+c   izone     = flag which is 2 (far zone), 1 (intermediate zone),
+c               or 0 (near zone)
+c
+c***********************************************************************
+c
+      implicit real*8 (a-h,o-z)
+
+      twopi = 8.d0*datan(1.d0)
+      dalph = twopi/dble(nd)
+
+      dist2 = 1.d10
+
+      do i = 1,nd
+        alpha = dble(i-1)*dalph
+        call r_func(alpha, ak, bk, th_k, phi_k, xs, ys, zs)
+        dist2 = min(dist2,(xs-x)**2.d0 + (ys-y)**2.d0 + (zs-z)**2.d0)
+      enddo
+
+      if (dist2 > arcLength) then
+c       in far zone
+        izone = 2
+      elseif (sqrt(dist2) > arcLength) then
+c       in intermediate zone
+        izone = 1
+      else
+c       in near zone
+        izone = 0
+      endif
+
+      return
+      end ! findZone
+c      
 c
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine IN_OR_OUT (x, y, z, eps, ak, bk, th_k, phi_k, itest)
@@ -565,21 +637,17 @@ c
 c
       pi = 4.d0*datan(1.d0)
 c
-      p(1) = x
-      p(2) = y
-      p(3) = z
-      call sph2cart (th_k, phi_k, 1.d0, z_ax(1), z_ax(2), z_ax(3))
-      call sph2cart (th_k, phi_k-0.5d0*pi, 1.d0, x_ax(1), x_ax(2), 
-     1               x_ax(3))
-      call cross (z_ax, x_ax, y_ax)
-      call dot (p, x_ax, x1)
-      call dot (p, y_ax, y1)
-      call dot (p, z_ax, z1)
-      rad = dsqrt((x1/ak)**2 + (y1/bk)**2)
-      if ((rad<=1.0d0 + 1.d-2*eps) .and. (z1>0.d0)) then 
+      x2 = dsin(phi_k)*dcos(th_k)*x + 
+     1      dsin(phi_k)*dsin(th_k)*y - dcos(phi_k)*z
+      y2 = -dsin(th_k) * x + dcos(th_k) * y
+      z2 = cos(phi_k)*cos(th_k)*x + 
+     1      dcos(phi_k)*dsin(th_k)*y + dsin(phi_k)*z
+      rad = dsqrt((x2/ak)**2.d0 + (y2/bk)**2.d0)
+
+      if (rad<=1.0d0 .and. (z2 > 0.d0)) then 
 c point is inside (or almost) the curve (outside the geometry)
         itest = 1
-      elseif ((rad<=1.d0 + eps) .and. (z1>0.d0)) then 
+      elseif (rad<=1.0d0 + eps .and. (z2 > 0.d0)) then 
         itest = -1
 c point is outside the curve (inside the geometry), but near
       else
@@ -588,24 +656,16 @@ c point is outside the curve (inside the geometry) and well-separated
       end if
 
 
-
-c      if ((rad<1.d0+eps).and.(z1>0.d0)) then 
-cc point is inside the curve (outside the geometry)
-c        itest = 1
-c      else
-cc point is outside the curve (inside the geometry)
-c        itest = 0
-c      end if
-
       return
-      end      
+      end ! IN_OR_OUT     
 c
 c
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine SURFACE_GRID (k, nd, nbk, freq, nth, nphi, ak, bk, 
      1                   cx, cy, cz, th_k, phi_k, th_gr, phi_gr, 
-     2                   nvort, x1Vort, x2Vort, x3Vort, vortK, 
-     3                   x_gr, y_gr, z_gr, igrid, uExact_gr)
+     2                   arcLength,
+     3                   nvort, x1Vort, x2Vort, x3Vort, vortK, 
+     4                   x_gr, y_gr, z_gr, igrid, near_gr, uExact_gr)
 c
 c  *** DESCRIPTION :
 c
@@ -628,6 +688,7 @@ c   cy        = y-coordinate of center ellipses on sphere
 c   cz        = z-coordinate of center ellipses on sphere
 c   th_k      = parameter for ellipses on sphere
 c   phi_k     = parameter for ellipses on sphere
+c   arcLength = arclength term of each component curve
 c   nvort     = number of vorticies to form exact solution
 c   x1Vort    = x-coordinate of the vorticies
 c   x2Vort    = y-coordinate of the vorticies
@@ -642,6 +703,8 @@ c   y_gr      = y-coordinate of grid on sphere
 c   z_gr      = z-coordinate of grid on sphere
 c   igrid     = flag for if a point is inside or outside of the
 c               geometry of interest
+c   near_gr   = flag for each hole that determines if near-singular
+c               integration is required or not
 c   uExact_gr = exact solution formed using the fundamental solution
 c               centered outside of the boundary components
 c
@@ -649,51 +712,60 @@ c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
       dimension ak(k), bk(k), cx(k), cy(k), cz(k), th_k(k), phi_k(k)
+      dimension arcLength(k)
       dimension x1Vort(nvort), x2Vort(nvort), x3Vort(nvort)
       dimension vortK(nvort)
-      dimension igrid(nth,nphi), th_gr(nth,nphi), phi_gr(nth,nphi),
+      dimension igrid(nth,nphi), near_gr(nth,nphi,k)
+      dimension th_gr(nth,nphi), phi_gr(nth,nphi),
      1          x_gr(nth,nphi), y_gr(nth,nphi), z_gr(nth,nphi),
      2          uExact_gr(nth,nphi)
 c
       pi = 4.d0*datan(1.d0)
 c
-c Calculate epsilon
-      radmax = 0.d0
-      do kbod = 1, k
-        radmax = max(radmax, dabs(ak(kbod)))
-        radmax = max(radmax, dabs(bk(kbod)))
-      end do
 
-
-c      eps = 1.d0*2.d0*pi*radmax/nd
-      eps = 1.d1*2.d0*pi*radmax/nd
 
       dth = 2.d0*pi/nth
       dphi = pi/(nphi-1)
       do i = 1, nth
         theta = (i-1)*dth
         do j = 1, nphi
+          igrid(i,j) = 1
           phi = dble(j-1)*dphi - 0.5d0*pi
           th_gr(i,j) = theta
           phi_gr(i,j) = phi
-c Cartesian coordainte of meshgrid on the sphere
+c Cartesian coordinate of meshgrid on the sphere
           call sph2cart (th_gr(i,j), phi_gr(i,j), 1.d0, 
      1                   x_gr(i,j), y_gr(i,j), z_gr(i,j))
           in_out = 0
           do kbod = 1, k
 c Check if it is inside any of the component curves
-            call IN_OR_OUT (x_gr(i,j), y_gr(i,j), z_gr(i,j), eps,  
+            eps = 2.d1 * 2.d0*pi*max(ak(kbod),bk(kbod))/nd
+            eps = 1.0d10
+c Hack for now to make sure we don't miss any intermediate points
+            call IN_OR_OUT (x_gr(i,j), y_gr(i,j), z_gr(i,j), eps,
      1                       ak(kbod), bk(kbod), th_k(kbod), 
      2                       phi_k(kbod), itest)
+c Check if point is possibly in the near or intermediate region
+c Also, rule out the points outside the geometry here
             in_out = in_out + itest
+            if (itest .eq. -1) then
+c             point is potentially in near zone
+              call findZone(x_gr(i,j), y_gr(i,j), z_gr(i,j), 
+     1          ak(kbod),bk(kbod), th_k(kbod), phi_k(kbod), 
+     2          nd, arcLength(kbod),near_gr(i,j,kbod))
+            elseif (itest .eq. 0) then
+c             point is definitely in far zone
+              near_gr(i,j,kbod) = 2
+            else
+c             point is definitely outside geometry
+              near_gr(i,j,kbod) = -1
+            endif
+
+            if (near_gr(i,j,kbod) .eq. -1) then
+              igrid(i,j) = 0
+            endif
+
           end do
-          if (in_out>0) then
-            igrid(i,j) = 0
-          elseif (in_out .eq. 0) then
-            igrid(i,j) = 1
-          else
-            igrid(i,j) = -1
-          end if
         end do
       end do 
 
@@ -702,7 +774,7 @@ c geometry
       do i = 1,nphi
         do j = 1, nphi
           uExact_gr(i,j) = 0.d0    
-          if (abs(igrid(i,j)) .eq. 1) then 
+          if (igrid(i,j) .eq. 1) then 
             do ivort = 1, nvort
               dist2 = (x_gr(i,j) - x1Vort(ivort))**2.d0 + 
      1                (y_gr(i,j) - x2Vort(ivort))**2.d0 + 
@@ -715,25 +787,35 @@ c geometry
       enddo
 
 
+c     Set exact solution to be zero at the near points
+c     Accurate evaulation at these points is not yet complete
+      do i = 1,nphi
+        do j = 1,nphi
+          do kbod = 1,k
+            if (near_gr(i,j,kbod) .eq. 0) then
+              uExact_gr(i,j) = 1.d-5
+            endif
+          enddo
+        enddo
+      enddo
+
+
 
 c Write the location of points in the geomtery and 
 c meshgrid to dat files
-      open (unit = 31, file = 'igrid.dat')
       open (unit = 32, file = 'xgrid.dat')
       open (unit = 33, file = 'ygrid.dat')
       open (unit = 34, file = 'zgrid.dat')
-      call dump (nth, nphi, x_gr, igrid, 0, 31)
       call dump (nth, nphi, x_gr, igrid, 1, 32)
       call dump (nth, nphi, y_gr, igrid, 1, 33)
       call dump (nth, nphi, z_gr, igrid, 1, 34)
-      close (31)
       close (32)
       close (33)
       close (34)
 c
-      return
+      return ! SURFACE_GRID
       end      
-
+c
 c
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine getRHS (k, nd, nbk, nvort, freq, xs, ys, zs, 
@@ -825,8 +907,6 @@ c
       end
 c
 c
-
-
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine solveBIE(nd, k, nbk, rhs, density, rwork, 
      1                  lrwork, iwork, liwork, dsda, maxl)
@@ -915,8 +995,8 @@ c Dump it out
 c
       return
       end
-
-
+c
+c
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine matvecYukawa (n, xx, yy, nelt, ia, ja, a, isym)
 c
@@ -1001,7 +1081,8 @@ c         diagonal term if not using Alpert's quadrature
 c
       return
       end
-
+c
+c
 c********1*********2*********3*********4*********5*********6*********7**
       real *8 function yukawaDLP(freq,dist2,rdotn)
 c
@@ -1060,7 +1141,8 @@ c     across the boundary
 
       return
       end
-
+c
+c
 c********1*********2*********3*********4*********5*********6*********7**
       real *8 function yukawaSLP(freq,dist2)
 c
@@ -1110,7 +1192,8 @@ c     argument required by hypergeometric representation
 
       return
       end
-
+c
+c
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine AlpertQuadrature(nhole,nd,xs,ys,zs,xn,yn,zn,
      1        dsda,freq,xx,ialpert,yy)
@@ -1387,7 +1470,8 @@ c       END OF SECOND TERM IN ALPERT'S CORRECTION
 
       return
       end
-
+c
+c
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine fourierUpsample(nIn,wsaveIn,zIn,nOut,wsaveOut,zOut)
 c
@@ -1432,9 +1516,8 @@ c
 
       return
       end
-
-
-
+c
+c
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine fourierInterp(nd,zfn,nshifts,shift,wsave,zInterp)
 c
@@ -1496,12 +1579,12 @@ c       Compute xx on the grid centered forwards by distances
 
       return
       end
-
-
+c
+c
 c********1*********2*********3*********4*********5*********6*********7**
-      subroutine SOL_GRID (freq, nd, k, nbk, nth, nphi, density, 
+      subroutine SOL_GRID (freq, nd, nhole, nbk, nth, nphi, density, 
      1        xs, ys, zs, xn, yn, zn, dsda, 
-     2        x_gr, y_gr, z_gr, igrid, u_gr)
+     2        x_gr, y_gr, z_gr, igrid, near_gr, u_gr)
 c
 c  *** DESCRIPTION :
 c
@@ -1532,6 +1615,7 @@ c   x_gr    = x-coordinate of grid on sphere
 c   y_gr    = y-coordinate of grid on sphere
 c   z_gr    = z-coordinate of grid on sphere
 c   igrid   = flag to determine if a point is inside or outside
+c   near_gr = flag to determine if point is near, intermediate or far
 c
 c   *** OUTPUT PARAMETERS :
 c
@@ -1544,7 +1628,8 @@ c
       dimension xn(nbk), yn(nbk), zn(nbk)
       dimension density(nbk), dsda(nbk)
       dimension x_gr(nth,nphi), y_gr(nth,nphi), z_gr(nth,nphi)
-      dimension igrid(nth,nphi), u_gr(nth,nphi)
+      dimension igrid(nth,nphi), near_gr(nth,nphi,nhole)
+      dimension u_gr(nth,nphi)
       real*4 timep(2), etime
       complex *16 eye
 
@@ -1558,7 +1643,8 @@ c
       dalph = 2.d0*pi/nd
       eye = (0.d0,1.0d0)
 
-      nup = nd 
+      base2 = dlog(dble(nd))/dlog(2.d0)
+      nup = 2**ceiling(base2/2.0d0)
 c     upscaling factor
 
       allocate(zIn(nd),stat=ierr)
@@ -1660,59 +1746,97 @@ c     upscaling factor
 c     Upsample the boundary and density function for handling near
 c     points
 
-      
-c
-
 c     Compute the double-layer potential at the target
 c     points using hypergeometric functions.
-      tbeg = etime(timep)
-c     loop over target points
-      do i = 1, nth
-        do j = 1, nphi
+      do i = 1,nth
+        do j = 1,nphi
           u_gr(i,j) = 0.d0
-          if (igrid(i,j) .eq. 1) then 
-c           loop over source points
-            do ip = 1, nbk
-c             distance squared between source and target
-              dist2 = (x_gr(i,j) - xs(ip))**2.d0 + 
-     1                (y_gr(i,j) - ys(ip))**2.d0 + 
-     2                (z_gr(i,j) - zs(ip))**2.d0 
-              rdotn = (x_gr(i,j) - xs(ip))*xn(ip) + 
-     1                (y_gr(i,j) - ys(ip))*yn(ip) + 
-     2                (z_gr(i,j) - zs(ip))*zn(ip)
+        enddo
+      enddo
+c     initialize solution to be 0
 
-c  update solution
-              u_gr(i,j) = u_gr(i,j) + yukawaDLP(freq,dist2,rdotn)*
-     1            density(ip)*dsda(ip)*dalph
-            end do !ip
 
-          elseif (igrid(i,j) .eq. -1) then
-c           loop over source points
-            do ip = 1, nbk*nup
-c             distance squared between source and target
-              dist2 = (x_gr(i,j) - xsUp(ip))**2.d0 + 
-     1                (y_gr(i,j) - ysUp(ip))**2.d0 + 
-     2                (z_gr(i,j) - zsUp(ip))**2.d0 
-              rdotn = (x_gr(i,j) - xsUp(ip))*xnUp(ip) + 
-     1                (y_gr(i,j) - ysUp(ip))*ynUp(ip) + 
-     2                (z_gr(i,j) - zsUp(ip))*znUp(ip)
+      tbeg = etime(timep)
+      istart = 0
+      istartUp = 0
+c     loop over source points
 
-c  update solution
-              u_gr(i,j) = u_gr(i,j) + yukawaDLP(freq,dist2,rdotn)*
-     1            densityUp(ip)*dsdaUp(ip)*dalph/nup
-            end do !ip
-            if (u_gr(i,j) .gt. 1.d0) then
-              u_gr(i,j) = 1.d0
-            elseif (u_gr(i,j) .le. -1.d0) then
-              u_gr(i,j) = -1.d0
-            endif
-c           hack to avoid near-singular integration           
-          else
+
+      if (0 .eq. 1) then
+      do i = 1,nth
+        do j = 1,nphi
+          if (near_gr(i,j,1) .eq. 2 .and. near_gr(i,j,2) .eq. 2) then
+            u_gr(i,j) = 3.d0
+          elseif (near_gr(i,j,1) .eq. 1 .or. near_gr(i,j,2) .eq. 1) then
+            u_gr(i,j) = 2.d0
+          elseif (near_gr(i,j,1) .eq. 0 .or. near_gr(i,j,2) .eq. 0) then
             u_gr(i,j) = 1.d0
-          end if
-        end do !j
-      end do !i
+          else
+            u_gr(i,j) = 0.d0
+          endif
+        enddo
+      enddo
+      endif
+
+      if (1 .eq. 1) then
+      do ihole = 1,nhole
+        do i = 1,nth
+          do j = 1,nphi
+            if (near_gr(i,j,ihole) .eq. 2 .and. igrid(i,j) .ne. 0) then
+              do k = 1,nd
+                dist2 = (x_gr(i,j) - xs(k + istart))**2.d0 + 
+     1                  (y_gr(i,j) - ys(k + istart))**2.d0 + 
+     2                  (z_gr(i,j) - zs(k + istart))**2.d0 
+                rdotn = (x_gr(i,j) - xs(k + istart))*xn(k + istart) + 
+     1                  (y_gr(i,j) - ys(k + istart))*yn(k + istart) + 
+     2                  (z_gr(i,j) - zs(k + istart))*zn(k + istart)
+
+                u_gr(i,j) = u_gr(i,j) + 
+     1            yukawaDLP(freq,dist2,rdotn)*
+     2            density(k + istart)*dsda(k + istart)*dalph
+              enddo !k
+            elseif (near_gr(i,j,ihole) .eq. 1 .and. 
+     1            igrid(i,j) .ne. 0) then
+              do k = 1,nd*nup
+                dist2 = (x_gr(i,j) - xsUp(k + istartUp))**2.d0 + 
+     1                  (y_gr(i,j) - ysUp(k + istartUp))**2.d0 + 
+     2                  (z_gr(i,j) - zsUp(k + istartUp))**2.d0 
+                rdotn = (x_gr(i,j) - xsUp(k + istartUp))*
+     1                      xnUp(k + istartUp) + 
+     2                  (y_gr(i,j) - ysUp(k + istartUp))*
+     3                      ynUp(k + istartUp) + 
+     4                  (z_gr(i,j) - zsUp(k + istartUp))*
+     5                      znUp(k + istartUp)
+
+                u_gr(i,j) = u_gr(i,j) + 
+     1            yukawaDLP(freq,dist2,rdotn)*
+     2            densityUp(k+istartUp)*dsdaUp(k+istartUp)*dalph/nup
+              enddo !k
+            elseif (near_gr(i,j,ihole) .eq. 0 .and. 
+     1          igrid(i,j) .ne. 0) then
+              u_gr(i,j) = 0.d0
+            else
+              u_gr(i,j) = 0.d0
+            endif
+          enddo !j
+        enddo !i
+        istart = istart + nd
+        istartUp = istartUp + nd*nup
+      enddo !ihole
       tend = etime(timep)
+      endif
+
+
+      do i = 1,nth
+        do j = 1,nphi
+          do ihole = 1,nhole
+            if (near_gr(i,j,ihole) .eq. 0) then
+              u_gr(i,j) = 1.d-5
+            endif
+          enddo
+        enddo
+      enddo
+
 
       call PRIN2 (' TIME FOR GRID = *',tend-tbeg,1)
 c
@@ -1722,7 +1846,7 @@ c  write solution on meshgrid to a dat file
       close (43)
 
       return
-      end
+      end ! SOL_GRID
 c
 c
 c********1*********2*********3*********4*********5*********6*********7**
@@ -1765,8 +1889,6 @@ c     no preconditioning for now
 c
       return
       end
-c
-c
 c
 c
 c********1*********2*********3*********4*********5*********6*********7**
@@ -1819,9 +1941,10 @@ c periodic
 c
       return
       end
-
+c
+c
 c********1*********2*********3*********4*********5*********6*********7**
-      subroutine CHECK_ERROR (nth, nphi, igrid ,u, uExact)
+      subroutine CHECK_ERROR (nhole, nth, nphi, near_gr, u, uExact)
 c
 c  *** DESCRIPTION :
 c
@@ -1832,9 +1955,10 @@ c   solution centered inside of each hole.
 c
 c   *** INPUT PARAMETERS :
 c
+c   k       = number of connected componenets in geometry
 c   nth     = number of points in the azimuthal direction
 c   nphi    = number of points in the z-uthal direction
-c   igrid   = want to check error in different regions independently
+c   near_gr = want to check error in different regions independently
 c   u       = numerical solution 
 c   uExact  = exact solution found using vorticies centered
 c             outside of the geometry
@@ -1847,48 +1971,79 @@ c***********************************************************************
 c
       implicit real *8 (a-h,o-z)
 
-      dimension igrid(nth,nphi)
+      dimension igrid(nth,nphi), near_gr(nth,nphi,nhole)
       dimension u(nth,nphi), uExact(nth,nphi)
 
       uExactFarMax = 0.d0
+      uExactIntermediateMax = 0.d0
       uExactNearMax = 0.d0
-      do i = 1,nth
-        do j = 1,nphi
-          if (igrid(i,j) .eq. 1) then
-            uExactFarMax = max(uExactFarMax, dabs(uExact(i,j)))
-          elseif (igrid(i,j) .eq. -1) then
-            uExactNearMax = max(uExactNearMax, dabs(uExact(i,j)))
-          endif
-        enddo
-      enddo
-
       absErrorFar = 0.d0
+      absErrorIntermediate = 0.d0
       absErrorNear = 0.d0
       do i = 1,nth
-        do j = 1,nphi  
-          if (igrid(i,j) .eq. 1) then
+        do j = 1,nphi
+          ifar = 1
+          iint = 0
+          inear = 0
+c         flags to determine if a point is far, intermediate, or near         
+          do k = 1,nhole
+            if (near_gr(i,j,k) .eq. 1) then
+              iint = 1
+              ifar = 0
+            elseif (near_gr(i,j,k) .eq. 0) then
+              inear = 1
+              ifar = 0
+            endif
+          enddo
+
+          if (ifar .eq. 1) then
+            uExactFarMax = max(uExactFarMax, dabs(uExact(i,j)))
             absErrorFar = max(absErrorFar,
      1          dabs(uExact(i,j) - u(i,j)))
-          elseif (igrid(i,j) .eq. -1) then
+          elseif (iint .eq. 1) then
+            uExactIntermediateMax = max(uExactIntermediateMax, 
+     1              dabs(uExact(i,j)))
+            absErrorIntermediate = max(absErrorIntermediate,
+     1          dabs(uExact(i,j) - u(i,j)))
+          elseif (inear .eq. 1) then
+            uExactNearMax = max(uExactNearMax, dabs(uExact(i,j)))
             absErrorNear = max(absErrorNear,
      1          dabs(uExact(i,j) - u(i,j)))
           endif
+
         enddo
       enddo
 
       relErrorFar = absErrorFar/uExactFarMax
+      relErrorIntermediate = absErrorIntermediate/uExactIntermediateMax
       relErrorNear = absErrorNear/uExactNearMax
-      call PRIN2(' Absolute Error (Far) = *',absErrorFar, 1)
-      call PRIN2(' Relative Error (Far)= *', relErrorFar, 1)
-      call PRIN2(' Absolute Error (Near) = *',absErrorNear, 1)
-      call PRIN2(' Relative Error (Near)= *', relErrorNear, 1)
 
 
+      if (uExactFarMax .gt. 0.d0) then
+        call PRIN2(' Absolute Error (Far) = *',absErrorFar, 1)
+        call PRIN2(' Relative Error (Far)= *', relErrorFar, 1)
+      else
+        print*,'Far region is empty'
+      endif
+      if (uExactIntermediateMax .gt. 0.d0) then
+        call PRIN2(' Absolute Error (Intermediate) = *',
+     1      absErrorIntermediate, 1)
+        call PRIN2(' Relative Error (Intermediate)= *',
+     1      relErrorIntermediate, 1)
+      else
+        print*,'Intermediate region is empty'
+      endif
+      if (uExactNearMax .gt. 0.d0) then
+        call PRIN2(' Absolute Error (Near) = *',absErrorNear, 1)
+        call PRIN2(' Relative Error (Near)= *', relErrorNear, 1)
+      else
+        print*,'Near region is empty'
+      endif
 
-
-      return
+      return ! CHECK_ERROR
       end
-
+c
+c
 c********1*********2*********3*********4*********5*********6*********7**
       subroutine dump_movie (nx, ny, xgrid, ygrid, zgrid, 
      1          ugrid, uExact, ifile)
@@ -1919,6 +2074,8 @@ c
       dimension xgrid(nx,ny), ygrid(nx,ny), zgrid(nx,ny)
       dimension ugrid(nx,ny), uExact(nx,ny)
 c
+
+
       write (ifile,*) 'nx = ',nx,';'
       write (ifile,*) 'ny = ',ny,';'
       write (ifile,*) 'xgrid = zeros(nx+1,ny);'
