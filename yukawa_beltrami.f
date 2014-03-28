@@ -1814,7 +1814,17 @@ c     loop over source points
               enddo !k
             elseif (near_gr(i,j,ihole) .eq. 0 .and. 
      1          igrid(i,j) .ne. 0) then
-              u_gr(i,j) = 0.d0
+              call nearInterp(freq,nd*nup,
+     1          x_gr(i,j),y_gr(i,j),z_gr(i,j),
+     2          xsUp(istartUp+1),ysUp(istartUp+1),zsUp(istartUp+1),
+     3          xnUp(istartUp+1),ynUp(istartUp+1),znUp(istartUp+1),
+     4          densityUp(istartUp+1),dsdaUp(istartUp+1),
+     5          valNear)
+
+              u_gr(i,j) = u_gr(i,j) + valNear
+
+
+              u_gr(i,j) = 1.d-5
             else
               u_gr(i,j) = 0.d0
             endif
@@ -1827,15 +1837,15 @@ c     loop over source points
       endif
 
 
-      do i = 1,nth
-        do j = 1,nphi
-          do ihole = 1,nhole
-            if (near_gr(i,j,ihole) .eq. 0) then
-              u_gr(i,j) = 1.d-5
-            endif
-          enddo
-        enddo
-      enddo
+c      do i = 1,nth
+c        do j = 1,nphi
+c          do ihole = 1,nhole
+c            if (near_gr(i,j,ihole) .eq. 0) then
+c              u_gr(i,j) = 1.d-5
+c            endif
+c          enddo
+c        enddo
+c      enddo
 
 
       call PRIN2 (' TIME FOR GRID = *',tend-tbeg,1)
@@ -1847,6 +1857,50 @@ c  write solution on meshgrid to a dat file
 
       return
       end ! SOL_GRID
+c
+c
+c********1*********2*********3*********4*********5*********6*********7**
+      subroutine nearInterp(freq,nd,x_gr,y_gr,z_gr,
+     1      xs,ys,zs,xn,yn,zn,density,dsda,valNear)
+c
+c  *** DESCRIPTION :
+c
+c   A description
+c
+c   *** INPUT PARAMETERS :
+c
+c   freq     =
+c   nd       = total number of points in linear system
+c   x_gr     = 
+c   y_gr     =
+c   z_gr     =
+c   xs       =
+c   ys       =
+c   zs       =
+c   xn       =
+c   yn       =
+c   zn       =
+c   density  =
+c   dsda     =
+c
+c   *** OUTPUT PARAMETERS :
+c
+c   valNear  = 
+c
+c***********************************************************************
+c
+      implicit double precision (a-h,o-z)
+c
+      dimension xs(nd),ys(nd),zs(nd)
+      dimension xn(nd),yn(nd),zn(nd)
+      dimension density(nd),dsda(nd)
+
+
+      valNear = 0.d0
+
+
+      return
+      end
 c
 c
 c********1*********2*********3*********4*********5*********6*********7**
