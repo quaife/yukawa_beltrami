@@ -1268,7 +1268,7 @@ c     Initialize to zero
       if (ialpert .eq. 0) return
 c     If we are not using Alpert, this the subroutine ends here
 
-      call quad2(v,u,numquad,nbuffer,norder,6)
+      call quad2(v,u,numquad,nbuffer,norder,10)
 c     Get quadrature nodes, weights, and region around singularity
 c     that is excluded
 
