@@ -93,7 +93,9 @@ c Construct solution on surface grid
        call SOL_GRID (freq, nd, k, nbk, nth, nphi, density, 
      1        xs, ys, zs, xn, yn, zn, dsda, arcLength, 
      2        x_gr, y_gr, z_gr, igrid, near_gr, u_gr)
-c
+
+c Check the infinity norm of the error in the far, intermediate
+c and near regions
        call CHECK_ERROR (k, nth, nphi, near_gr, u_gr, uExact_gr)
 
 c Create a matlab file that plots the solution on the surface
@@ -147,8 +149,10 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
+c 
       dimension ak(*), bk(*), cx(*), cy(*), cz(*), th_k(*), phi_k(*)
       dimension x1Vort(*),x2Vort(*),x3Vort(*),vortK(*)
+c
       complex *16 eye
 c
       eye = dcmplx(0.d0,1.d0)
@@ -214,7 +218,8 @@ c   z        = z-coordinate
 c
 c***********************************************************************
 c
-      implicit real*8 (a-h,o-z)
+      real *8 theta,phi,r
+      real *8 x,y,z
 c
       x = r*dcos(phi)*dcos(theta)
       y = r*dcos(phi)*dsin(theta)
@@ -242,8 +247,7 @@ c   u_cross_v = cross product of u and v
 c
 c***********************************************************************
 c
-      implicit real*8 (a-h,o-z)
-      dimension u(3), v(3), u_cross_v(3)
+      real *8 u(3), v(3), u_cross_v(3)
 c
       u_cross_v(1) = u(2)*v(3) - v(2)*u(3)
       u_cross_v(2) = v(1)*u(3) - u(1)*v(3)
@@ -271,8 +275,7 @@ c   u_dot_v = dot product of u and v
 c
 c***********************************************************************
 c
-      implicit real*8 (a-h,o-z)
-      dimension u(3), v(3)
+      real *8 u_dot_v, u(3), v(3)
 c
       u_dot_v = u(1)*v(1) + u(2)*v(2) + u(3)*v(3)
 c
@@ -305,6 +308,7 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
+c
       dimension zaxis(3), xaxis(3), yaxis(3)
 c
       pi = 4.d0*datan(1.d0)
@@ -348,6 +352,7 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
+c
       dimension zaxis(3), xaxis(3), yaxis(3)
 c
       pi = 4.d0*datan(1.d0)
@@ -394,6 +399,7 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
+c
       dimension zaxis(3), xaxis(3), yaxis(3)
 c
       pi = 4.d0*datan(1.d0)
@@ -465,6 +471,7 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
+c
       dimension ak(k), bk(k), th_k(k), phi_k(k), r(3), t(3), pn(3),
      1          vn(3), diag(nbk), d2x(nbk), d2y(nbk), d2z(nbk)
       dimension xs(nbk), ys(nbk), zs(nbk), dx(nbk), dy(nbk), dz(nbk),
@@ -555,7 +562,8 @@ c********1*********2*********3*********4*********5*********6*********7**
 c
 c  *** DESCRIPTION :
 c
-c  A description
+c   Classify a point as either being far, intermediate, or near to
+c   the ellipse given by the parameters ak, bk, th_k, phi_k
 c
 c   *** INPUT PARAMETERS :
 c
@@ -577,7 +585,7 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
-
+c
       twopi = 8.d0*datan(1.d0)
       dalph = twopi/dble(nd)
 
@@ -633,6 +641,7 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
+c
       dimension p(3), x_ax(3), y_ax(3), z_ax(3)
 c
       pi = 4.d0*datan(1.d0)
@@ -711,6 +720,7 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
+c
       dimension ak(k), bk(k), cx(k), cy(k), cz(k), th_k(k), phi_k(k)
       dimension arcLength(k)
       dimension x1Vort(nvort), x2Vort(nvort), x3Vort(nvort)
@@ -847,12 +857,12 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
-
+c
       dimension xs(k*nd), ys(k*nd), zs(k*nd)
       dimension x1Vort(nvort), x2Vort(nvort), x3Vort(nvort)
       dimension vortK(nvort)
       dimension rhs(nbk)
-
+c
       istart = 0
       do kbod = 1, k
         do j = 1, nd
@@ -935,6 +945,7 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
+c
       external matvecYukawa, msolve
 c
 c  System
@@ -944,9 +955,8 @@ c  DGMRES work arrays
       dimension rwork(lrwork),iwork(liwork)
 c
 c  Timings
-c
       real*4 timep(2), etime
-
+c
 c     parameters for DGMRES
       itol = 0
       tol = 1.0d-11
@@ -1025,16 +1035,17 @@ c   yy       = output yy in yy = A*xx
 c
 c***********************************************************************
 c
-      implicit double precision (a-h,o-z)
+      implicit real *8 (a-h,o-z)
+c
       dimension xx(n), yy(n)
       parameter (kmax = 50, npmax = 512, nmax = kmax*npmax)
       parameter (nth_max = 1000, nphi_max = 1000, 
      1          ng_max = nth_max*nphi_max)
-
+c
 c common blocks
       common /sys_size/ k, nd, nbk
       common /sphere_int/ xs, ys, zs, xn, yn, zn, dsda, diag, freq
-
+c
 c Geometry of holes
       dimension xs(nmax), ys(nmax), zs(nmax)
       dimension xn(nmax), yn(nmax), zn(nmax)
@@ -1106,11 +1117,11 @@ c***********************************************************************
 c
       use someconstants
       use hyp_2f1_module
+c
       implicit real*8 (a-h,o-z)
-
-      complex *16 nu,a,b,c,hyp_2f1,cdlp
-      complex *16 eye
-
+c
+      complex *16 nu,a,b,c,hyp_2f1,cdlp,eye
+c
       eye = (0.d0,1.d0)
 
 c     parameter for using hypergeometric functions
@@ -1166,11 +1177,11 @@ c***********************************************************************
 c
       use someconstants
       use hyp_2f1_module
+c
       implicit real*8 (a-h,o-z)
 
-      complex *16 nu,a,b,c,hyp_2f1,cdlp
-      complex *16 eye
-
+      complex *16 nu,a,b,c,hyp_2f1,cdlp,eye
+c
       eye = (0.d0,1.d0)
 
 c     parameter for using hypergeometric functions
@@ -1231,6 +1242,7 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
+c
       dimension xs(nhole*nd), ys(nhole*nd), zs(nhole*nd)
       dimension xn(nhole*nd), yn(nhole*nd), zn(nhole*nd)
       dimension dsda(nhole*nd)
@@ -1253,7 +1265,7 @@ c     workspace for FFT and IFFT
       real *8, allocatable :: dsdaShift(:,:)
       real *8, allocatable :: xxShift(:,:)
 c     shifted versions of the different periodic variables
-
+c
       complex *16 eye
 c
       eye = (0.d0,1.d0)
@@ -1625,6 +1637,7 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
+c
       dimension xs(nbk), ys(nbk), zs(nbk)
       dimension xn(nbk), yn(nbk), zn(nbk)
       dimension density(nbk), dsda(nbk)
@@ -1634,7 +1647,7 @@ c
       dimension u_gr(nth,nphi)
       real*4 timep(2), etime
       complex *16 eye
-
+c
       complex *16, allocatable :: wsaveIn(:),wsaveOut(:)
       complex *16, allocatable :: zIn(:),zOut(:)
       real *8, allocatable :: xsUp(:),ysUp(:),zsUp(:)
@@ -1864,31 +1877,34 @@ c********1*********2*********3*********4*********5*********6*********7**
 c
 c  *** DESCRIPTION :
 c
-c   A description
+c    Do a one-dimensional Lagrange interplation to evaluate the
+c    layer potential at (x_gr,y_gr,z_gr) which is in the near region
+c    of (xs,ys,zs)
 c
 c   *** INPUT PARAMETERS :
 c
-c   freq     =
+c   freq     = constant in the pde (\Delta - freq^2)u = 0
 c   nd       = total number of points in linear system
-c   x_gr     = 
-c   y_gr     =
-c   z_gr     =
-c   xs       =
-c   ys       =
-c   zs       =
-c   xn       =
-c   yn       =
-c   zn       =
-c   density  =
-c   dsda     =
+c   x_gr     = x-coordinate of the target point
+c   y_gr     = y-coordinate of the target point
+c   z_gr     = z-coordinate of the target point
+c   xs       = x-coordinate of the source points
+c   ys       = y-coordinate of the source points
+c   zs       = z-coordinate of the source points
+c   xn       = x-coordinate of the normal vector
+c   yn       = y-coordinate of the normal vector
+c   zn       = z-coordinate of the normal vector
+c   density  = density function
+c   dsda     = Jacobian
 c
 c   *** OUTPUT PARAMETERS :
 c
-c   valNear  = 
+c   valNear  = value of the double-layer potential due to
+c              (xs,ys,zs)
 c
 c***********************************************************************
 c
-      implicit double precision (a-h,o-z)
+      implicit real *8 (a-h,o-z)
 c
       dimension xs(nd),ys(nd),zs(nd)
       dimension xn(nd),yn(nd),zn(nd)
@@ -1921,7 +1937,7 @@ c     Compute direction vector that joins the source and target point
 c     Note that these points will not be on the sphere, but this should
 c     not effect the accuracy
 
-
+c     number of Lagrange interpolation points to use
       nLag = 6
       do k = 1,nLag
         xLag(k) = xs(iCP) + dble(k-1)*dirx
@@ -1996,11 +2012,10 @@ c   r        = solution r of A*r = z
 c
 c***********************************************************************
 c
-      implicit double precision (a-h,o-z)
+      implicit real *8 (a-h,o-z)
 c
       dimension r(n), z(n)
 c
-
       do i = 1,n
         r(i) = z(i)
       enddo
@@ -2033,6 +2048,7 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
+c
       dimension ugrid(nx,ny), igrid(nx,ny)
 c
       do i = 1,nx
@@ -2089,10 +2105,10 @@ c
 c***********************************************************************
 c
       implicit real *8 (a-h,o-z)
-
+c
       dimension igrid(nth,nphi), near_gr(nth,nphi,nhole)
       dimension u(nth,nphi), uExact(nth,nphi)
-
+c
       uExactFarMax = 0.d0
       uExactIntermediateMax = 0.d0
       uExactNearMax = 0.d0
@@ -2190,11 +2206,10 @@ c
 c***********************************************************************
 c
       implicit real*8 (a-h,o-z)
+c
       dimension xgrid(nx,ny), ygrid(nx,ny), zgrid(nx,ny)
       dimension ugrid(nx,ny), uExact(nx,ny)
 c
-
-
       write (ifile,*) 'nx = ',nx,';'
       write (ifile,*) 'ny = ',ny,';'
       write (ifile,*) 'xgrid = zeros(nx+1,ny);'
