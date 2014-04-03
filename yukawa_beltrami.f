@@ -73,6 +73,10 @@ c Construct hole geometry and grid on surface of sphere
      1               dx, dy, dz, d2x, d2y, d2z, xn, yn, zn, dsda, 
      2               arcLength, diag)
 
+cc Construct the system matrix so that we can look at conditioning
+c      call SYSTEM_MAT (nbk)
+c      return
+
 c Construct grid on surface of sphere
       call SURFACE_GRID (k, nd, nbk, freq, nth, nphi, ak, bk,
      1                   cx, cy, cz, th_k, phi_k, th_gr, phi_gr, 
@@ -423,6 +427,60 @@ c
 c
       return
       end ! d2r_func   
+c
+c
+c********1*********2*********3*********4*********5*********6*********7**
+      subroutine SYSTEM_MAT (n)
+c
+c  *** DESCRIPTION :
+c
+c   Construct the matrix of the linear system we are inverting by
+c   looping through the standard Euclidean basis and then passing
+c   it through the matvec routine
+c
+c   *** INPUT PARAMETERS :
+c
+c   n  = system size
+c
+c   *** OUTPUT PARAMETERS :
+c
+c   NONE
+c
+c***********************************************************************
+c
+      implicit real*8 (a-h,o-z)
+c
+      dimension x(n), y(n)
+      dimension amat(n,n)
+
+      do i = 1,n
+        x(i) = 0.d0
+      enddo
+
+      do i = 1,n
+        x(i) = 1.d0
+        call matvecYukawa (n, x, y)
+        x(i) = 0.d0
+        do j = 1,n
+          amat(i,j) = y(j)
+        enddo
+      enddo
+
+      open (unit=24, file = 'amat.dat')
+      do i = 1,n
+        do j = 1,n
+          write(24,'(e20.13,$)')(amat(i,j))
+          write(24,'(a)') ''
+        enddo
+      enddo
+      close(24)
+
+
+
+
+
+      return
+      end
 c
 c
 c********1*********2*********3*********4*********5*********6*********7**
