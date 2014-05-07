@@ -1,0 +1,73 @@
+\begin{tikzpicture}[scale=1.5]
+\usetikzlibrary{arrows}
+
+\begin{axis}[
+  width=2in, height=2in,
+  axis equal,
+  hide axis
+  ]
+\addplot[color=black,line width =
+1.0pt,solid,domain=0:90,samples=20]({cos(\x)},{sin(\x)});
+\addplot[color=black,line width =
+1.0pt,dashed,domain=0:90,samples=20]({0.8*cos(\x)},{0.8*sin(\x)});
+\addplot[color=black,line width =
+1.0pt,dashed,domain=0:90,samples=20]({0.5*cos(\x)},{0.5*sin(\x)});
+% plot the boundary
+
+\addplot [only marks, mark=*, fill=black] table{
+1 0
+0.9239 0.3827
+0.7071 0.7071
+0.3827 0.9239
+0 1
+}; 
+% 5 points where we we do the local interpolation of the boundary
+
+\addplot [only marks, mark=*,fill=white] coordinates {(0.6330,0.7742)};
+% open circle which is closest point to curve.  Corresponds to theta =
+% pi/4 + 0.1
+
+%\addplot [color=black,line width = 1.0pt,->,-triangle 60] plot coordinates {(0.6330,0.7742) (1.5*0.6330,1.5*0.7742)};
+% draw the normal vector
+
+\addplot [only marks, mark=*,fill=black] coordinates {(0.5965,0.7004)};
+% plot the target location
+
+
+\addplot[color=black,line
+width=1.0pt,solid,domain=0:10,samples=2]({\x*0.5965+0.6330*(1-\x)},{x*0.7004+0.7742*(1-\x)});
+% draw line connecting target point to closest point on boundary
+
+\addplot[only marks, mark=*,fill=white] coordinates {(0.2679,0.0369)};
+\addplot[only marks, mark=*,fill=white] coordinates {(0.4869,0.4793)};
+% Lagrange interpolation points along 1-d line coming from closest
+% point
+
+
+\addplot [color=black,solid,line width = 0.8pt,<->] plot
+coordinates {(0.9808,0.1951) (0.8*0.9808,0.8*0.1951)};
+% width of near zone has an arrow to label its width
+
+\addplot [color=black,solid,line width = 0.8pt,<->] plot
+coordinates {(0.95,0.3122) (0.5*0.95,0.5*0.3122)};
+% width of far zone has an arrow to label its width
+
+\end{axis}
+
+\node at (2.2,2.75) {$x_{0}$};
+\node at (2.05,1.55) {$x_{1}$};
+\node at (1.6,0.3) {$x_{m}$};
+\node at (2.9,0.6) {$h$};
+\node at (2.2,0.75) {$\sqrt{h}$};
+\node at (1.85,2.35) {$x$};
+\node[font = \Large] at (0.8,2.85) {$\Omega_{2}$};
+\node[font = \Large] at (0.8,2.0) {$\Omega_{1}$};
+\node[font = \Large] at (0.8,1.2) {$\Omega_{0}$};
+\draw[dotted,line cap = round, line width=2pt,dash pattern=on 0pt off
+5\pgflinewidth] (1.5,0.6) -- (1.9,1.4);
+
+
+%\draw[gray,thin] (0,0) grid +(3,4);
+
+\end{tikzpicture}
+
