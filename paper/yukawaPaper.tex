@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage{amssymb,amsmath}
 \usepackage{epstopdf}
+\usepackage{array}
 
 \usepackage{subfigure}
 \usepackage{tensor,color}
@@ -85,8 +86,8 @@ We wish to solve the Yukawa boundary value problem for $k>\frac{1}{2}$:
 \begin{subequations}
 \label{bigmodel}
   \begin{align}
-    -\lap_\S u(x)+k^2(x)&= f({ x}), && \forall x \in \Omega, \\
-    u(x)&=g(x), &&\forall { x} \in \Gamma. 
+    -\lap_\S u(x)+k^2(x)&= f({ x}), && \mbox{for} \: x \in \Omega, \\
+    u(x)&=g(x), &&\mbox{for} \; x \in \Gamma. 
   \end{align}
 \end{subequations}
 
@@ -1237,6 +1238,204 @@ simple if we use~\eqref{curlT}:
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Numerical Examples}
+\label{s:numerics}
+In this section, we apply standard numerical methods to solve the
+integral equation
+\begin{align}
+  \label{e:dlpBIE}
+  \frac{1}{2}\mu(x_{0}) + \int_{\Gamma}
+    [\underline{\mbox{curl}}_{\S}G_{k}(x_{0},y) \cdot
+    \vec{t}(y)] \mu(y)ds_{y} = g(x_{0}), \quad x_{0} \in \Gamma,
+\end{align}
+and to evaluate the double-layer potential
+\begin{align}
+  \label{e:dlpuEval}
+  u(x) = \int_{\Gamma} [\underline{\mbox{curl}}_{\S}G_{k}(x,y) 
+    \cdot \vec{t}(y)] \mu(y)ds_{y}, \quad x \in \Omega,
+\end{align}
+where
+\begin{align*}
+  G_{k}(x,y) = \C P_{\nu(k)} \left(
+    \frac{\|x - y\|^{2}}{2} - 1\right), \quad 
+  \C = \frac{1}{4\cosh\left(\frac{\pi}{2}\sqrt{4k^{2}-1}\right)}.
+\end{align*}
+In~\eqref{e:dlpuEval}, since $x \notin \Gamma$, the integrand is
+periodic and smooth.  Therefore, for a fixed $x\in \Omega$, the
+trapezoid rule has spectral accuracy.  However, the error grows as $x$
+approaches $\Gamma$.  Therefore, our reported errors are only measured
+at points $x$ sufficiently far from $\Gamma$.  We test two quadrature
+formulas for solving~\eqref{e:dlpBIE}.  First, we test the trapezoid
+rule which we expect will achieve third-order accuracy since the
+integrand is once continuously differentiable (Lemma~\ref{regularity}).
+Second, we test a high-order quadrature formula designed for functions
+that contain logarithmic singularities~\cite{alpert}.
+
+For all the examples, we discretize each connected component of the
+boundary with $N$ unknowns and solve the resulting linear system with
+unrestarted GMRES and a tolerance of $10^{-11}$.  The error of the
+Alpert quadrature formula is $\mathcal{O}(h^{16}\log h)$, and we use
+Fourier interpolation to assign values to the density function $\mu$ at
+points that are intermediate to the regular grid.
+
+We present four numerical examples which we now summarize.
+\begin{itemize}
+  \item{\em{The effect of the quadrature rule}:} For a two-ply connected
+  domain, we report a convergence study for the two quadrature formulas.
+  We also establish that the number of GMRES iterations is independent
+  of the mesh size.
+
+  \item{\em{The effect of $k$}:} For the same two-ply connected domain,
+  we examine the effect of the parameter $k$ on the condition number of
+  the linear system corresponding to~\eqref{e:dlpBIE}, and on the number
+  of GMRES iterations.
+
+  \item{\em{The effect of the geometry's curvature}:} We consider a
+  simply-connected domain and vary the aspect ratio of the major to
+  minor axis of the domain's boundary.  We examine the effect this
+  parameter has on the conditioning and the number of GMRES iterations.
+
+  \item{\em{A complex domain}:} We demonstrate that our method is able
+  to solve the Yukawa-Beltrami equation in complex domains by
+  solving~\eqref{DBVP} in a 32-ply connected domain, with an acceptable
+  number of GMRES iterations.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{The effect of the quadrature rule}
+We consider the two-ply connect geometry illustrated in
+Figure~\ref{f:twoply}.  An exact solution is formed by taking the
+Dirichlet boundary condition corresponding to the sum of two fundamental
+solutions centered inside the two islands.  In Table~\ref{t:example1},
+we report the number of GMRES iterations (this was independent of the
+quadrature formula).  We see that the number of GMRES iterations is
+independent of the mesh size, the error of the trapezoid rule has
+third-order accuracy, and the error of the Alpert quadrature formula
+quickly decays to the GMRES tolerance.
+
+\begin{figure}[htps]
+  \includegraphics[width=0.5\textwidth]{vortexBC1}
+  \includegraphics[width=0.5\textwidth]{vortexBC2}
+\caption{\label{f:twoply} A numerical solution of the Yukawa-Beltrami
+equation in a two-ply connected domain with $k=4$.  The exact solution
+is the sum of two fundamental solutions, each one centered inside the
+regions bounded by $\Gamma$.}
+\end{figure}
+
+\begin{table}[htps]
+\centering
+\begin{tabular}{c|cccc}
+$N$ & \# GMRES & Trapezoid Error & Alpert Error  \\
+\hline
+32   & 9 & 6.67E-5 & 5.54E-6  \\
+64   & 9 & 7.84E-6 & 9.66E-10 \\
+128  & 9 & 9.86E-7 & 2.28E-11 \\
+256  & 9 & 1.24E-7 & 3.68E-11 \\
+512  & 9 & 1.59E-8 & 1.76E-10 \\  
+1024 & 9 & 1.84E-9 & 1.20E-10 \\ 
+\end{tabular}
+\caption{\label{t:example1} The number of GMRES iterations and the
+error at a collection of points sufficiently far from $\Gamma$.}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{The effect of $k$}
+We consider again the same two-ply connected geometry illustrated in
+Figure~\ref{f:twoply}.  We solve~\eqref{e:dlpBIE} for varying values of
+$k > 1/2$ using Alpert's quadrature rule with $N=32$.  We report the
+condition number of the resulting linear system and the required number
+of GMRES iterations in Table~\ref{t:example2}.  We see that for larger
+values of $k$, the conditioning of the linear system improves, and the
+number of GMRES iterations decreases.  In Figure~\ref{f:evalues}, we
+plot the eigenvalues of the linear system for $k=1$ and $k=64$.  We see
+that for larger values of $k$, the eigenvalues cluster more strongly
+around $1/2$, and the result is a smaller number of gmres iterations and
+a smaller condition number.
+
+\begin{table}[htps]
+\centering
+\begin{tabular}{c>{\centering}m{2cm}c}
+$k$ & Condition Number & \# GMRES \\
+\hline
+0.51 & 4.22E1 & 14 \\
+1    & 1.22E1 & 13 \\
+2    & 4.50E0 & 11 \\
+4    & 2.17E0 & 9  \\
+8    & 1.45E0 & 8  \\  
+16   & 1.24E0 & 7  \\ 
+32   & 1.13E0 & 6  \\
+64   & 1.07E0 & 6  \\
+\end{tabular}
+\caption{\label{t:example2} The condition number of the linear system
+corresponding to a high-order discretization of~\eqref{e:dlpBIE} and the
+number of GMRES iterations as a function of the parameter $k$.}
+\end{table}
+
+\begin{figure}[htps]
+\centering
+\begin{tabular}{cc}
+\input{eigsk1.tikz} &
+\input{eigsk64.tikz}
+\end{tabular}
+\caption{\label{f:evalues} The eigenvalues of a discretization
+of~\eqref{e:dlpBIE} for $k=1$ (left) and $k=64$ (right).}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{The effect of the geometry's curvature}
+We let $\Omega$ be exterior of an ellipse with a varying aspect ratio of
+its major and minor axis.  The boundary $\Gamma$ is parameterized by
+$x(\alpha) = a\cos(\alpha)$, $y(\alpha) = b\sin(\alpha)$, and $z(\alpha)
+= \sqrt{1-x^{2}(\alpha)-y^{2}(\alpha)}$, where $a = 0.8$ and $b$ is
+varied in Table~\ref{t:example3}.  We see that the curvature does have
+an effect on the condition number of the corresponding linear system as
+well as on the required number of GMRES iterations.
+
+\begin{table}[htps]
+\centering
+\begin{tabular}{c>{\centering}m{2cm}c}
+\hline
+1   & 1.11E0 & 2  \\ 
+2   & 1.51E0 & 6  \\
+4   & 2.88E0 & 8  \\
+8   & 5.95E0 & 11 \\
+16  & 1.23E1 & 19 \\
+32  & 2.52E1 & 35 \\
+64  & \\
+128 & \\
+256 &
+\end{tabular}
+\caption{\label{t:example3} The condition number of the linear system
+corresponding to~\eqref{e:dlpBIE} and the number of required GMRES
+iterations with respect to the ratio $a/b$.}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{A complex domain}
+We take a 32-ply connected domain and set the boundary condition to be a
+constant value of one everywhere.  We set the parameter of the PDE to be
+$k=4$ and each boundary is discretized with only $N=32$ points.  The
+resulting linear system has 1152 unknowns, a condition number of $7.58$,
+and GMRES requires 25 iterations to reach the desired 11 digits of
+accuracy.  A plot of the solution is in Figure~\ref{f:32ply}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\textwidth]{constBC}
+  \caption{\label{f:32ply} The numerical solution of the Yukawa-Beltrami
+  equation with $k=4$ in a 32-ply connected domain.  The Dirichlet
+  boundary condition is equal to one on each of the boundaries (black
+  curves).}
+\end{figure}
+
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\section{A boundary integral strategy}
@@ -1265,440 +1464,432 @@ simple if we use~\eqref{curlT}:
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Numerical methods}
-\label{s:numerics}
-Let $\Omega \subset S$ be a $M$-ply connected domain with a smooth
-boundary $\Gamma$.  The $M$ connected components of $\Gamma$ are denoted
-by $\Gamma_{\ell}$, $\ell = 1,\dots,M$.  We seek a solution
-of~\eqref{DBVP} in terms of the double layer potential 
-\begin{align}
-  \label{e:dlpuEval}
-  u(x) = (\widetilde{W_k}\mu )(x)
-  \int_{\Gamma} [\underline{\mbox{curl}}_{\S}G_{k}(x,y) 
-    \cdot \vec{t}(y)] \mu(y)ds_{y},
-\end{align}
-where
-\begin{align*}
-  G_{k}(x_{0},y) = \C P_{\nu(k)} \left(
-    \frac{\|x_{0} - y\|^{2}}{2} - 1\right),
-\end{align*}
-and $\C = (4\cosh(\frac{\pi}{2}\sqrt{4k^{2}-1}))^{-1}$.  Since $\Gamma$
-is smooth, by~\eqref{DLPjump}, the density function $\mu$ must satisfy
-\begin{align}
-  \label{e:dlpBIE}
-  \frac{1}{2}\mu(x_{0}) + \int_{\Gamma}
-    [\underline{\mbox{curl}}_{\S}G_{k}(x_{0},y) \cdot
-    \vec{t}(y)] \mu(y)ds_{y} = g(x_{0}), 
-    \quad \mbox{for all } x_{0} \in \Gamma.
-\end{align}
-
-We now describe the discretization and solution of~\eqref{e:dlpBIE} and
-the evaluation of~\eqref{e:dlpuEval}.  Each component curve
-$\Gamma_{\ell}$ is parameterized by $\xi^{\ell}(\alpha)$, $\alpha \in
-[0,2\pi)$, and an equispaced discretization of $[0,2\pi)$ results in a
-discretization $\xi_{i}^{\ell}$ of $\Gamma_{\ell}$.  Each of the $M$
-component curves are discretized with $N$ points resulting in $NM$
-unknown values for the density function $\mu_{i}^{\ell}$, $\ell =
-1,\ldots,M$, and $i = 1,\ldots,N$.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Trapezoid rule}
-
-The trapezoid rule applied to~\eqref{e:dlpBIE} is 
-\begin{align}
-  \label{e:trapRule}
-  \mu_{i}^{\ell} + 2h \sum_{m=1}^{M} \sum_{j=1}^{N}
-    \mu_{j}^{m} K(\xi_{i}^{\ell},\xi_{j}^{m}) = 2g_{i}^{\ell}, \quad
-      \ell=1,\ldots,M,i=1,\ldots,N,
-\end{align}
-where
-\begin{align*}
-  K(\xi_{i}^{\ell},\xi_{j}^{m}) =\underline{\mbox{curl}}_{\S}G_{k}
-    (\xi_{i}^{\ell},\xi_{j}^{m}) \cdot \vec{t}{j}^{m} |\Delta s_{j}^{m}|.
-\end{align*}
-When using the trapezoid rule, the limiting value of the diagonal term
-$K(\xi_{i}^{\ell},\xi_{i}^{\ell}) = -\frac{1}{4\pi} \kappa
-\mathbf{s}\cdot(\mathbf{n}_p\times \mathbf{x})$ from
-Lemma~\ref{l:diagTerm} is used.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Alpert quadrature rules}
-We have seen in~\eqref{e:logSingularity} that the singularity of the
-fundamental solution is logarithmic.  While the kernel
-$\underline{\mbox{curl}}_{\S}G_{k}(x_{0},y) \cdot \vec{t}(y)$ of the
-double-layer potential is actually continuously differentiable, it does
-contain logarithmic singularities in higher-order derivatives, as we
-saw in Lemma~\ref{regularity}.  Based on past
-experience~\cite{kro:qua2011,qua2011}, we apply Alpert's quadrature
-rules~\cite{alpert} which are designed to integrate products of smooth
-functions with functions that have a logarithmic singularity.  These
-quadrature rules use an equispaced grid for points $y$ away from
-$x_0$.  Then, a collection of unstructured quadrature points $v_{k}$
-are in a neighbourhood of the logarithmic singularity at $x_0$.  See
-equation (9) in~\cite{kro:qua2011} for a complete description of the
-resulting linear system that must be solved.  These quadrature rules
-require values for the density function $\mu$ at the intermediate
-points $v_{k}$.  Again, we use Fourier interpolation  to make use of
-the periodicity of $\Gamma_{\ell}$,in line with~\cite{kro:qua2011}.  We
-report results using four quadrature rules of differing orders.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Evaluating $u$ in $\Omega$}
-
-Once we have an approximation of the density function $\mu_{i}^{\ell}$,
-the double layer potential must be evaluated at arbitrary points in
-$\Omega$~\eqref{e:dlpuEval} in order to reconstruct an approximation to the desired solution $u$.  Since the trapezoid rule applied to smooth
-periodic functions is spectrally accurate, and $x$ is located away from
-the boundary $\Gamma$, the trapezoid rule is spectrally accurate.
-However, for a fixed resolution $N$, the global error for all $x \in
-\Omega$ grows without bound~\cite{bir:yin:zor2006}.
-
-The integral that needs to be evaluated when $x$ is close to $\Gamma$ is
-referred to as nearly-singular.  The efficient evaluation of
-near-singular integrals is an active line of
-research~\cite{hel2013,hel:oja2008,klo:bar:gre:one2012}.  In this work,
-we opt to use the strategy outlined in~\cite{bir:yin:zor2006}.  Given
-the boundary of a simply-connected domain $\Gamma$, and an arclength
-term h = $|\Gamma|/N$, we divide $\Omega$ into three regions (see
-Figure~\ref{f:nearsing}):
-\begin{itemize}
-  \item Far region: $\Omega_{0} = \{x \in \Omega \:|\: d(x,\Gamma) >
-  \sqrt{h}\}$;
-
-  \item Intermediate region: $\Omega_{1} = \{x \in \Omega \:|\:
-  d(x,\Gamma) \in (h,\sqrt{h})\}$;
-
-  \item Near region: $\Omega_{2}= \{x \in \Omega \:|\: d(x,\Gamma) \leq
-  h\}$;
-\end{itemize}
-where $d(x,\Gamma) = \displaystyle\inf_{y \in \Gamma} \|x - y\|.$ 
-\begin{figure}[htps]
-\centering
-\input{near-sing.tikz}
-\caption{\label{f:nearsing} An illustration of the near-singular
-integration strategy from~\cite{bir:yin:zor2006}.  For points in the
-far region $\Omega_{0}$, the $N$-point trapezoid rule is used, and for
-points in the intermediate region $\Omega_{1}$, the $N^{3/2}$-point
-trapezoid rule is used.  Finally, for points in the near region
-$\Omega_{2}$, the layer potential at a collection of quadrature points,
-$x_{1},\ldots,x_{m}$ are used to form a one-dimensional interpolant.}
-\end{figure}
-
-It is shown in~\cite{bir:yin:zor2006} that if the density function is
-$p$ times differentiable, then by using the $N$-point trapezoid rule in
-$\Omega_{0}$, the error will be on the order of $h^{p+2}$, and by using
-the $N^{3/2}$-point trapezoid rule in $\Omega_{1}$ the error will be on
-the order of $h^{p+1}$.  Finally, if $x \in \Omega_{2}$, we first find
-the closest point $x_{0} \in \Gamma$, and then take $m$ interpolation
-points in $\Omega_{0} \cup \Omega_{1}$ that all lie on the line joining
-$x$ to $x_{0}$.  Then, standard quadrature formulas are used to achieve
-an accuracy of $h^{p+1}$ at all the interpolation points in $\Omega_{1}
-\cup \Omega_{0}$.  Next, a local interpolant of order $m_{\mathrm{loc}}$
-is used to assign a value to $u(x_{0}$.  Finally, an $(m+1)$-point
-Lagrange interpolant is used to estimate $u(x)$ with an error of
-$h^{\min(p+1,m,m_{loc})}$.  The net result is that if the density
-function is sufficiently differentiable, the near-singular integration
-error will be uniform for all points in $\Omega$.\\
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Complexity Estimates}
+%\section{Numerical methods}
+%\label{s:numerics}
+%Let $\Omega \subset S$ be a $M$-ply connected domain with a smooth
+%boundary $\Gamma$.  The $M$ connected components of $\Gamma$ are denoted
+%by $\Gamma_{\ell}$, $\ell = 1,\dots,M$.  We seek a solution
+%of~\eqref{DBVP} in terms of the double layer potential 
+%\begin{align}
+%  \label{e:dlpuEval}
+%  u(x) = (\widetilde{W_k}\mu )(x)
+%  \int_{\Gamma} [\underline{\mbox{curl}}_{\S}G_{k}(x,y) 
+%    \cdot \vec{t}(y)] \mu(y)ds_{y},
+%\end{align}
+%where
+%\begin{align*}
+%  G_{k}(x_{0},y) = \C P_{\nu(k)} \left(
+%    \frac{\|x_{0} - y\|^{2}}{2} - 1\right),
+%\end{align*}
+%and $\C = (4\cosh(\frac{\pi}{2}\sqrt{4k^{2}-1}))^{-1}$.  Since $\Gamma$
+%is smooth, by~\eqref{DLPjump}, the density function $\mu$ must satisfy
+%\begin{align}
+%  \label{e:dlpBIE}
+%  \frac{1}{2}\mu(x_{0}) + \int_{\Gamma}
+%    [\underline{\mbox{curl}}_{\S}G_{k}(x_{0},y) \cdot
+%    \vec{t}(y)] \mu(y)ds_{y} = g(x_{0}), 
+%    \quad \mbox{for all } x_{0} \in \Gamma.
+%\end{align}
 %
+%We now describe the discretization and solution of~\eqref{e:dlpBIE} and
+%the evaluation of~\eqref{e:dlpuEval}.  Each component curve
+%$\Gamma_{\ell}$ is parameterized by $\xi^{\ell}(\alpha)$, $\alpha \in
+%[0,2\pi)$, and an equispaced discretization of $[0,2\pi)$ results in a
+%discretization $\xi_{i}^{\ell}$ of $\Gamma_{\ell}$.  Each of the $M$
+%component curves are discretized with $N$ points resulting in $NM$
+%unknown values for the density function $\mu_{i}^{\ell}$, $\ell =
+%1,\ldots,M$, and $i = 1,\ldots,N$.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Trapezoid rule}
+%
+%The trapezoid rule applied to~\eqref{e:dlpBIE} is 
+%\begin{align}
+%  \label{e:trapRule}
+%  \mu_{i}^{\ell} + 2h \sum_{m=1}^{M} \sum_{j=1}^{N}
+%    \mu_{j}^{m} K(\xi_{i}^{\ell},\xi_{j}^{m}) = 2g_{i}^{\ell}, \quad
+%      \ell=1,\ldots,M,i=1,\ldots,N,
+%\end{align}
+%where
+%\begin{align*}
+%  K(\xi_{i}^{\ell},\xi_{j}^{m}) =\underline{\mbox{curl}}_{\S}G_{k}
+%    (\xi_{i}^{\ell},\xi_{j}^{m}) \cdot \vec{t}{j}^{m} |\Delta s_{j}^{m}|.
+%\end{align*}
+%When using the trapezoid rule, the limiting value of the diagonal term
+%$K(\xi_{i}^{\ell},\xi_{i}^{\ell}) = -\frac{1}{4\pi} \kappa
+%\mathbf{s}\cdot(\mathbf{n}_p\times \mathbf{x})$ from
+%Lemma~\ref{l:diagTerm} is used.
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Alpert quadrature rules}
+%We have seen in~\eqref{e:logSingularity} that the singularity of the
+%fundamental solution is logarithmic.  While the kernel
+%$\underline{\mbox{curl}}_{\S}G_{k}(x_{0},y) \cdot \vec{t}(y)$ of the
+%double-layer potential is actually continuously differentiable, it does
+%contain logarithmic singularities in higher-order derivatives, as we
+%saw in Lemma~\ref{regularity}.  Based on past
+%experience~\cite{kro:qua2011,qua2011}, we apply Alpert's quadrature
+%rules~\cite{alpert} which are designed to integrate products of smooth
+%functions with functions that have a logarithmic singularity.  These
+%quadrature rules use an equispaced grid for points $y$ away from
+%$x_0$.  Then, a collection of unstructured quadrature points $v_{k}$
+%are in a neighbourhood of the logarithmic singularity at $x_0$.  See
+%equation (9) in~\cite{kro:qua2011} for a complete description of the
+%resulting linear system that must be solved.  These quadrature rules
+%require values for the density function $\mu$ at the intermediate
+%points $v_{k}$.  Again, we use Fourier interpolation  to make use of
+%the periodicity of $\Gamma_{\ell}$,in line with~\cite{kro:qua2011}.  We
+%report results using four quadrature rules of differing orders.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\subsection{Evaluating $u$ in $\Omega$}
+%
+%Once we have an approximation of the density function $\mu_{i}^{\ell}$,
+%the double layer potential must be evaluated at arbitrary points in
+%$\Omega$~\eqref{e:dlpuEval} in order to reconstruct an approximation to the desired solution $u$.  Since the trapezoid rule applied to smooth
+%periodic functions is spectrally accurate, and $x$ is located away from
+%the boundary $\Gamma$, the trapezoid rule is spectrally accurate.
+%However, for a fixed resolution $N$, the global error for all $x \in
+%\Omega$ grows without bound~\cite{bir:yin:zor2006}.
+%
+%The integral that needs to be evaluated when $x$ is close to $\Gamma$ is
+%referred to as nearly-singular.  The efficient evaluation of
+%near-singular integrals is an active line of
+%research~\cite{hel2013,hel:oja2008,klo:bar:gre:one2012}.  In this work,
+%we opt to use the strategy outlined in~\cite{bir:yin:zor2006}.  Given
+%the boundary of a simply-connected domain $\Gamma$, and an arclength
+%term h = $|\Gamma|/N$, we divide $\Omega$ into three regions (see
+%Figure~\ref{f:nearsing}):
 %\begin{itemize}
+%  \item Far region: $\Omega_{0} = \{x \in \Omega \:|\: d(x,\Gamma) >
+%  \sqrt{h}\}$;
 %
-%\item{\em{Trapezoid rule}:}
-%Applying the trapezoid rule requires evaluating~\eqref{e:trapRule}.
-%Since the double summation must be evaluated at every discretization
-%point of $\Gamma$, one application of the trapezoid rule requires
-%$\bigO(N^{2}M^{2})$ operations.  This can be accelerated with fast
-%summation methods such as the Fast Multipole Method~\cite{gre:rok1987},
-%but this is not the focus of the current work.
+%  \item Intermediate region: $\Omega_{1} = \{x \in \Omega \:|\:
+%  d(x,\Gamma) \in (h,\sqrt{h})\}$;
 %
-%\item{\em{Alpert quadrature rules with Fourier interpolation}:} Alpert's
-%quadrature rules involve an additional $m$ quadrature points $m$ points
-%($m$ is on the order of 10) when compared to the trapezoid rule.  The
-%result is that $\bigO((N+m)^{2}M^{2})$ operations are required to
-%evaluate the quadrature formula.
-%
-%Another additional costs comes from the Fourier interpolation required
-%to assign values $\mu$ at the unstructured quadrature points $v_{k}$.
-%We form all the required functions values using a forward Fourier
-%transform, a multiplication in Fourier space, and an inverse Fourier
-%transform.  The resulting cost is $\bigO(mMN\log N)$.  This cost is
-%minimal when compared to the $\bigO(N^{2})$ calculation required to do
-%the direct evaluation of the $N$-body problem.
-%
-%\item{\em{Evaluating $u$ in $\Omega$}:}
-%Once the density function is computed at the $NM$ discretization points
-%of $\Gamma$, the double layer potential can be evaluated at
-%$N_{\mathrm{int}}$ points inside $\Omega$.  Asymptotically, the near
-%region $\Omega_{2}$ contains $\bigO(N_{\mathrm{int}}/N)$ points, the
-%intermediate region $\Omega_{1}$ contains
-%$\bigO(N_{\mathrm{int}}/\sqrt{N})$, and the far region $\Omega_{0}$
-%contains $\bigO(N_{\mathrm{int}})$ points.  Since we are using the
-%$N^{3/2}$-point trapezoid rule in $\Omega_{1}$ and the $N$-point
-%trapezoid rule in $\Omega_{0}$, our near-singular integration strategy
-%requires $\bigO(NMN_{\mathrm{int}})$ operations.
-%
-%In order to apply the $N^{3/2}$-point trapezoid rule, the density
-%function must be upsampled.  This is done by padding the FFT and the
-%complexity is $\bigO(MN^{3/2} \log N)$.
-%
-%
+%  \item Near region: $\Omega_{2}= \{x \in \Omega \:|\: d(x,\Gamma) \leq
+%  h\}$;
 %\end{itemize}
+%where $d(x,\Gamma) = \displaystyle\inf_{y \in \Gamma} \|x - y\|.$ 
+%\begin{figure}[htps]
+%\centering
+%\input{near-sing.tikz}
+%\caption{\label{f:nearsing} An illustration of the near-singular
+%integration strategy from~\cite{bir:yin:zor2006}.  For points in the
+%far region $\Omega_{0}$, the $N$-point trapezoid rule is used, and for
+%points in the intermediate region $\Omega_{1}$, the $N^{3/2}$-point
+%trapezoid rule is used.  Finally, for points in the near region
+%$\Omega_{2}$, the layer potential at a collection of quadrature points,
+%$x_{1},\ldots,x_{m}$ are used to form a one-dimensional interpolant.}
+%\end{figure}
+%
+%It is shown in~\cite{bir:yin:zor2006} that if the density function is
+%$p$ times differentiable, then by using the $N$-point trapezoid rule in
+%$\Omega_{0}$, the error will be on the order of $h^{p+2}$, and by using
+%the $N^{3/2}$-point trapezoid rule in $\Omega_{1}$ the error will be on
+%the order of $h^{p+1}$.  Finally, if $x \in \Omega_{2}$, we first find
+%the closest point $x_{0} \in \Gamma$, and then take $m$ interpolation
+%points in $\Omega_{0} \cup \Omega_{1}$ that all lie on the line joining
+%$x$ to $x_{0}$.  Then, standard quadrature formulas are used to achieve
+%an accuracy of $h^{p+1}$ at all the interpolation points in $\Omega_{1}
+%\cup \Omega_{0}$.  Next, a local interpolant of order $m_{\mathrm{loc}}$
+%is used to assign a value to $u(x_{0}$.  Finally, an $(m+1)$-point
+%Lagrange interpolant is used to estimate $u(x)$ with an error of
+%$h^{\min(p+1,m,m_{loc})}$.  The net result is that if the density
+%function is sufficiently differentiable, the near-singular integration
+%error will be uniform for all points in $\Omega$.\\
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\subsection{Complexity Estimates}
+%%
+%%\begin{itemize}
+%%
+%%\item{\em{Trapezoid rule}:}
+%%Applying the trapezoid rule requires evaluating~\eqref{e:trapRule}.
+%%Since the double summation must be evaluated at every discretization
+%%point of $\Gamma$, one application of the trapezoid rule requires
+%%$\bigO(N^{2}M^{2})$ operations.  This can be accelerated with fast
+%%summation methods such as the Fast Multipole Method~\cite{gre:rok1987},
+%%but this is not the focus of the current work.
+%%
+%%\item{\em{Alpert quadrature rules with Fourier interpolation}:} Alpert's
+%%quadrature rules involve an additional $m$ quadrature points $m$ points
+%%($m$ is on the order of 10) when compared to the trapezoid rule.  The
+%%result is that $\bigO((N+m)^{2}M^{2})$ operations are required to
+%%evaluate the quadrature formula.
+%%
+%%Another additional costs comes from the Fourier interpolation required
+%%to assign values $\mu$ at the unstructured quadrature points $v_{k}$.
+%%We form all the required functions values using a forward Fourier
+%%transform, a multiplication in Fourier space, and an inverse Fourier
+%%transform.  The resulting cost is $\bigO(mMN\log N)$.  This cost is
+%%minimal when compared to the $\bigO(N^{2})$ calculation required to do
+%%the direct evaluation of the $N$-body problem.
+%%
+%%\item{\em{Evaluating $u$ in $\Omega$}:}
+%%Once the density function is computed at the $NM$ discretization points
+%%of $\Gamma$, the double layer potential can be evaluated at
+%%$N_{\mathrm{int}}$ points inside $\Omega$.  Asymptotically, the near
+%%region $\Omega_{2}$ contains $\bigO(N_{\mathrm{int}}/N)$ points, the
+%%intermediate region $\Omega_{1}$ contains
+%%$\bigO(N_{\mathrm{int}}/\sqrt{N})$, and the far region $\Omega_{0}$
+%%contains $\bigO(N_{\mathrm{int}})$ points.  Since we are using the
+%%$N^{3/2}$-point trapezoid rule in $\Omega_{1}$ and the $N$-point
+%%trapezoid rule in $\Omega_{0}$, our near-singular integration strategy
+%%requires $\bigO(NMN_{\mathrm{int}})$ operations.
+%%
+%%In order to apply the $N^{3/2}$-point trapezoid rule, the density
+%%function must be upsampled.  This is done by padding the FFT and the
+%%complexity is $\bigO(MN^{3/2} \log N)$.
+%%
+%%
+%%\end{itemize}
+%%
+%%
+%%
 %
 %
 %
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Numerical Results}
-We now demonstrate the effectiveness of our method on a variety of
-examples.  We set the GMRES tolerance to $10^{-11}$.  We test the
-accuracy of the trapezoid rule versus Alpert's quadrature
-rules~\cite{alpert}.  We also demonstrate mesh independence.  Exact
-solutions are formed by finding the Dirichlet boundary condition of
-linear combinations of the fundamental solution centered at points
-outside of each geometry.  The examples we present are
-\begin{itemize}
-  \item We consider a two-ply connected domain and study the effect of
-  the parameter $k$ on the error and the number of GMRES iterations when
-  using the trapezoid rule~\eqref{e:trapRule}.  We also check that the
-  error in the far and intermediate regions decay at the correct rates.
-  \item We consider the same two-ply connected domain, and we study the
-  effect of the quadrature rule.  We use Alpert's quadrature rules with
-  four different orders of accuracy.  Again, we are interested in the
-  error and the number of required GMRES iterations.
-  \item We consider a 32-ply connected domain with a constant boundary
-  condition for which we do not have an exact solution.  Our method
-  proves to be quite reliable for solving the Yukawa-Beltrami paper in
-  complex geometries.
-\end{itemize}
-We only use direct methods to evaluate all the required layer
-potentials, and the result is a method whose complexity scales with the
-total number of unknowns squared.  We plan to investigate fast
-summation methods such as the Fast Multipole Method~\cite{gre:rok1987}
-to reduce the complexity to linear or near linear in future work.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{Effect of $k$}
-%input.data file is
-%2 256 2              number of holes  number of points per hole
-%8.0                parameter in pde
-%50 50             number of azimuthal and z-uthal discretization points
-%0.8 0.4 1.0 3.0     boundary curves radius1, radius2, center1, center2
-%0.2 0.4 1.0 1.0
-%1.0 3.0 2.0         vortex locations (theta,phi) and strength
-%1.0 1.0 -1.1
-
-Here we examine the effect of the parameter $k$ in the PDE
-$(-\lap_{\S} + k^{2})u=0$ on the convergence of GMRES.  As a test
-problem, we use the two-ply connected domain illustrated in
-Figure~\ref{f:twoply}.  An exact solution is formed by taking the sum
-of two fundamental solutions centered inside each of the two islands.
-
-\begin{figure}[htps]
-  \includegraphics[width=0.5\textwidth]{vortexBC1}
-  \includegraphics[width=0.5\textwidth]{vortexBC2}
-\caption{\label{f:twoply} A numerical solution of the Yukawa-Beltrami
-equation in a two-ply connected domain with $k=1$.  The exact solution
-is the sum of two fundamental solutions, each one centered inside the
-regions bounded by $\Gamma$.}
-\end{figure}
-
-
-\begin{table}[htps]
-\centering
-
-\begin{tabular}{c|ccc|ccc}
-$N$ & \# GMRES & $\Omega_{0}$-Error & $\Omega_{1}$-Error 
-    & \# GMRES & $\Omega_{0}$-Error & $\Omega_{1}$-Error \\
-\hline
-32   & 11 & 1.68E-5  & 4.06E-3  
-     & 11 & 2.63E-5  & 2.11E-3 \\
-64   & 11 & 2.06E-6  & 1.72E-5  
-     & 11 & 3.76E-6  & 9.61E-6 \\
-128  & 11 & 2.58E-7  & 3.14E-7 
-     & 11 & 4.46E-7  & 5.28E-7 \\
-256  & 11 & 3.58E-8  & 4.39E-8  
-     & 11 & 6.29E-8  & 7.45E-8 \\
-512  & 11 & 4.37E-9  & 5.49E-9  
-     & 11 & 7.24E-9  & 9.32E-9 \\
-1024 & 11 & 5.70E-10 & 7.19E-10 
-     & 11 & 9.41E-10 & 1.28E-9 \\
-\end{tabular}
-\caption{\label{t:example1a} The number of GMRES iterations, and the
-errors in the far and intermediate regions with $k = 0.51$ (left) and
-$k=1$ (right).}
-
-\begin{tabular}{c|ccc|ccc}
-$N$ & \# GMRES & $\Omega_{0}$-Error & $\Omega_{1}$-Error 
-    & \# GMRES & $\Omega_{0}$-Error & $\Omega_{1}$-Error \\
-\hline
-32   & 11 & 3.37E-5 & 7.61E-4  
-     & 9  & 6.67E-5 & 2.54E-4 \\
-64   & 11 & 4.11E-6 & 6.82E-6  
-     & 9  & 7.84E-6 & 7.58E-5 \\
-128  & 11 & 5.33E-7 & 7.18E-7 
-     & 9  & 9.86E-7 & 1.02E-6 \\
-256  & 11 & 7.81E-8 & 1.03E-7  
-     & 9  & 1.24E-6 & 1.27E-7 \\
-512  & 11 & 1.04E-8 & 1.29E-8  
-     & 9  & 1.59E-8 & 1.59E-8 \\
-1024 & 11 & 1.24E-9 & 1.64E-9 
-     & 9  & 1.84E-9 & 1.98E-9 \\
-\end{tabular}
-\caption{\label{t:example1b} The number of GMRES iterations, and the
-errors in the far and intermediate regions with $k = 2$ (left) and
-$k=4$ (right).}
-
-\begin{tabular}{c|ccc|ccc}
-$N$ & \# GMRES & $\Omega_{0}$-Error & $\Omega_{1}$-Error 
-    & \# GMRES & $\Omega_{0}$-Error & $\Omega_{1}$-Error \\
-\hline
-32   & 7 & 1.84E-4 & 2.69E-3  
-     & 5 & 1.66E-2 & 5.47E+0 \\
-64   & 7 & 2.28E-5 & 2.24E-5
-     & 5 & 1.11E-3 & 5.97E-2 \\
-128  & 7 & 2.83E-6 & 2.92E-6 
-     & 5 & 1.56E-4 & 1.55E-4 \\
-256  & 7 & 3.53E-7 & 3.65E-7  
-     & 5 & 2.01E-5 & 2.04E-5 \\
-512  & 7 & 4.50E-8 & 4.56E-8  
-     & 5 & 2.55E-6 & 2.58E-6 \\
-1024 & 7 & 5.45E-9 & 5.60E-9 
-     & 5 & 3.17E-7 & 3.24E-7 \\
-\end{tabular}
-\caption{\label{t:example1c} The number of GMRES iterations, and the
-errors in the far and intermediate regions with $k = 8$ (left) and
-$k=64$ (right).}
-
-\end{table}
-
-From Tables~\ref{t:example1a}--\ref{t:example1c}, we can conclude
-several results.  First, for a fixed $k$, the number of GMRES iterations
-is independent of $N$.  This mesh-independence is generally observed for
-second-kind integral equations with smooth boundaries and it results
-from the eigenvalues clustering at some points away form the origin.
-The reduction in the number of GMRES iterations as $k$ increases is
-attributed to the spectrum of the compact double layer potential
-clustering tighter around the origin as $k$ increases.  For instance,
-taking $N=64$ for this example, the minimum eigenvalue is 4.4E-1 for
-$k=1$, while it is 9.9E-2 for $k=16$.  The tightness of the spectrum is
-directly linked to the number of required GMRES iterations.
-
-With respect to the convergence rate, as desired, we see that the error
-in the far region $\Omega_{0}$ and the intermediate region $\Omega_{1}$
-have the same rates of convergence.  In this case, we are observing
-third-order convergence for all the reported values of $k$.  This
-indicates that the kernel of the double layer potential is $C^{1}
-\backslash C^{2}$.  This in fact is the case as we showed in
-Lemma~\ref{regularity}.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{The effect of the quadrature rule}
-%input.data file is
-%2 256 2              number of holes  number of points per hole
-%8.0                parameter in pde
-%50 50             number of azimuthal and z-uthal discretization points
-%0.8 0.4 1.0 3.0     boundary curves radius1, radius2, center1, center2
-%0.2 0.4 1.0 1.0
-%1.0 3.0 2.0         vortex locations (theta,phi) and strength
-%1.0 1.0 -1.1
-%parameter eps in code which picks size of buffer around the boundaries
-%when deciding who is inside and outside is
-%eps = 1.d1*2.d0*pi*radmax/nd
-
-Here we examine the effect of the quadrature rule used to evaluate the
-double layer potential.  Since the diagonal of the kernel has a
-logarithmic singularities in its derivatives, we use Alpert's quadrature
-rules~\cite{alpert} with varying orders of accuracy.  We report results
-for three different quadrature formula in Tables~\ref{t:example2a}
-and~\ref{t:example2b}.  We only report the relative error in the far
-zone, since, as we saw in the previous example, the error decays with
-the same rate in the intermediate zone.  The geometry and exact solution
-are the same as the previous example.
-
-As expected, we see an increase in accuracy when using the higher-order
-quadrature rules.  Moreover, there is no increase in the number of GMRES
-iterations when comparing all of the Alpert quadrature rules and the
-trapezoid rule.  Therefore, we have a high-order mesh-independent method
-for solving~\eqref{e:dlpBIE}.
-
-\begin{table}[htps]
-\centering
-\begin{tabular}{c|cc|cc|cc}
-\multicolumn{1}{c|}{} &
-\multicolumn{2}{c|}{$h^{2}\log h$} &
-\multicolumn{2}{c}{$h^{4}\log h$} \\
-$N$  & \# GMRES & $\Omega_{0}-Error$  
-     & \# GMRES & $\Omega_{0}-Error$ \\
-\hline
-32   & 11 & 4.35E-4 & 11 & 1.38E-5  \\
-64   & 11 & 6.84E-5 & 11 & 1.37E-8  \\
-128  & 11 & 1.07E-6 & 11 & 8.46E-10 \\
-256  & 11 & 2.01E-7 & 11 & 4.16E-11 \\
-512  & 11 & 2.88E-8 & 11 & 7.99E-12 \\
-1024 & 11 & 4.44E-9 & 11 & 1.46E-11 \\
-\end{tabular}
-\caption{\label{t:example2a} The number of GMRES iterations and error in
-the far region using Alpert's $2^{nd}$- and $4^{th}$-order quadrature
-rule with $k=2$.}
-
-\begin{tabular}{c|cc|cc|cc}
-\multicolumn{1}{c|}{} &
-\multicolumn{2}{c|}{$h^{8}\log h$} &
-\multicolumn{2}{c}{$h^{16}\log h$} \\
-$N$  & \# GMRES & $\Omega_{0}-Error$  
-     & \# GMRES & $\Omega_{0}-Error$ \\
-\hline
-32   & 11 & 1.50E-4  & 11 & 1.48E-5  \\
-64   & 11 & 2.25E-9  & 11 & 2.25E-9  \\
-128  & 11 & 1.75E-12 & 11 & 6.18E-11 \\
-256  & 11 & 1.54E-11 & 11 & 9.54E-11 \\
-512  & 11 & 2.18E-11 & 11 & 3.12E-10 \\
-1024 & 11 & 3.95E-11 & 11 & 4.15E-10 \\
-\end{tabular}
-\caption{\label{t:example2b} The number of GMRES iterations and error in
-the far region using Alpert's $8^{th}$- and $16^{th}$-order quadrature
-rule with $k=2$.}
-
-\end{table}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{A complex domain}
-We take a 32-ply connected domain and set the boundary condition to be a
-constant value of one everywhere.  We set the parameter of the PDE to be
-$k=4$ and each boundary is discretized with only $N=32$ points.  The
-resulting linear system has 1152 unknowns, and GMRES requires 25
-iterations to reach the desired 11 digits of accouracy.  A plot of the
-solution is in Figure~\ref{f:32ply}.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.5\textwidth]{constBC}
-  \caption{\label{f:32ply} The numerical solution of the Yukawa-Beltrami
-  equation with $k=4$ in a 32-ply connected domain.  The Dirichlet
-  boundary condition is equal to one on each of the boundaries (black
-  curves).}
-\end{figure}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Appendix}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Numerical Results}
+%We now demonstrate the effectiveness of our method on a variety of
+%examples.  We set the GMRES tolerance to $10^{-11}$.  We test the
+%accuracy of the trapezoid rule versus Alpert's quadrature
+%rules~\cite{alpert}.  We also demonstrate mesh independence.  Exact
+%solutions are formed by finding the Dirichlet boundary condition of
+%linear combinations of the fundamental solution centered at points
+%outside of each geometry.  The examples we present are
+%\begin{itemize}
+%  \item We consider a two-ply connected domain and study the effect of
+%  the parameter $k$ on the error and the number of GMRES iterations when
+%  using the trapezoid rule~\eqref{e:trapRule}.  We also check that the
+%  error in the far and intermediate regions decay at the correct rates.
+%  \item We consider the same two-ply connected domain, and we study the
+%  effect of the quadrature rule.  We use Alpert's quadrature rules with
+%  four different orders of accuracy.  Again, we are interested in the
+%  error and the number of required GMRES iterations.
+%  \item We consider a 32-ply connected domain with a constant boundary
+%  condition for which we do not have an exact solution.  Our method
+%  proves to be quite reliable for solving the Yukawa-Beltrami paper in
+%  complex geometries.
+%\end{itemize}
+%We only use direct methods to evaluate all the required layer
+%potentials, and the result is a method whose complexity scales with the
+%total number of unknowns squared.  We plan to investigate fast
+%summation methods such as the Fast Multipole Method~\cite{gre:rok1987}
+%to reduce the complexity to linear or near linear in future work.
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%We now show using elementary arguments that the kernel of the double layer potential on $\mathcal{S}$ is continuous.
-%%\begin{lemma} On a smooth contour $C_k$, the kernel of the double layer potential is continuous. 
-%%\end{lemma}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection*{Effect of $k$}
+%%input.data file is
+%%2 256 2              number of holes  number of points per hole
+%%8.0                parameter in pde
+%%50 50             number of azimuthal and z-uthal discretization points
+%%0.8 0.4 1.0 3.0     boundary curves radius1, radius2, center1, center2
+%%0.2 0.4 1.0 1.0
+%%1.0 3.0 2.0         vortex locations (theta,phi) and strength
+%%1.0 1.0 -1.1
+%
+%Here we examine the effect of the parameter $k$ in the PDE
+%$(-\lap_{\S} + k^{2})u=0$ on the convergence of GMRES.  As a test
+%problem, we use the two-ply connected domain illustrated in
+%Figure~\ref{f:twoply}.  An exact solution is formed by taking the sum
+%of two fundamental solutions centered inside each of the two islands.
+%
+%\begin{figure}[htps]
+%  \includegraphics[width=0.5\textwidth]{vortexBC1}
+%  \includegraphics[width=0.5\textwidth]{vortexBC2}
+%\caption{\label{f:twoply} A numerical solution of the Yukawa-Beltrami
+%equation in a two-ply connected domain with $k=1$.  The exact solution
+%is the sum of two fundamental solutions, each one centered inside the
+%regions bounded by $\Gamma$.}
+%\end{figure}
+%
+%
+%\begin{table}[htps]
+%\centering
+%
+%\begin{tabular}{c|ccc|ccc}
+%$N$ & \# GMRES & $\Omega_{0}$-Error & $\Omega_{1}$-Error 
+%    & \# GMRES & $\Omega_{0}$-Error & $\Omega_{1}$-Error \\
+%\hline
+%32   & 11 & 1.68E-5  & 4.06E-3  
+%     & 11 & 2.63E-5  & 2.11E-3 \\
+%64   & 11 & 2.06E-6  & 1.72E-5  
+%     & 11 & 3.76E-6  & 9.61E-6 \\
+%128  & 11 & 2.58E-7  & 3.14E-7 
+%     & 11 & 4.46E-7  & 5.28E-7 \\
+%256  & 11 & 3.58E-8  & 4.39E-8  
+%     & 11 & 6.29E-8  & 7.45E-8 \\
+%512  & 11 & 4.37E-9  & 5.49E-9  
+%     & 11 & 7.24E-9  & 9.32E-9 \\
+%1024 & 11 & 5.70E-10 & 7.19E-10 
+%     & 11 & 9.41E-10 & 1.28E-9 \\
+%\end{tabular}
+%\caption{\label{t:example1a} The number of GMRES iterations, and the
+%errors in the far and intermediate regions with $k = 0.51$ (left) and
+%$k=1$ (right).}
+%
+%\begin{tabular}{c|ccc|ccc}
+%$N$ & \# GMRES & $\Omega_{0}$-Error & $\Omega_{1}$-Error 
+%    & \# GMRES & $\Omega_{0}$-Error & $\Omega_{1}$-Error \\
+%\hline
+%32   & 11 & 3.37E-5 & 7.61E-4  
+%     & 9  & 6.67E-5 & 2.54E-4 \\
+%64   & 11 & 4.11E-6 & 6.82E-6  
+%     & 9  & 7.84E-6 & 7.58E-5 \\
+%128  & 11 & 5.33E-7 & 7.18E-7 
+%     & 9  & 9.86E-7 & 1.02E-6 \\
+%256  & 11 & 7.81E-8 & 1.03E-7  
+%     & 9  & 1.24E-6 & 1.27E-7 \\
+%512  & 11 & 1.04E-8 & 1.29E-8  
+%     & 9  & 1.59E-8 & 1.59E-8 \\
+%1024 & 11 & 1.24E-9 & 1.64E-9 
+%     & 9  & 1.84E-9 & 1.98E-9 \\
+%\end{tabular}
+%\caption{\label{t:example1b} The number of GMRES iterations, and the
+%errors in the far and intermediate regions with $k = 2$ (left) and
+%$k=4$ (right).}
+%
+%\begin{tabular}{c|ccc|ccc}
+%$N$ & \# GMRES & $\Omega_{0}$-Error & $\Omega_{1}$-Error 
+%    & \# GMRES & $\Omega_{0}$-Error & $\Omega_{1}$-Error \\
+%\hline
+%32   & 7 & 1.84E-4 & 2.69E-3  
+%     & 5 & 1.66E-2 & 5.47E+0 \\
+%64   & 7 & 2.28E-5 & 2.24E-5
+%     & 5 & 1.11E-3 & 5.97E-2 \\
+%128  & 7 & 2.83E-6 & 2.92E-6 
+%     & 5 & 1.56E-4 & 1.55E-4 \\
+%256  & 7 & 3.53E-7 & 3.65E-7  
+%     & 5 & 2.01E-5 & 2.04E-5 \\
+%512  & 7 & 4.50E-8 & 4.56E-8  
+%     & 5 & 2.55E-6 & 2.58E-6 \\
+%1024 & 7 & 5.45E-9 & 5.60E-9 
+%     & 5 & 3.17E-7 & 3.24E-7 \\
+%\end{tabular}
+%\caption{\label{t:example1c} The number of GMRES iterations, and the
+%errors in the far and intermediate regions with $k = 8$ (left) and
+%$k=64$ (right).}
+%
+%\end{table}
+%
+%From Tables~\ref{t:example1a}--\ref{t:example1c}, we can conclude
+%several results.  First, for a fixed $k$, the number of GMRES iterations
+%is independent of $N$.  This mesh-independence is generally observed for
+%second-kind integral equations with smooth boundaries and it results
+%from the eigenvalues clustering at some points away form the origin.
+%The reduction in the number of GMRES iterations as $k$ increases is
+%attributed to the spectrum of the compact double layer potential
+%clustering tighter around the origin as $k$ increases.  For instance,
+%taking $N=64$ for this example, the minimum eigenvalue is 4.4E-1 for
+%$k=1$, while it is 9.9E-2 for $k=16$.  The tightness of the spectrum is
+%directly linked to the number of required GMRES iterations.
+%
+%With respect to the convergence rate, as desired, we see that the error
+%in the far region $\Omega_{0}$ and the intermediate region $\Omega_{1}$
+%have the same rates of convergence.  In this case, we are observing
+%third-order convergence for all the reported values of $k$.  This
+%indicates that the kernel of the double layer potential is $C^{1}
+%\backslash C^{2}$.  This in fact is the case as we showed in
+%Lemma~\ref{regularity}.
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection*{The effect of the quadrature rule}
+%%input.data file is
+%%2 256 2              number of holes  number of points per hole
+%%8.0                parameter in pde
+%%50 50             number of azimuthal and z-uthal discretization points
+%%0.8 0.4 1.0 3.0     boundary curves radius1, radius2, center1, center2
+%%0.2 0.4 1.0 1.0
+%%1.0 3.0 2.0         vortex locations (theta,phi) and strength
+%%1.0 1.0 -1.1
+%%parameter eps in code which picks size of buffer around the boundaries
+%%when deciding who is inside and outside is
+%%eps = 1.d1*2.d0*pi*radmax/nd
+%
+%Here we examine the effect of the quadrature rule used to evaluate the
+%double layer potential.  Since the diagonal of the kernel has a
+%logarithmic singularities in its derivatives, we use Alpert's quadrature
+%rules~\cite{alpert} with varying orders of accuracy.  We report results
+%for three different quadrature formula in Tables~\ref{t:example2a}
+%and~\ref{t:example2b}.  We only report the relative error in the far
+%zone, since, as we saw in the previous example, the error decays with
+%the same rate in the intermediate zone.  The geometry and exact solution
+%are the same as the previous example.
+%
+%As expected, we see an increase in accuracy when using the higher-order
+%quadrature rules.  Moreover, there is no increase in the number of GMRES
+%iterations when comparing all of the Alpert quadrature rules and the
+%trapezoid rule.  Therefore, we have a high-order mesh-independent method
+%for solving~\eqref{e:dlpBIE}.
+%
+%\begin{table}[htps]
+%\centering
+%\begin{tabular}{c|cc|cc|cc}
+%\multicolumn{1}{c|}{} &
+%\multicolumn{2}{c|}{$h^{2}\log h$} &
+%\multicolumn{2}{c}{$h^{4}\log h$} \\
+%$N$  & \# GMRES & $\Omega_{0}-Error$  
+%     & \# GMRES & $\Omega_{0}-Error$ \\
+%\hline
+%32   & 11 & 4.35E-4 & 11 & 1.38E-5  \\
+%64   & 11 & 6.84E-5 & 11 & 1.37E-8  \\
+%128  & 11 & 1.07E-6 & 11 & 8.46E-10 \\
+%256  & 11 & 2.01E-7 & 11 & 4.16E-11 \\
+%512  & 11 & 2.88E-8 & 11 & 7.99E-12 \\
+%1024 & 11 & 4.44E-9 & 11 & 1.46E-11 \\
+%\end{tabular}
+%\caption{\label{t:example2a} The number of GMRES iterations and error in
+%the far region using Alpert's $2^{nd}$- and $4^{th}$-order quadrature
+%rule with $k=2$.}
+%
+%\begin{tabular}{c|cc|cc|cc}
+%\multicolumn{1}{c|}{} &
+%\multicolumn{2}{c|}{$h^{8}\log h$} &
+%\multicolumn{2}{c}{$h^{16}\log h$} \\
+%$N$  & \# GMRES & $\Omega_{0}-Error$  
+%     & \# GMRES & $\Omega_{0}-Error$ \\
+%\hline
+%32   & 11 & 1.50E-4  & 11 & 1.48E-5  \\
+%64   & 11 & 2.25E-9  & 11 & 2.25E-9  \\
+%128  & 11 & 1.75E-12 & 11 & 6.18E-11 \\
+%256  & 11 & 1.54E-11 & 11 & 9.54E-11 \\
+%512  & 11 & 2.18E-11 & 11 & 3.12E-10 \\
+%1024 & 11 & 3.95E-11 & 11 & 4.15E-10 \\
+%\end{tabular}
+%\caption{\label{t:example2b} The number of GMRES iterations and error in
+%the far region using Alpert's $8^{th}$- and $16^{th}$-order quadrature
+%rule with $k=2$.}
+%
+%\end{table}
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection*{A complex domain}
+%We take a 32-ply connected domain and set the boundary condition to be a
+%constant value of one everywhere.  We set the parameter of the PDE to be
+%$k=4$ and each boundary is discretized with only $N=32$ points.  The
+%resulting linear system has 1152 unknowns, and GMRES requires 25
+%iterations to reach the desired 11 digits of accouracy.  A plot of the
+%solution is in Figure~\ref{f:32ply}.
+%
+%\begin{figure}
+%  \centering
+%  \includegraphics[width=0.5\textwidth]{constBC}
+%  \caption{\label{f:32ply} The numerical solution of the Yukawa-Beltrami
+%  equation with $k=4$ in a 32-ply connected domain.  The Dirichlet
+%  boundary condition is equal to one on each of the boundaries (black
+%  curves).}
+%\end{figure}
+%
+%
 
 
 
