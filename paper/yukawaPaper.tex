@@ -72,9 +72,9 @@ $\spadesuit$ {\small \tt quaife@ices.utexas.edu}}
 \section{Introduction}
 
 \todo{Write an introduction!}
-blah blah blah blah In this paper we present a reformulation of a
+In this paper we present a reformulation of a
 boundary value problem for the Yukawa-Beltrami equation on the surface
-of the unit sphere $\S$,  in terms of boundary integral equations. 
+of the unit sphere $\S$  in terms of boundary integral equations. 
 
 Concretely, let $\Omega$ denote a sub-manifold of $\S$,
 and let $\Gamma$ denote its boundary. By this we mean that $\Gamma$ is
@@ -82,18 +82,18 @@ a closed curve  on $\S$ which divides $\S$ into two
 (not necessarily connected) parts $\Omega$ and $\Omega^{c}$. In
 particular, $\Gamma = \partial\Omega$ is the boundary curve of $\Omega$.
 
-We wish to solve the Yukawa boundary value problem for $k>\frac{1}{2}$:
+We wish to solve the Yukawa boundary value problem:
 \begin{subequations}
 \label{bigmodel}
   \begin{align}
-    -\lap_\S u(x)+k^2(x)&= f({ x}), && \mbox{for} \: x \in \Omega, \\
+    -\lap_\S u(x)+k^2  u(x)&= f({ x}), && \mbox{for} \: x \in \Omega, \\
     u(x)&=g(x), &&\mbox{for} \; x \in \Gamma. 
   \end{align}
 \end{subequations}
-
 Here $\lap_\S$ is the Laplace-Beltrami operator on $\S$ and $k \in
-\mathbb{R}$ is constant. The  problem~\eqref{bigmodel} arises in
-several contexts. \todo{more motivation}
+\mathbb{R}$ is constant. This  problem arises in
+the context of solving the isotropic heat equation via Rothe's method: first apply a semi-implicit time discretization to the heat equation and then time-stepping involves repeatedly solve an elliptic PDE  of the form~\eqref{bigmodel}. In this context, $k^2 = O(1/\Delta t)$, and with this in mind, we restrict our attention to the case $k>1/2$.
+This approach is discussed in \cite{rothe:heat} for the heat equation in the plane. 
 
 We recall that the exterior boundary value problem for the Yukawa
 operator $(-\lap + k^2)$  in $\mathbb{R}^2$ is well-posed if we seek
@@ -131,7 +131,7 @@ for the system.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Some preliminaries}
-We first need to fix notation.  A point on the sphere $\S$ will be
+Before proceeding, we first fix notation.  A point on the sphere $\S$ is
 described in terms of the spherical angles,
 \begin{align*}
   x(\varphi,\theta) \, = \, \left( 
@@ -143,7 +143,7 @@ described in terms of the spherical angles,
   \right) \in{\S}, \quad \varphi \in [0,2\pi), 
     \quad \theta \in [0,\pi].
 \end{align*}
-We also recall that in spherical coordinates, $\lap_\S$ is defined as
+Recall that in spherical coordinates, $\lap_\S$ is defined as
 \begin{align*}
   \lap_S u(x) \, = \, \left[
   \frac{1}{\sin^2 \theta} \frac{\partial^2}{\partial \varphi^2} +
@@ -152,8 +152,8 @@ We also recall that in spherical coordinates, $\lap_\S$ is defined as
   \right] u(x(\varphi,\theta)).
 \end{align*}
 
-If two points $x,y$ lie on the unit sphere, with
-spherical coordinates $x=x(\phi,\theta), y=(\alpha,\beta)$ and Cartesian coordinates $(x_1,x_2,x_2),(y_1,y_2,y_3)$, then we describe the solid angle between them by \begin{align*}
+For two points $x,y$  on the unit sphere, with
+spherical coordinates $x=x(\phi,\theta), y=(\alpha,\beta)$ and Cartesian coordinates $(x_1,x_2,x_2),(y_1,y_2,y_3)$, then the solid angle between them is given by \begin{align*}
   <x,y> = \sum_{i=1}^3 x_iy_i=\cos(\phi-\alpha)\sin(\theta)\sin(\beta)+\cos(\theta)\cos(\beta).
 \end{align*} In particular, if $y=(0,0,1)^T$ is the North pole, then $<x,y>=\cos(\theta)$. 
 The distance between $x$ and $y$ in the 3-dimensional Euclidean metric
@@ -164,8 +164,7 @@ by
   2-2<x,y>, \qquad \Rightarrow \qquad <x,y>= 1-\frac{\|x-y\|^2}{2}.
 \end{align*}
 
-
-We also remind the reader of some useful vectorial
+We remind the reader of some useful vectorial
 identities on the sphere. Let $\vec{e}_r, \vec{e}_\theta,
 \vec{e}_{\varphi} $ be the usual unit vectors in spherical coordinates.
 Recall that we can define the surface gradient of a scalar $f$ on $\S$
@@ -174,8 +173,8 @@ as
 \nabla_{\S} f(x) \,  = \, \frac{1}{\sin \theta}\frac{\partial f}{\partial \varphi}
 \,\vec{e}_{\varphi} + \frac{\partial f}{\partial \theta}\, \vec{e}_{\theta}.
 \end{align*}
-In the same way we introduce the surface divergence for a vector-valued
-function $\vec{V}$ on the sphere as
+In the same way, the surface divergence for a vector-valued
+function $\vec{V}$ on the sphere can be written as
 \begin{align*}
 \mbox{div}_{\S} \vec{V}(x) \, = \, 
 \frac{1}{\sin \theta} \left(
@@ -254,12 +253,9 @@ We shall make extensive use of these identities.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{A fundamental solution and representation formula}
-
-Motivated by a similar analysis for the Laplace-Beltrami operator on
-$\S$, we seek a fundamental solution for the Yukawa-Beltrami operator
-$-\lap_\S + k^2$ by examining first the situation for the Yukawa
-operator in the Euclidean plane. Recall that if $\lap$ is the flat
-Laplacian, then the fundamental solution of the Yukawa operator in
+We seek a fundamental solution for the Yukawa-Beltrami operator
+$(-\lap_\S + k^2)$.  Examining first the situation for the Yukawa
+operator in the Euclidean plane, the fundamental solution of the Yukawa operator, $(-\lap + k^2)$ in
 $\mathbb{R}^2$ is given by $\frac{k^2}{2\pi}
 K_{0}(k|\mathbf{x}-\mathbf{x}_{0}|)$, $\mathbf{x},\mathbf{x}_{0} \in
 \mathbb{R}^{2}$. Here $K_{0}$ is the modified Bessel function of order 0
@@ -271,10 +267,9 @@ $G_k(x,x_{0})$ for the Yukawa-Beltrami operator to possess a
 logarithmic singularity when $x$ approaches $x_{0}$. Exactly as was
 done  with the Laplace-Beltrami operator in~\cite{gemmrich}, we could
 define a parametrix for this operator to be $
-\frac{k^2}{2\pi}K_0(k\|x-x_{0}\|)$.  Such a choice of parametrix for
-the Yukawa-Beltrami operator $-\lap_{\S}+k^2$ on the sphere would be
+\frac{k^2}{2\pi}K_0(k\|x-x_{0}\|)$.  Such a choice of parametrix would be
 directly related to the fundamental solution of the two-dimensional
-modified Helmholtz operator $-\lap+k^2$; the amount by which it fails
+operator; the amount by which it fails
 to yield a dirac measure is directly attributable to the difference
 between the spherical and flat metrics.  In particular, if we let
 $r:=\|x-x_{0}\|$, then
@@ -511,7 +506,7 @@ $x=x(\theta,\phi)$. Then, $G_k(x,x_0) = \C P_\nu(-\cos(\theta))$, and
 \end{align}
 Now, using~\eqref{difflegp}, 
 \begin{align*}
-  \underline{\mbox{curl}}_{\Omega} G_k(x,x_0)&=-
+  \underline{\mbox{curl}}_{\S} G_k(x,x_0)&=-
   \C\frac{\partial}{\partial \theta} \left[P_{\nu(k)}(-\cos(\theta))
   \right] \vec{e}_\varphi \\
   &=-\C(\nu+1)\frac{\sin(\theta)}{\cos^2\theta -1} 
@@ -528,22 +523,22 @@ Since the line element on the surface of the sphere is given by
 we obtain that
 \begin{align}
   \label{curlT}
-  \underline{\mbox{curl}}_{\Omega} G_k(x,x_0)\cdot \vec{t} &= 
+  \underline{\mbox{curl}}_{\S} G_k(x,x_0)\cdot \vec{t} &= 
   \C (\nu+1)  \left[ P_{\nu+1}(-z) + 
-  z P_\nu(z)\right]\vert_{z=\cos(\theta)}.
+  z P_\nu(-z)\right]\vert_{z=\cos(\theta)}.
 \end{align}
 The expression in~\eqref{curlT} will be important in subsequent
 sections, and is precisely the kernel of the second layer operator. We
 shall define this carefully later on. For now, however, we are
 interested in the limit of $
-\underline{\mbox{curl}}_{\Omega} G_k(x,x_0)\cdot \vec{t}$ as the point
+\underline{\mbox{curl}}_{\S} G_k(x,x_0)\cdot \vec{t}$ as the point
 $x\rightarrow x_0=(0,0,1)$. For this argument, assume that
 $x=x(\theta,0)$ is the curve along which we approach $x_0$. 
 
 Now, the term in the square bracket in~\eqref{curlT} be simplified,
 using~\eqref{connect}. Let us denote $\cos(\theta)=z$, then
 \begin{align}
-  P_{\nu+1}(-z) + z P_\nu(z)&=-\frac{2}{\pi}\sin\left((\nu+1) \pi\right)Q_{\nu+1}(z)+
+  P_{\nu+1}(-z) + z P_\nu(-z)&=-\frac{2}{\pi}\sin\left((\nu+1) \pi\right)Q_{\nu+1}(z)+
     \cos((\nu+1)\pi)P_{\nu+1}(z) \nonumber \\
   & \qquad +z\left[-\frac{2}{\pi}\sin(\nu\pi)Q_\nu\left(z\right)+
     \cos(\nu\pi)P_\nu\left(z\right)  \right] \nonumber \\
@@ -558,7 +553,6 @@ using~\eqref{connect}. Let us denote $\cos(\theta)=z$, then
     -P_{\nu+1}\left(z\right)+zP_\nu\left(z\right)\right].
   \label{bigmess1}
 \end{align}
-\todo{Nilima: Are some of the signs off in here?}
  
 As $x\rightarrow x_{0}$, i.e., as $\theta \rightarrow 0^{+}$, clearly
 $z=\cos(\theta)\rightarrow 1^{-}$. Recall that in this limit, $P_\nu(z)
@@ -583,7 +577,7 @@ Putting together~\eqref{smallermess1},~\eqref{smallermess2},
 and~\eqref{curlT}, we have
 \begin{align} 
   \label{doublelayerwithz}
-  \lim_{z\rightarrow 1-}\C(\nu+1)\left[ P_{\nu+1}(-z)+zP{-\nu}(-z)\right] =
+  \lim_{z\rightarrow 1-}\C(\nu+1)\left[ P_{\nu+1}(-z)+zP{\nu}(-z)\right] =
     \C \frac{2}{\pi} \sin(\nu \pi).
 \end{align}
 
