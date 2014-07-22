@@ -90,10 +90,15 @@ We wish to solve the Yukawa boundary value problem:
     u(x)&=g(x), &&\mbox{for} \; x \in \Gamma. 
   \end{align}
 \end{subequations}
-Here $\lap_\S$ is the Laplace-Beltrami operator on $\S$ and $k>0 \in
-\mathbb{R}$ is constant. This  problem arises in
-the context of solving the isotropic heat equation via Rothe's method: first apply a semi-implicit time discretization to the heat equation and then time-stepping involves repeatedly solve an elliptic PDE  of the form~\eqref{bigmodel}. In this context, $k^2 = O(1/\Delta t)$, and with this in mind, we restrict our attention to the case $k>1/2$.
-This approach is discussed in \cite{rothe:heat} for the heat equation in the plane. 
+Here $\lap_{\S}$ is the Laplace-Beltrami operator on $\S$ and $k>0 \in
+\mathbb{R}$ is constant. This  problem arises in the context of solving
+the isotropic heat equation via Rothe's method: first apply a
+semi-implicit time discretization to the heat equation and then
+time-stepping involves repeatedly solve an elliptic PDE  of the
+form~\eqref{bigmodel}. In this context, $k^2 = O(1/\Delta t)$, and with
+this in mind, we restrict our attention to the case $k>1/2$.  This
+approach is discussed in~\cite{rothe:heat} for the heat equation in the
+plane. 
 
 We recall that the exterior boundary value problem for the Yukawa
 operator $(-\lap + k^2)$  in $\mathbb{R}^2$ is well-posed if we seek
@@ -142,7 +147,8 @@ for the system.
   \right) \in{\S}, \quad \varphi \in [0,2\pi), 
     \quad \theta \in [0,\pi].
 \end{align*}
-We also recall that on $\S$, the Laplace-Beltrami operator  $\lap_\S$ is defined as
+We also recall that on $\S$, the Laplace-Beltrami operator  $\lap_\S$
+is defined as
 \begin{align*}
   \lap_S u(x) \, = \, \left[
   \frac{1}{\sin^2 \theta} \frac{\partial^2}{\partial \varphi^2} +
@@ -154,9 +160,12 @@ We also recall that on $\S$, the Laplace-Beltrami operator  $\lap_\S$ is defined
 If two points $x,y$ lie on the unit sphere, with
 spherical coordinates $x=x(\phi,\theta), y=(\alpha,\beta)$ then we describe the solid angle between them (a measure of their distance in the metric on $\S$)  by \begin{align*}
   <x,y> =\cos(\phi-\alpha)\sin(\theta)\sin(\beta)+\cos(\theta)\cos(\beta).
-\end{align*} In particular if $y$ is the North Pole then  $\beta=0$ and $<x,y>=\cos(\theta)$. (If we denoted $x,y$  by their Cartesian coordinates $(x_1,x_2,x_2),(y_1,y_2,y_3)$, then $<x,y>== \sum_{i=1}^3 x_iy_i$.) The distance between $x$ and $y$ in the 3-dimensional Euclidean metric
-$\|x-y\|$ is given
-by 
+\end{align*} 
+In particular if $y$ is the North Pole then  $\beta=0$ and
+$<x,y>=\cos(\theta)$. (If we denoted $x,y$  by their Cartesian
+coordinates $(x_1,x_2,x_2),(y_1,y_2,y_3)$, then $<x,y> = \sum_{i=1}^3
+x_iy_i$.) The distance between $x$ and $y$ in the 3-dimensional
+Euclidean metric $\|x-y\|$ is given by 
 \begin{align*}
   \|x-y\|^2:=
   2-2<x,y>, \qquad \Rightarrow \qquad <x,y>= 1-\frac{\|x-y\|^2}{2}.
@@ -238,9 +247,12 @@ We obtain Green's second formula by interchanging the roles of $u$ and
 $v$ in~\eqref{Green1}, subtracting the two identities, and using the
 symmetry of the left hand side
 \begin{align}
-&\int\limits_{\Omega} v(x)(-\lap_{\S}u(x) +k^2 u(x))-
-u(x)(-\lap_{\S}v(x) +k^2v(x))\, d\sigma_x \nonumber \\
-=&\int\limits_\Gamma [v(x)\,\underline{\mbox{curl}}_{\S} u(x) - u(x)\, \underline{\mbox{curl}}_{\S}v(x)]\cdot \vec{t}(x) ds_x. \label{Green2}
+  &\int\limits_{\Omega} v(x)(-\lap_{\S}u(x) + k^2 u(x))-
+  u(x)(-\lap_{\S}v(x) +k^2v(x))\, d\sigma_x \nonumber \\
+  =&\int\limits_\Gamma [v(x)\,\underline{\mbox{curl}}_{\S} 
+  u(x) - u(x)\, \underline{\mbox{curl}}_{\S}v(x)] \cdot 
+  \vec{t}(x) ds_x.
+  \label{Green2}
 \end{align}
 
 We shall make extensive use of these identities.
@@ -253,25 +265,29 @@ We shall make extensive use of these identities.
 \section{A fundamental solution and representation formula}
 We seek a fundamental solution for the Yukawa-Beltrami operator
 $(-\lap_\S + k^2)$.  Examining first the situation for the Yukawa
-operator in the Euclidean plane, the fundamental solution of the Yukawa operator, $(-\lap + k^2)$ in
-$\mathbb{R}^2$ is given by $\frac{k^2}{2\pi}
-K_{0}(kr)$, where $r=$ distance between the source and evaluation point in the $2-D$ Euclidean metric. Here $K_{0}$ is the modified Bessel function of order 0
-which is analytic for non-zero argument, and has a logarithmic
-singularity when the source and evaluation points coincide, ie, when $r=0$. 
+operator in the Euclidean plane, the fundamental solution of the Yukawa
+operator, $(-\lap + k^2)$ in $\mathbb{R}^2$ is given by
+$\frac{k^2}{2\pi} K_{0}(kr)$, where $r=\|\mathbf{x} - \mathbf{x}_{0}\|$
+is the distance between the source and evaluation point in the
+two-dimensional Euclidean metric. Here $K_{0}$ is the modified Bessel
+function of order 0 which is analytic for non-zero argument, and has a
+logarithmic singularity when the source and evaluation points coincide,
+ie, when $r=0$.
 
 On the surface of the sphere $\S$, we expect the fundamental solution
 $G_k(x,x_{0})$ for the Yukawa-Beltrami operator to possess a
 logarithmic singularity when $x$ approaches $x_{0}$. Exactly as was
 done  with the Laplace-Beltrami operator in~\cite{gemmrich}, we could
-define a parametrix for this operator by using the {\it distance measured in the Euclidean norm in $\mathbb{R}^3$}. This would suggest using $
-\frac{k^2}{2\pi}K_0(k\|x-x_{0}\|)$.  Such a choice of parametrix would be
-directly related to the fundamental solution of the two-dimensional
-operator; the amount by which it fails
-to yield a dirac measure is directly attributable to the difference
-between the spherical and flat metrics.  In particular, if we let
-$r:=\|x-x_{0}\|$, then
+define a parametrix for this operator by using the {\it distance
+measured in the Euclidean norm in $\mathbb{R}^3$}. This would suggest
+using $ \frac{k^2}{2\pi}K_0(k\|x-x_{0}\|)$.  Such a choice of
+parametrix would be directly related to the fundamental solution of the
+two-dimensional operator; the amount by which it fails to yield a dirac
+measure is directly attributable to the difference between the
+spherical and flat metrics.  In particular, with $r:=\|x-x_{0}\|$, we
+have
 \begin{align*}
-  (-\lap_{\S} + k^{2})\frac{k^2}{2\pi}K_0(kr\|)&=
+  (-\lap_{\S} + k^{2})\frac{k^2}{2\pi}K_0(kr)&=
     \delta(r) 
     +\frac{k^{4}r^{2}}{8\pi}K_{0}(kr) - \frac{k^{3}r}{4\pi}K_{1}(kr).
 \end{align*}
@@ -306,12 +322,11 @@ as
   \label{LegendrePequation}
   (1-z^2)\,w'' -2zw' + \left[\nu(\nu+1)\right]\,w = 0,
 \end{align}
-where $\nu = \nu(k)$ satisfies $\nu(\nu + 1) = -k^2$. We note here that the Yukawa-Beltrami operator on the sphere would lead to 
-to the same equation, but with $\nu(k)$ satisfying $\nu(\nu+1)=-k^2R^2$. In
-what follows we shall suppress the
-dependence of $\nu$ on $k$ when there is no risk of confusion.
-
-
+where $\nu = \nu(k)$ satisfies $\nu(\nu + 1) = -k^2$. We note here that
+the Helmholtz-Beltrami operator on the sphere would lead to to the same
+equation, but with $\nu(k)$ satisfying $\nu(\nu+1)=k^{2}$. In what
+follows we shall suppress the dependence of $\nu$ on $k$ when there is
+no risk of confusion.
 
 Equation~\eqref{LegendrePequation} is the well-known {\it Legendre's
 equation}, which is well-defined for arbitrary real or complex $\nu$.
@@ -319,13 +334,13 @@ Therefore, we can locate two linearly independent solutions
 of~\eqref{LegendrePequation}, the so-called {\it first and second kind
 Legendre functions of degree $\nu(k)$}, denoted $ P_{\nu(k)}(z),
 Q_{\nu(k)}(z)$ respectively. Of these, only the  LegendreP function
-$P_{\nu(k)}(z)$ remains finite as $z$ approaches $1$ (to a limiting value of 1
-as we will soon see),~\cite{lebedev}.  The function $P_{\nu(k)}(z)$ is
-well-defined for $|1-z|<2$.  This means that
+$P_{\nu(k)}(z)$ remains finite as $z$ approaches $1$ (to a limiting
+value of 1 as we will soon see),~\cite{lebedev}.  The function
+$P_{\nu(k)}(z)$ is well-defined for $|1-z|<2$.  This means that
 \begin{align*}
   u(r_0(\theta)) =  P_{\nu(k)}(-\cos(\theta))
 \end{align*}
-is well defined whenever $|1+\cos(\theta)|<2$, which holds for all
+is well-defined whenever $|1+\cos(\theta)|<2$, which holds for all
 $\theta \in(0,\pi]$ (see Figure~\ref{f:legendreP}).  Moreover, since we
 want $u(r_0(\pi))$ to be finite, we do not use the other possible
 solution of~\eqref{LegendrePequation}, namely $Q_{\nu(k)}$.
@@ -339,7 +354,7 @@ solution of~\eqref{LegendrePequation}, namely $Q_{\nu(k)}$.
 
 We recall that $P_{\nu}$ is well-defined for all $\nu \in \mathbb{C}$, whereas $Q_\nu$ is well-defined for $\nu \not= 0,-1,-2,...$. 
 
-On $\S$, from \eqref{LegendrePequation} we obtain\begin{align*}  
+On $\S$, from~\eqref{LegendrePequation} we obtain\begin{align*}  
   \nu(k):=\frac{-1+\sqrt{1-4k^2}}{2}.
 \end{align*}
 If $0<k^2<\frac{1}{4}$ then $\nu \in (-1,0)$. If $k^2\geq\frac{1}{4}$ then 
@@ -347,14 +362,13 @@ If $0<k^2<\frac{1}{4}$ then $\nu \in (-1,0)$. If $k^2\geq\frac{1}{4}$ then
   \nu(k):=\frac{-1+i\sqrt{4k^2-1}}{2}.
 \end{align*}
 
-We observe that provided $k>0$, $\nu(k) \notin \mathbb{Z}$. Moreover, if $k>\frac{1}{2}$ then $Im(\nu)\not=0$. This is the regime in which we shall work, and in
-what follows we shall make this assumption on $k$.
+We observe that since $k^{2}>0$, $\nu(k) \notin \mathbb{Z}$. Moreover,
+if $k>\frac{1}{2}$ then $Im(\nu)\not=0$. This is the regime in which we
+shall work, and in what follows we shall make this assumption on $k$.
 
-
-
-A further substitution allows us to write~\eqref{LegendrePequation} as a
-hypergeometric equation, (see, e.g., Section 7.3,~\cite{lebedev}). This
-in turn allows us to write the solution of $\mathcal{D}_k(u)=0$ as 
+A further substitution allows us to write~\eqref{LegendrePequation} as
+a hypergeometric equation, (see, e.g., Section 7.3,~\cite{lebedev}).
+This in turn allows us to write the solution of $\mathcal{D}_k(u)=0$ as 
 \begin{align*} 
   u(r_0(\theta)) &= P_{\nu(k)}(-\cos(\theta)) = 
     \tensor[_2]{F}{_1}\left(-\nu(k), \nu(k)+  1; 1; 
@@ -402,9 +416,10 @@ k^2$ for points $x,x_0$ on the surface of the unit sphere is
   \begin{align}
     G_k(x,x_{0})&:=\C P_{\nu}\left(-<x,x_{0}>\right) \nonumber \\
     &:=\C P_{\nu}\left(\frac{\|x-x_{0}\|^2}{2}-1\right) \label{LegP} \\
-    &= \C\, \tensor[_2]{F}{_1} \left(-\nu, \nu+1; 1; \frac{1}{2}+
-      \frac{<x,x_{0}>}{2}\right)\label{hyperG} \\
-    &=\C P_{-\frac{1}{2} + i \tau} \left(<x,x_{0}>\right)\label{conicalP}
+    &= \C\, \tensor[_2]{F}{_1} \left(-\nu, \nu+1; 1; 
+      \frac{1+<x,x_{0}>}{2}\right)\label{hyperG} \\
+    &=\C P_{-\frac{1}{2} + i \tau}
+    \left(<x,x_{0}>\right) \label{conicalP},
   \end{align} 
 \end{subequations}
 where 
@@ -414,9 +429,9 @@ $\nu:=\frac{-1+i\sqrt{4k^2-1}}{2}$, $k>1/2$, and
   \C=-\frac{1}{4\sin(\nu\pi)} 
     =\frac{1}{4\cosh(\frac{\pi}{2}\sqrt{4k^2-1})}.
 \end{align}
-\end{definition} (See
-    Figure~\ref{f:greensFun} for a visualization of $G_1(x,x_0)$.)
-We mention here that the specific choice of $\C$ is motivated by the
+\end{definition} 
+(See Figure~\ref{f:greensFun} for a visualization of $G_1(x,x_0)$.) We
+mention here that the specific choice of $\C$ is motivated by the
 calculations performed while deriving a representation formula in
 Section~\ref{s:representation}.  We will see that $\C$ is well-defined
 with our assumption that $k>1/2$.
@@ -424,11 +439,13 @@ with our assumption that $k>1/2$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Properties of the fundamental solution of the Yukawa-Beltrami operator}
-Before we embark on the definition and analysis of boundary integral operators, we examine some properties of the fundamental solution $G_k$
+Before we embark on the definition and analysis of boundary integral
+operators, we examine some properties of the fundamental solution $G_k$
 defined in Definition~\ref{fundamentaldef}. We shall use either the
 representation~\eqref{LegP},~\eqref{hyperG}, or~\eqref{conicalP} as
-convenient. 
-We first observe that the fundamental solution is symmetric in its arguments, $G_k(x,x_{0}) = G_k(x_{0},x)$. Next, by noting the expansion for the conical functions as~\cite{lebedev}
+convenient.  We first observe that the fundamental solution is
+symmetric in its arguments, $G_k(x,x_{0}) = G_k(x_{0},x)$. Next, by
+noting the expansion for the conical functions as~\cite{lebedev}
 \begin{align*}
   P_{-\frac{1}{2}+i \tau} (\cos(t)) &= 1+
     \frac{4\tau^2+1}{2^2}\sin^2(t/2) + 
@@ -489,14 +506,15 @@ and~\eqref{Qasymptotics}, we obtain
       \bigO(1-<x,x_0>)\right) \nonumber \\
   &=\frac{\C\sin(\nu\pi)}{\pi}\lim_{x\rightarrow x_0}
       \log(1-<x,x_0>) + \C\left[\cos(\nu\pi)-
-      2\frac{\sin(\nu)}{\pi}R(\nu)\right].
+      2\frac{\sin(\nu\pi)}{\pi}R(\nu)\right].
   \label{e:logSingularity}
 \end{align}
-Therefore, as $x\rightarrow x_0$
-$G_k(x,x_0)$ possesses a logarithmic singularity (recall that $\nu$ is not an integers).  At this point, we
-could predict a value for $\C$ so that the strength the singularity is
-consistent with that for the Laplace-Beltrami~\cite{gemmrich}.
-However, we compute $\C$ rigorously below.
+Therefore, as $x\rightarrow x_{0}$ $G_k(x,x_{0})$ possesses a
+logarithmic singularity (recall that $\nu$ is not an integer).  At this
+point, we could predict a value for $\C$ so that the strength the
+singularity is consistent with that for the
+Laplace-Beltrami~\cite{gemmrich}.  However, we compute $\C$ rigorously
+below.
 
 It is also useful to document the relation, obtained using recurrence
 relations for the LegendreP function (Section 14.10.4
@@ -544,13 +562,16 @@ shall define this operator carefully later on.) For now, however, we are
 interested in the limit of $F(\theta)$ as the point
 $x\rightarrow x_0$, that is, as $\theta \rightarrow 0^+$.  
 
-\begin{lemma} Let $F(\theta)$ be as defined in \eqref{curlT}. Then
+\begin{lemma} Let $F(\theta)$ be as defined in~\eqref{curlT}. Then
 $\lim_{\theta\rightarrow 0^+} F(\theta)= \frac{2}{\pi}C_k \sin(\nu \pi)$
 \end{lemma}
-\begin{proof} Since $$F(\theta) =  \C (\nu+1)  \left[ P_{\nu+1}(-z) + 
-  z P_\nu(-z)\right]\vert_{z=\cos(\theta)},$$
- the term in the square bracket be simplified
-using~\eqref{connect}. Denoting $\cos(\theta)=z$, 
+\begin{proof} 
+Using~\eqref{connect}, the term in the square bracket of
+\begin{align*}
+F(\theta) =  \C (\nu+1)  \left[ P_{\nu+1}(-z) + 
+  z P_\nu(-z)\right]\vert_{z=\cos(\theta)},
+\end{align*}
+can be simplified.  Denoting $\cos(\theta)=z$, 
 \begin{align}
   P_{\nu+1}(-z) + z P_\nu(-z)&=-\frac{2}{\pi}\sin\left((\nu+1) \pi\right)Q_{\nu+1}(z)+
     \cos((\nu+1)\pi)P_{\nu+1}(z) \nonumber \\
@@ -597,8 +618,10 @@ and~\eqref{curlT}, we have
 
 \end{proof}
 
-Observe that setting $\C=-\frac{1}{4\sin(\nu \pi)}$, that is, using exactly the constant defined in \eqref{constant-definition} in the definition of
-$G_k(x,x_0)$, we  get $\lim_{\theta\rightarrow 0^+}F(\theta)=\frac{1}{2\pi}.$
+Observe that setting $\C=-\frac{1}{4\sin(\nu \pi)}$, that is, using
+exactly the constant defined in~\eqref{constant-definition} in the
+definition of $G_k(x,x_0)$, we  get $\lim_{\theta\rightarrow
+0^+}F(\theta)=\frac{1}{2\pi}.$
 
 
 
@@ -624,7 +647,7 @@ C^{1}(\overline{\Omega})$ satisfies the representation formula
  + \int\limits_{{\Gamma}}  u(x)
  \,\underline{\mbox{curl}}_{{\S}} G_k(x,x_0) \cdot \vec{t}(x) ds_x 
  &= \left\{ \begin{array}{ll} u(x_0) & \mbox{ if $x_0\in \Omega$},\\
-				0 & \mbox{ if  $x_0\in{\Omega}_c$}. 
+  0 & \mbox{ if  $x_0\in{\Omega}_c$}. 
   \end{array} \right.
 \end{align}
 
@@ -644,7 +667,7 @@ integrals involved are bounded, and
   \int\limits_{\Omega} u(x)(\lap_{\S}G_{k}(x,x_0) 
       -k^{2}G_{k}(x,x_0)) \, d\sigma_x=0.
 \end{align*}
-Therefore, using \eqref{Green2} we get 
+Therefore, using~\eqref{Green2} we get 
 \begin{align*}
  0 &= - \int\limits_{\Omega}
     G_k(x,x_{0})\left(\lap_{\S}u(x) -k^2 u(x)\right)\,d\sigma_x \\
@@ -780,11 +803,11 @@ Therefore, taking limits in~\eqref{Green_S1eps} proves the result.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Layer potentials and boundary integral operators}
-Now that we have a convenient parametrix
-$G_k(x,x_0)$~\eqref{fundamentaldef} for the Yukawa-Beltrami equation
-and a representation formula~\eqref{eq:representationformula}, we can
-define convenient layer potentials which in turn will be used to reduce
-the boundary value problem~\eqref{DBVP}  over the domain $\Omega$ to a
+Now that we have a convenient parametrix $G_k(x,x_0)$ defined in
+Definition~\ref{fundamentaldef} for the Yukawa-Beltrami equation and a
+representation formula~\eqref{eq:representationformula}, we can define
+convenient layer potentials which in turn will be used to reduce the
+boundary value problem~\eqref{DBVP}  over the domain $\Omega$ to a
 boundary integral equation over $\Gamma = \partial \Omega$.
 
 
@@ -854,14 +877,14 @@ prescribed along $\Gamma$, one has to investigate the limit features of
 this quantity for the layer potentials. In both cases, there will be
 certain jump relations across the curve $\Gamma$. For the purpose of
 this paper however, we will restrict ourselves to the Dirichlet case.
-First, consider the single layer potential with density $\sigma$ for
-$x \notin \Gamma$:
+First, consider the single layer potential with density $\sigma$ for $x
+\notin \Gamma$:
 \begin{align*}
   (\widetilde{V}\sigma)(x) & =  \int\limits_\Gamma
   G_k(x,y)\,\sigma(y)\,ds_{y} \\
-  & = C_k \int\limits_\Gamma P_{\nu(k)}(-<x,x_{0}>)\,\sigma(x)\,ds_{x}.
+  & = \C \int\limits_\Gamma P_{\nu(k)}(-<x,y>)\,\sigma(y)\,ds_{y}.
 \end{align*}
-The following lemma describes the limit behavior of the single layer potential.
+The following Lemma describes the limit behavior of the single layer potential.
 \begin{lemma}
 For $x_{0}\in\Gamma$ we have:
 \begin{align*} 
@@ -899,7 +922,7 @@ away from $<x,x_0>=1$, i.e. where $x=x_0$.  That is,
 \int_{C_{\e,>}}
 \left[G_k(x,y)\,-\,G_k(x_0,y) \right]\,\sigma(y)\,ds_{y} = 0 .
 \end{align*}
-The second term in~\eqref{lemm} we can bound in terms of the density
+The second term in~\eqref{lemm} can be bound in terms of the density
 $\sigma$:
 \begin{align*}
  &\left|\int_{C_{\e,\leq}}
@@ -936,49 +959,251 @@ possess a jump across the boundary of a domain.  Indeed, since
 $G_k(x,x_0)$ has a logarithmic singularity, the estimates follow the
 same argument as for the Laplace-Beltrami. The details of the
 calculation are cumbersome, but the overall strategy is that of Section
-8.2 in~\cite{hackbusch}.
-
+8.2 in~\cite{hackbusch}.  First, we examine the regularity of the kernel
+of the double layer operator
+$\underline{\mbox{curl}}_{\S}\,G(x,y)\cdot\vec{t}(y)$.  In particular,
+we establish that it is continuous at $x \in \Gamma$.
 
 \begin{lemma}
-For $x_0\in\Gamma$ we have:
-\begin{align} 
-\label{DLPjump}
-(\gamma^{\Omega^{c}}_0\widetilde
-W\mu)(x_0):=\lim\limits_{\substack{x \to x_0 \\ x \in \Omega^{c}}}\,(\widetilde{W}\mu)(x) = (K\mu)(x_0)\,+\,\left(1-\frac{\alpha(x_0)}{2\pi}\right)\,\mu(x_0),
-\end{align}
-where $\alpha(x_0)$ represents the interior (with respect to
-$\Omega^{c}$) angle of $\Gamma$ at $x_0$. For a smooth curve, $\alpha = \pi$. The operator $K$ is defined via the Cauchy principle value: 
-\begin{align}
-(K\mu)(x_0)&=\lim_{\varepsilon\rightarrow 0}\, (K_{\varepsilon}\mu)(x_0)
-\quad \mbox{where}\qquad
-(K_{\varepsilon}\mu)(x_0)&:=\int\limits_{y\in C_{\epsilon,\geq}} 
-\mu(y)\,\left[\underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\right]\,ds_{y}.\notag
-\end{align}
-Hence  the double layer potential satisfies:
-\begin{align}
-\left[(\gamma_0\widetilde W\mu)
-\right]_\Gamma:=(\gamma^{\Omega^{c}}_0\widetilde W\mu)+(\gamma^{\Omega}_0\widetilde W\mu)=\mu,
-\end{align}
-where we tacitly assumed the orientation of the tangential vector
-$\vec{t}$ along $\Gamma$ to be in accordance with the orientation of
-$\Omega^{c}$ in the sense of Stoke's theorem.
+\label{regularity}
+Let $x_0,x$ be points on the sphere, connected by the smooth curve
+$\Gamma$. Let $x_0$ be fixed, and let $\Gamma$ be parametrized by
+$x=x(s), s\in[-A,A]$ such that $x(0)=x_{0}$. Then the kernel of the double layer operator is continuously differentiable in $s$, but the second derivative is unbounded. More precisely, 
+the function 
+\begin{align*}
+  f(s):=\underline{\mbox{curl}}_{\S}\,
+    G_{k}(x(s),x_0)\cdot\vec{t}(x(s)), \quad s\in[-A,A], s \neq 0,
+\end{align*}
+has the following properties:
+\begin{itemize}
+\item 
+\begin{align*} 
+  \lim_{\substack {s \rightarrow 0}} f(s) = 
+   \lim_{\substack {x' \rightarrow x_{0} \\ x' \in \Gamma}}
+   [\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x') \cdot \vec{t}(x')] =  
+   -\frac{1}{4\pi} \kappa \mathbf{t}\cdot(\mathbf{n}_{p}
+    \times \mathbf{x}_0)
+\end{align*}
+\todo{Have reversed source and target point in the above expression for
+$G_{k}$.  Not sure how this'll effect all the other instances in the
+proof.}
+Here $\kappa$ is the principle curvature of $\Gamma$ at $x_{0}$,
+$\mathbf{x}_0$ is the 3-dimensional vector associated with the point
+$x_0$ (assuming the origin is located at the center of the sphere),
+$\mathbf{n}_p$ is the principle normal of $\Gamma$ at $x_0$ and
+$\mathbf{t}$ is a three-dimensional vector, identified with $\vec{t}$.
+\item $\frac{d}{ds}f(s)$ can be extended to be well-defined and
+continuous at $s=0$.
+\item $\frac{d^2}{ds^2} f(s)$ is unbounded as $s\rightarrow 0$, and
+therefore $f$ cannot be extended to be a $C^{2}$ function on $\Gamma$.
+\end{itemize}
 \end{lemma}
 
 \begin{proof}
-We provide only a sketch of the proof.  
-Given $\varepsilon \, > \,0$, let $x\in \Omega^{c}$ with $ \|
-x-x_0\|<\varepsilon$.   We use the same notation for $C_{\epsilon,\geq}$ and $C_{\epsilon,<}$ introduced earlier.
-Then, for fixed $\e>0$, 
-\begin{align}\label{eq:Kjump1}
-(\widetilde{W}\mu)(x)-(K_{\varepsilon} \mu)(x_0) =  \int_{C_{\e,\geq}}
-\mu(y)\left[\underline{\mbox{curl}}_{\S}\, G_k(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_0,y)\right]\cdot\vec{t}(y)\, ds_{y} \nonumber\\
-+\int_{C_{\e,<}}
-\mu(y)\,\underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_y.
+\todo{I don't see the need to introduce $\mathbf{x'}$.  Why not just
+use $\mathbf{x}$}
+We provide a simple argument via l'H\^{o}pital's rule in the case that
+$\Gamma$ is a simple smooth closed curve. For this argument, it is
+easier  to work with points and vectors in $\mathbb{R}^3$.  Let $x_0$,
+$x'$ be points on the unit sphere. We identify them with the
+3-dimensional vectors $\mathbf{x}_{0}$, $\mathbf{x'}$ respectively.  Let
+$\mathbf{t'}$ and $\mathbf{n'}$ be the unit tangent and normal vectors
+at the point $\mathbf{x'} \in \Gamma$ lying in the tangent plane of
+$\mathcal{S}$.  We note for future reference that
+$\mathbf{x'}=\mathbf{e}$, $\mathbf{x'} \cdot \mathbf{x'} = 1$ and that
+$\mathbf{x'} = \mathbf{n'} \times \mathbf{t'}$. Since $\Gamma$ is
+parametrized by arc length $s$, we also note the following identities:
+\todo{what is $\mathbf{e}?$}
+\begin{align*}
+  \mathbf{t} = \frac{d\mathbf{x}}{ds}, \qquad 
+  \frac{d\mathbf{t}}{ds} = \kappa \, \mathbf{n}_{p}.
+\end{align*}
+The second identity is one of the Frenet formulae, where $\kappa$ is
+the curvature of the curve $\Gamma$ at the point $\mathbf{x}$ and
+$\mathbf{n}_{p}$ is the principal normal to the curve.  From these, it
+is straightforward to show that 
+\begin{align*}
+  \frac{d \, }{ds} \left( \mathbf{t} \times \mathbf{x} \right)=
+  \kappa \mathbf{n}_{p} \times \mathbf{x} . 
+\end{align*}
+
+We now examine the kernel of the double layer potential. Calculating the
+three dimensional gradient of the fundamental solution $G$ yields
+\begin{align*}
+  \nabla' G_k(x_0,x') &= \C \nabla P_\nu\left(
+    \frac{\|x_0-x'\|^2}{2}-1\right) = 
+  -\C P'_\nu\left(\frac{\|x_0-x'\|^2}{2}-1\right)
+    (\mathbf{x}_{0}-\mathbf{x'}),
+\end{align*}
+which we can decompose into the surface gradient plus a derivative in
+the radial direction. We can write this more concisely as
+\begin{align*}
+\nabla' G_k(x_0,x')=-\C P'_{\nu}(z) (\mathbf{x}_0-\mathbf{x'}), \qquad 
+  z=\frac{\|{ x_0}-{x}'\|^2}{2}-1.
+\end{align*} 
+The kernel of the double layer operator is $f(s): =
+[\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x') \cdot \vec{t}(x')]=
+\frac{\partial}{\partial n'} G_k({x}_{0},{x}')$, which in turn can be
+written as 
+\begin{align*}
+ f(s)=\frac{\partial \, }{\partial n'} G_{k}(x_{0},x') 
+ =\nabla' G_{k} \cdot \mathbf{n'} = \nabla' G_k\cdot \left( \mathbf{t'}
+ \times \mathbf{x'} \right) 
+ =-\C (\mathbf{x}_0-\mathbf{x'})P'_{\nu}(z)\cdot \left(
+ \mathbf{t'} \times \mathbf{x'} \right).
+\end{align*}
+Recalling that $P'_{\nu}(z)=\frac{-(\nu+1)}{1-z^2}(P_{\nu+1}(z)-z
+P_{\nu}(z))$~\eqref{difflegp},
+\begin{align}
+  f(s) &= \C \frac{(\nu+1)}{1-z^2}\left(
+  P_{\nu+1}(z)-zP_{\nu}(z)\right) 
+  (\mathbf{x}_0-\mathbf{x'})\cdot \left(
+  \mathbf{t}' \times {\mathbf x}' \right) \nonumber\\
+  &= 2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z} \left[
+  \frac{(\mathbf{x}_0-\mathbf{x'})}{\|\mathbf{x}_{0}-\mathbf{x'}\|^2}
+  \cdot \left( \mathbf{t}' \times \mathbf{x'} \right)\right].
+  \label{kern1}
+\end{align} 
+
+Now, the quantity
+\begin{align*}
+  2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z}
+  =4\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{4-\|{x_0}-{x'}\|^2},
+\end{align*}
+has a well-defined limit as $x' \rightarrow
+x_{0}$~\eqref{doublelayerwithz}. In fact,
+following~\eqref{doublelayerwithz}
+\begin{align*}
+  \lim_{x'\rightarrow x_0} 
+  \C[\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x') \cdot \vec{t}(x')] 
+  = \C(\nu+1)\lim_{z\rightarrow 1^-}
+  P_{\nu+1}(-z)+zP_{\nu}(-z)) = -\frac{1}{2\pi}.
+\end{align*}
+
+The remaining term in~\eqref{kern1} is $q(x',x_0) :=
+\frac{(\mathbf{x}_{0}-\mathbf{x'})}{\|\mathbf{x}_{0}-\mathbf{x'}\|^2}
+\cdot \left( \mathbf{t'} \times \mathbf{x'} \right).$  This term can be
+shown to be continuous as $\mathbf{x'} \rightarrow \mathbf{x}_{0}$ by
+l'H\^{o}pital's rule.  A first application of l'H\^{o}pital's rule to
+evaluate $q(x',x_0)$ at the point of singularity, $x' = x_{0}$, 
+\begin{align*}
+  \lim_{x' \rightarrow x_{0}}q(x',x_{0}) & = 
+  \lim_{x' \rightarrow x_{0}} 
+  \frac{ -\mathbf{t'} \cdot \left(\mathbf{t'} \times \mathbf{x'} \right)
+  + (\mathbf{x}_{0}-\mathbf{x'}) \cdot \left( \kappa' \mathbf{n'}_{p}
+  \times \mathbf{x'} \right)}
+  {-2(\mathbf{x}_{0} - \mathbf{x'}) \cdot \mathbf{t'}} \\
+  & = \lim_{\mathbf{x'} \rightarrow \mathbf{x}_{0}} 
+  \frac{(\mathbf{x}_{0}-\mathbf{x'}) \cdot \left(
+  \kappa'\mathbf{n'}_{p} \times \mathbf{x'}\right)}
+  {(\mathbf{x}_{0} - \mathbf{x'}) \cdot \mathbf{t'}}. 
+\end{align*}
+Proceeding with a second application of l'H\^{o}pital's rule yields
+\begin{align*}
+  \lim_{x' \rightarrow x_{0}} q(x',x_0)  
+  & = \lim_{x' \rightarrow x_{0}} \frac{-\mathbf{t'} \cdot 
+  \left( \kappa' \mathbf{n'}_{p} \times \mathbf{x'} \right) +
+  \mathcal{O}(\mathbf{x}-\mathbf{x'})}
+  {-2\mathbf{t'} \cdot \mathbf{t'} + \mathcal{O}(\mathbf{x}-\mathbf{x'})}
+  = \frac{1}{2} \mathbf{t} \cdot \left( \kappa \mathbf{n}_{p} \times 
+  \mathbf{x}_{0} \right).
+\end{align*}
+This shows that $f(s)$ has a well-defined limit as $s\rightarrow 0$,
+that is, as $x'\rightarrow x_0$. The kernel of the double-layer
+operator can therefore be made continuous in the arc-length parameter.
+
+If we now examine $\frac{d}{ds}f(s)$, we obtain
+\begin{align*} 
+  f'(s)&= -\C \frac{d}{ds}\left( P'_\nu(z)(\mathbf{x_0}-\mathbf{x'}) \cdot 
+    \mathbf{n'} \right) \\
+  &=-C_{k} \left\{P''_{\nu}(z) \frac{dz}{ds}
+    (\mathbf{x}_{0}-\mathbf{x'})  \cdot \mathbf{n'} - P'_{\nu}(z)
+    (-\mathbf{t'} \cdot \mathbf{n'}) + P'_\nu(z)((\mathbf{x}_{0} -
+    \mathbf{x'}) \cdot \frac{d}{ds}\mathbf{n'})\right\}.
+ \end{align*}
+Since $P_\nu(z)$ solves Legendre's equation~\eqref{LegendrePequation}
+and since $\mathbf{x'},\mathbf{t'}, \mathbf{n'}$ form an orthogonal set,
+we have
+\begin{align*}
+  \lim_{\substack {s \rightarrow 0}} f'(s) =-C_k
+  \left\{\frac{2zP'_{\nu}(z)-\nu(\nu+1)P_{\nu}(z)}{1-z^2}
+  \frac{dz}{ds}(\mathbf{x_0}-\mathbf{x'})\cdot \mathbf{n'} + \kappa
+  P'_\nu(z)((\mathbf{x}_{0}-\mathbf{x'})\cdot (\mathbf{n}'_{p} \times 
+  \mathbf{x'})\right\}
+\end{align*}
+Applying L'H\^{o}pital's rule to each of the terms above, we see that
+$f'(s)$ has a well-defined and bounded limit at $s \rightarrow 0$.
+Therefore, the kernel of the double layer operator is differentiable in
+the arc length parameter, with bounded derivative as $s \rightarrow 0$. 
+
+However,
+\begin{align*} 
+  f''(s) &= -\C \frac{d^2}{ds^2}\left( P'_\nu(z) 
+  (\mathbf{x}_{0}-\mathbf{x'}) \cdot \mathbf{n'} \right)
+\end{align*}
+is not bounded as $s\rightarrow 0$. This can be shown using calculations
+similar to those above, and we do not include them here.
+\end{proof}
+
+Now that we have established that the kernel of the double layer
+operator is continuous, we prove can establish the jump relations of the
+double-layer potential.
+
+\begin{lemma}
+For $x_0\in\Gamma$ we have:
+\begin{align*} 
+  (\gamma^{\Omega^{c}}_0\widetilde{W}\mu)(x_0):=
+  \lim\limits_{\substack{x \to x_0 \\ x \in \Omega^{c}}}\, 
+  (\widetilde{W}\mu)(x) =
+  (K\mu)(x_0)\,+\,\left(1-\frac{\alpha(x_0)}{2\pi}\right)\,\mu(x_0),
+\end{align*}
+where $\alpha(x_0)$ represents the interior (with respect to
+$\Omega^{c}$) angle of $\Gamma$ at $x_0$. For a smooth curve, $\alpha =
+\pi$. The operator $K$ is defined via the Cauchy principle value: 
+\begin{align*}
+(K\mu)(x_0)&=\lim_{\varepsilon\rightarrow 0}\, (K_{\varepsilon}\mu)(x_0)
+\quad \mbox{where}\qquad
+(K_{\varepsilon}\mu)(x_0)&:=\int\limits_{y\in C_{\epsilon,\geq}} 
+\mu(y)\,\left[\underline{\mbox{curl}}_{\S}\,
+G_k(x_{0},y)\cdot\vec{t}(y)\right]\,ds_{y}.
+\end{align*}
+Hence the double layer potential satisfies:
+\begin{align*}
+  \left[(\gamma_0\widetilde W\mu) \right]_\Gamma := 
+  (\gamma^{\Omega^{c}}_0\widetilde W\mu)+(\gamma^{\Omega}_{0} 
+  \widetilde{W}\mu)=\mu,
+\end{align*}
+where we tacitly assumed the orientation of the tangential vector
+$\vec{t}$ along $\Gamma$ to be in accordance with the orientation of
+$\Omega^{c}$ in the sense of Stoke's theorem.
+\todo{What is $K$?  Should it not be $W$?} \\
+\todo{Should we define $\gamma_{0}^{\Omega_{c}}$ as the trace?}
+\end{lemma}
+
+\begin{proof}
+We provide only a sketch of the proof.  Given $\varepsilon \, > \,0$,
+let $x\in \Omega^{c}$ with $ \| x-x_0\|<\varepsilon$.   We use the same
+notation for $C_{\epsilon,\geq}$ and $C_{\epsilon,<}$ introduced
+earlier.  Then, for fixed $\e>0$, 
+\begin{align}
+  (\widetilde{W}\mu)(x)-(K_{\varepsilon} \mu)(x_0) = 
+  \int_{C_{\e,\geq}}\mu(y)\left[\underline{\mbox{curl}}_{\S}\, 
+  G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_{0},y)
+  \right]\cdot\vec{t}(y)\, ds_{y} \nonumber\\
+  +\int_{C_{\e,<}} \mu(y)\,\underline{\mbox{curl}}_{\S}\,
+  G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
+  \label{eq:Kjump1}
 \end{align}
-We note that the integrand of $ \int_{C_{\e,\geq}}
-\mu(y)\left[\underline{\mbox{curl}}_{\S}\, G_k(x,y)y\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_0,y)\right]\cdot\vec{t}(y)\, ds_{y}$ is continuous in $x$ away from  $x_0$, and therefore 
-$$ \lim_{x\rightarrow x_0}  \int_{C_{\e,\geq}}
-\mu(y)\left[\underline{\mbox{curl}}_{\S}\, G_k(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_0,y)\right]\cdot\vec{t}(y)\, ds_{y} =0.$$
+We note that the integrand of $\int_{C_{\e,\geq}} \mu(y)
+\left[\underline{\mbox{curl}}_{\S}\,
+G_k(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_0,y)\right]\cdot\vec{t}(y)\,
+ds_{y}$ is continuous in $x$ away from  $x_0$, and therefore 
+\begin{align*}
+  \lim_{x\rightarrow x_0}  \int_{C_{\e,\geq}}
+  \mu(y)\left[\underline{\mbox{curl}}_{\S}\,
+  G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,
+  G_{k}(x_{0},y)\right]\cdot\vec{t}(y)\,ds_{y} = 0.
+\end{align*}
 
 The integral over $C_{\e,<}$ in~\eqref{eq:Kjump1} can be rewritten as
 \begin{align}
@@ -991,21 +1216,21 @@ The integral over $C_{\e,<}$ in~\eqref{eq:Kjump1} can be rewritten as
     G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
   \label{interm}
 \end{align}
-For the first integral on the right hand side of~\eqref{interm} we have
-(for fixed x), the estimate
+For the first integral on the right hand side of~\eqref{interm}, using
+Lemma~\ref{regularity}, we have the estimate (for a fixed $x$)
 \begin{align*}
   &\left|\int_{C_{\e,<}} \left[\mu(y)-\mu(x_0)\right]\,
     \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}\right| \\
   &\qquad \leq \sup_{C_{\e,<}} |\mu(y)-\mu(x_0)|
-    \int_{C_{e,<}} \left|\underline{\mbox{curl}}_{\S}\,
+    \int_{C_{\e,<}} \left|\underline{\mbox{curl}}_{\S}\,
     G_k(x,y)\cdot\vec{t}(y)\right|\,ds_{y}\\
-  &\qquad \leq M\,\cdot \mbox{length $(\Gamma_{\varepsilon})$}\;
+  &\qquad \leq M\,\cdot \mbox{length $(C_{\e,<})$}\;
     \cdot \sup_{C_{\e,<}} |\mu(y)-\mu(x_0)|
 \end{align*}
 for some constant $M$, and hence the integral vanishes in the limit as
-  $\varepsilon\longrightarrow 0$.
+$\varepsilon\longrightarrow 0$.
 
-For the second integral in~\eqref{interm},  we define
+For the second integral in~\eqref{interm}, we define
 $\Omega_{\varepsilon}(x_{0}):=\left\{ y\in\Omega^{c}:\; \|x_0-y\|<
 \varepsilon \right\}$ to see
 \begin{align*}
@@ -1043,146 +1268,6 @@ Putting the parts together we see that
   =\left(1-\frac{\alpha(x_0)}{2\pi}\right)\mu(x_0).
 \end{align*}
 \end{proof}
-
-From Lemma~\ref{l:diagTerm}, we see that the kernel of the double layer
-operator, $\underline{\mbox{curl}}_{\S}\,G(x,y)\cdot\vec{t}(y)$, is
-continuous at $x \in \Gamma$ as a function of $y$.  We need to record
-one further property of this kernel, which will be used to understand
-the convergence properties of our quadrature rule in
-Section~\ref{s:numerics}. 
-
-\begin{lemma}
-\label{regularity}
-Let $x_0,x$ be points on the sphere, connected by the smooth curve
-$\Gamma$. Let $x_0$ be fixed, and let $\Gamma$ be parametrized by
-$x=x(s), s\in[-A,A]$ such that $x(0)=x_{0}$. Then the kernel of the double layer operator is continuously differentiable in $s$, but the second derivative is unbounded. More precisely, 
-the function 
-\begin{align*}
-  f(s):=\underline{\mbox{curl}}_{\S}\,
-    G_k(x(s),x_0)\cdot\vec{t}(x(s)), \quad s\in[-A,A], s \neq 0
-\end{align*}
-has the following properties:
-\begin{itemize}
-\item \begin{align*} \lim_{\substack {s \rightarrow 0}} f(s) = 
-      \lim_{\substack {x' \rightarrow x_{0} \\ x' \in \Gamma}}
-        [\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x') \cdot \vec{t}(x')] =  
-        -\frac{1}{4\pi} \kappa \mathbf{t}\cdot(\mathbf{n}_p\times \mathbf{x}_0)
-    \end{align*}
-Here $\kappa$ is the principle curvature of $\Gamma$ at $x_0$, $mathbf{x}_0$ is the 3-dimensional vector associated with the point $x_0$ (assuming the origin is located at the center of the sphere), $\mathbf{n}_p$ is the principle normal of $\Gamma$ at $x_0$ and $\mathbf{t}$ is a three-dimensional vector, identified with $\vec{t}$. 
-\item $\lim_{s\rightarrow 0} \frac{d}{ds}f(s)$ can be extended to be well-defined and continuous at
-$s=0$. 
-\item $ \frac{d^2}{ds^2} f(s)$ is unbounded as $s\rightarrow 0$, and therefore $f$ cannot be extended to be a $C^2$ function on $\Gamma$.
-
-\end{itemize}
-\end{lemma}
-
-\begin{proof}
- We provide a simple argument via l'Hopital's rule in the case that $\Gamma$ is a simple smooth closed curve. For this argument, it is easier  to work with points and vectors in $\mathbb{R}^3$. 
-Let $x_0,x'$ be points on the unit sphere. We can identify them with the
-3-dimensional vectors ${\mathbf x_0},{\mathbf x'}$ respectively.  Let
-${\mathbf t}'$ and ${\mathbf n}'$ be the unit tangent and normal vectors
-at the point ${\mathbf x}'  \in  \Gamma$ lying in the tangent plane
-of ${\cal S}$.  We note for future reference that $\mathbf{x'}=\mathbf{e}$,
-$\mathbf{x'} \cdot \mathbf{x'} = 1$ and that $\mathbf{x'} = \mathbf{n'}
-\times \mathbf{t'}$. Since $\Gamma$ is parametrized by arc length $s$, we also note the following identities:
-\[
-   {\mathbf t} = \frac{d{\mathbf x}}{ds}, \qquad \frac{d{\mathbf t}}{ds} = \kappa \, {\mathbf n}_p .
-\]
-The second identity is one of the Frenet formulae, where $\kappa$ is the curvature of the curve $\Gamma$ at the point ${\mathbf x}$ and ${\mathbf n}_p$ is the principal normal to the curve. 
-From these, it is straightforward to show that 
-\begin{align*}
-%  \label{kernel_diag}
-  \frac{d \, }{ds} \left( {\mathbf t} \times {\mathbf x} \right)=
-  \kappa {\mathbf n}_p \times {\mathbf x} . 
-\end{align*}
-
-We now examine the kernel of the double layer potential. Calculating the three dimensional gradient of the fundamental solution $G$
-yields
-\begin{align*}
-  \nabla' G_k(x_0,x') &= \C \nabla P_\nu\left(
-    \frac{\|x_0-x'\|^2}{2}-1\right) = 
-  -\C P'_\nu\left(\frac{\|x_0-x'\|^2}{2}-1\right)
-    (\mathbf{x_0}-\mathbf{x'}),
-\end{align*}
-which we can decompose into the surface gradient plus a derivative in
-the radial direction. We can write this more concisely as
-\begin{align*}
-\nabla' G_k(x_0,x')=-\C P'_{\nu}(z) (\mathbf{x}_0-\mathbf{x'}), \qquad 
-  z=\left(\frac{\|{ x_0}-{x}'\|^2}{2}-1\right).
-\end{align*} The kernel of the double layer operator is   $f(s):=[\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x') \cdot
-\vec{t}(x')]= \frac{\partial}{\partial n'}
-G_k({x_0},{x}')$, which in turn can be written as 
-\begin{align}
- f(s)=\frac{\partial \, }{\partial n'} G_k({ x}_0,{ x}') &
- =\nabla' G_k \cdot {\mathbf n}' = \nabla' G_k\cdot \left( \mathbf{t}'
- \times {\mathbf x}' \right) 
- =-\C (\mathbf{x}_0-\mathbf{x'})P'_{\nu}(z)\cdot \left(
- \mathbf{t}' \times {\mathbf x}' \right) \nonumber\\
- \end{align}
- Recalling \eqref{} that 
- $P'_{\nu}(z)=\frac{-(\nu+1)}{1-z^2}(P_{\nu+1}(z)-z P_{\nu}(z))$,
- \begin{align}
-  f(s)
-  &=\C \frac{(\nu+1)}{1-z^2}\left(P_{\nu+1}(z)-zP_{\nu}(z)\right)  (\mathbf{x}_0-\mathbf{x'})\cdot \left(
-   \mathbf{t}' \times {\mathbf x}' \right) \nonumber\\
- &= 2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z} \left[
- \frac{(\mathbf{x}_0-\mathbf{x'})}{\|{x}_0-{x'}\|^2}\cdot
- \left( \mathbf{t}' \times {\mathbf x}' \right)\right].
- \label{kern1}
-\end{align} 
-
-Now, the quantity
-\begin{align}\label{nicepartoflimit}
-2\C(\nu+1)(1+z)P'(z)=2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z}&=4\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{4-\|{x_0}-{x'}\|^2},
-\end{align}
-has a well-defined limit as $x'\rightarrow
-x_0$~\eqref{doublelayerwithz}). In fact, following \eqref{}
-\begin{align*}
-\lim_{x'\rightarrow x_0}=\C(\nu+1)\lim_{z\rightarrow 1^-}P_{\nu+1}(-z)+zP_{\nu}(-z))=-\frac{1}{2\pi}
-\end{align*}
-
- 
-
-
-The remaining term in~\eqref{kern1} is 
-$
- q(x',x_0) := 
-    \frac{(\mathbf{x_0}-\mathbf{x'})}{\|{x_0}-{x'}\|^2}
-    \cdot \left( \mathbf{t}' \times {\mathbf x}' \right).
-$
-This term can be shown to be continuous as ${\mathbf x}' \rightarrow {\mathbf x_0}$ by l'H\^{o}pital's rule. 
-A first application of l'H\^{o}pital's rule to evaluate $q(x',x_0)$ at the point of singularity, ${ x}' = { x_0}$, 
-\begin{align*}
-   \lim_{{ x}' \rightarrow { x_0}}q(x',x_0) 
-      & = \lim_{{ x}' \rightarrow { x_0}}  \frac{ -\mathbf{t}' \cdot \left( \mathbf{t}' \times {\mathbf x}' \right) 
-                                                             + ({\mathbf x_0}-{\mathbf x}') \cdot \left( \kappa' {\mathbf n}'_p \times {\mathbf x}'  \right)}
-                                                           { -2 ({\mathbf x_0} - {\mathbf x}') \cdot \mathbf{t}' } =  \lim_{{\mathbf x}' \rightarrow {\mathbf x_0}}  \frac{  ({\mathbf x_0}-{\mathbf x}') \cdot \left( \kappa' {\mathbf n}'_p \times {\mathbf x}'  \right)}
-                                                           { ({\mathbf x_0} - {\mathbf x}') \cdot \mathbf{t}' }. 
-\end{align*}
-Proceeding with a second application of l'H\^{o}pital's rule yields
-\begin{align*}
-%  \label{kern2}
-   \lim_{{ x}' \rightarrow { x_0}} q(x',x_0)  
-      & =   \lim_{{ x}' \rightarrow { x_0}}  \frac{  -\mathbf{t'} \cdot 
-                                                                 \left( \kappa' {\mathbf n}'_p \times {\mathbf x}'  \right) + O({\mathbf x}-{\mathbf x}')}
-                                                           { -2{\mathbf t}' \cdot \mathbf{t}' + O({\mathbf x}-{\mathbf x}')}  = \frac{1}{2} \mathbf{t} \cdot  \left( \kappa {\mathbf n}_p \times {\mathbf x_0}  \right) 
-\end{align*}
-This shows that $f(s)$ has a well-defined limit as $s\rightarrow 0$, that is, as $x'\rightarrow x_0$. The kernel of the double-layer operator can therefore be made continuous in the arc-length parameter.
-
-If we now examine $\frac{d}{ds}f(s)$, we obtain
-\begin{align*} f'(s)&= -\C \frac{d}{ds}\left( P'_\nu(z) (\mathbf{x_0}-\mathbf{x'})\cdot \mathbf{n}' \right)\\
-&=-C_k \left\{P''_{\nu}(z) \frac{dz}{ds}(\mathbf{x_0}-\mathbf{x'})\cdot \mathbf{n}' -P
-'_{\nu}(z)(-\mathbf{t'}\cdot \mathbf{n'}) + P'_\nu(z)((\mathbf{x_0}-\mathbf{x'})\cdot \frac{d}{ds}\mathbf{n}')\right\}
- \end{align*}
-Since $P_\nu(z)$ solves Legendre's equation \eqref{LegendrePequation} and since $\mathbf{x'},\mathbf{t'}, \mathbf{n'}$ form an orthogonal set,   we get
- \begin{align} \lim_{\substack {s \rightarrow 0}} f'(s) =-C_k \left\{\frac{2zP'_{\nu}(z)-\nu(\nu+1)P_{\nu}(z)}{1-z^2} \frac{dz}{ds}(\mathbf{x_0}-\mathbf{x'})\cdot \mathbf{n}'  +\kappa P'_\nu(z)((\mathbf{x_0}-\mathbf{x'})\cdot (\mathbf{n_p'}\times \mathbf{x'})\right\}   \end{align}   
-Applying L'H\^{o}spital's rule to each of the terms above, we see that $f'(s)$ has a well-defined and bounded limit at $s\rightarrow 0$. 
-Therefore, the kernel of the double layer operator is differentiable in the arc length parameter, with bounded derivative as $s\rightarrow 0$. 
-
-However, \begin{align*} f''(s)&= -\C \frac{d^2}{ds^2}\left( P'_\nu(z) (\mathbf{x_0}-\mathbf{x'})\cdot \mathbf{n}' \right)\end{align*}| is not bounded as $s\rightarrow 0$. This can be shown using calculations similar to those above, and we do not include them here.
-
-\end{proof}
-
 
 
 
@@ -1364,7 +1449,7 @@ iterations with respect to the ratio $a/b$.}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{A complex domain}
+\subsection{A complex domain}
 We take a 32-ply connected domain and set the boundary condition to be a
 constant value of one everywhere.  We set the parameter of the PDE to be
 $k=4$ and each boundary is discretized with only $N=32$ points.  The
@@ -1382,6 +1467,8 @@ accuracy.  A plot of the solution is in Figure~\ref{f:32ply}.
 \end{figure}
 
 
+\section{Conclusions and Discussion}
+\todo{Write this section}
 
 
 
