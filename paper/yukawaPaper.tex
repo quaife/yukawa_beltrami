@@ -307,9 +307,10 @@ such complications, we shall instead derive a more convenient
 parametrix. To the best of our knowledge the use of this parametrix and
 the associated boundary integral equations is novel. 
 
-Without loss of generality we first set $x_{0}$ to be the point at
-the north pole.  Let $x$ be some other point on the sphere. The parametrix $G_k(x,x_0)$ we seek depends on
-$r_0(\theta)=\|x-x_0\|=\sqrt{2-2\cos(\theta)} $. Since there is no
+Without loss of generality we first set $x_{0}$ to be the point at the
+north pole.  Let $x$ be some other point on the sphere. The parametrix
+$G_k(x,x_0)$ we seek depends on
+$r_0(\theta)=\|x-x_0\|=\sqrt{2-2\cos(\theta)}$. Since there is no
 angular dependence in $\phi$, the Yukawa-Beltrami operator reduces to
 the second order ODE operator
 \begin{align*}
@@ -959,17 +960,143 @@ possess a jump across the boundary of a domain.  Indeed, since
 $G_k(x,x_0)$ has a logarithmic singularity, the estimates follow the
 same argument as for the Laplace-Beltrami. The details of the
 calculation are cumbersome, but the overall strategy is that of Section
-8.2 in~\cite{hackbusch}.  First, we examine the regularity of the kernel
-of the double layer operator
-$\underline{\mbox{curl}}_{\S}\,G(x,y)\cdot\vec{t}(y)$.  In particular,
-we establish that it is continuous at $x \in \Gamma$.
+8.2 in~\cite{hackbusch}.
+
+\begin{lemma}
+\label{l:DLPjump}
+For $x_{0} \in \Gamma$ we have:
+\begin{align*} 
+  (\gamma^{\Omega^{c}}_0\widetilde{W}\mu)(x_0):=
+  \lim\limits_{\substack{x \to x_0 \\ x \in \Omega^{c}}}\, 
+  (\widetilde{W}\mu)(x) =
+  (K\mu)(x_0)\,+\,\left(1-\frac{\alpha(x_0)}{2\pi}\right)\,\mu(x_0),
+\end{align*}
+where $\alpha(x_{0})$ represents the interior (with respect to
+$\Omega^{c}$) angle of $\Gamma$ at $x_{0}$. For a smooth curve, $\alpha
+= \pi$. The operator $K$ is defined via the Cauchy principle value: 
+\begin{align*}
+(K\mu)(x_0)&=\lim_{\varepsilon\rightarrow 0}\, (K_{\varepsilon}\mu)(x_0)
+\quad \mbox{where}\qquad
+(K_{\varepsilon}\mu)(x_0)&:=\int\limits_{y\in C_{\epsilon,\geq}} 
+\mu(y)\,\left[\underline{\mbox{curl}}_{\S}\,
+G_k(x_{0},y)\cdot\vec{t}(y)\right]\,ds_{y}.
+\end{align*}
+Hence the double layer potential satisfies:
+\begin{align*}
+  \left[(\gamma_0\widetilde W\mu) \right]_\Gamma := 
+  (\gamma^{\Omega^{c}}_0\widetilde W\mu)+(\gamma^{\Omega}_{0} 
+  \widetilde{W}\mu)=\mu,
+\end{align*}
+where we tacitly assumed the orientation of the tangential vector
+$\vec{t}$ along $\Gamma$ to be in accordance with the orientation of
+$\Omega^{c}$ in the sense of Stoke's theorem.
+\todo{What is $K$?  Should it not be $W$?} \\
+\todo{Should we define $\gamma_{0}^{\Omega_{c}}$ as the trace?}
+\end{lemma}
+
+\begin{proof}
+We provide only a sketch of the proof.  Given $\varepsilon \, > \,0$,
+let $x\in \Omega^{c}$ with $ \| x-x_0\|<\varepsilon$.   We use the same
+notation for $C_{\epsilon,\geq}$ and $C_{\epsilon,<}$ introduced
+earlier.  Then, for fixed $\e>0$, 
+\begin{align}
+  (\widetilde{W}\mu)(x)-(K_{\varepsilon} \mu)(x_0) = 
+  \int_{C_{\e,\geq}}\mu(y)\left[\underline{\mbox{curl}}_{\S}\, 
+  G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_{0},y)
+  \right]\cdot\vec{t}(y)\, ds_{y} \nonumber\\
+  +\int_{C_{\e,<}} \mu(y)\,\underline{\mbox{curl}}_{\S}\,
+  G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
+  \label{eq:Kjump1}
+\end{align}
+We note that the integrand of $\int_{C_{\e,\geq}} \mu(y)
+\left[\underline{\mbox{curl}}_{\S}\,
+G_k(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_0,y)\right]\cdot\vec{t}(y)\,
+ds_{y}$ is continuous in $x$ away from  $x_0$, and therefore 
+\begin{align*}
+  \lim_{x\rightarrow x_0}  \int_{C_{\e,\geq}}
+  \mu(y)\left[\underline{\mbox{curl}}_{\S}\,
+  G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,
+  G_{k}(x_{0},y)\right]\cdot\vec{t}(y)\,ds_{y} = 0.
+\end{align*}
+
+The integral over $C_{\e,<}$ in~\eqref{eq:Kjump1} can be rewritten as
+\begin{align}
+  \int_{C_{\e,<}} \mu(y)\,\underline{\mbox{curl}}_{\S}\,
+    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} 
+  = &\int_{C_{\e,<}} \left[\mu(y)-\mu(x_0)\right]\,
+    \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}
+    \nonumber \\
+  + \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
+    G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
+  \label{interm}
+\end{align}
+For the first integral on the right hand side of~\eqref{interm}, using
+Lemma~\ref{regularity}, we have the estimate (for a fixed $x$)
+\begin{align*}
+  &\left|\int_{C_{\e,<}} \left[\mu(y)-\mu(x_0)\right]\,
+    \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}\right| \\
+  &\qquad \leq \sup_{y \in C_{\e,<}} |\mu(y)-\mu(x_0)|
+    \int_{C_{\e,<}} \left|\underline{\mbox{curl}}_{\S}\,
+    G_k(x,y)\cdot\vec{t}(y)\right|\,ds_{y}\\
+  &\qquad \leq M\,\cdot \mbox{length $(C_{\e,<})$}\;
+    \cdot \sup_{y \in C_{\e,<}} |\mu(y)-\mu(x_0)|
+\end{align*}
+for some constant $M$, and hence the integral vanishes in the limit as
+$\varepsilon\longrightarrow 0$.
+
+For the second integral in~\eqref{interm}, we define
+$\Omega_{\varepsilon}(x_{0}):=\left\{ y\in\Omega^{c}:\; \|x_0-y\|<
+\varepsilon \right\}$ to see
+\begin{align*}
+  \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
+    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \\
+  &= \mu(x_0) \left[ \int\limits_{\partial \Omega_{\varepsilon}(x_0)} 
+  \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y} - 
+  \int\limits_{\substack{y \in \Omega^{c} \\ \|y - x_{0}\| =
+  \varepsilon}}
+\underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \right].
+\end{align*}
+Using the representation formula~\eqref{eq:representationformula} with
+$u=1$ we have
+\begin{align*}
+  \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
+    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \\
+    &=\;\mu(x_0) \left(1 - \int\limits_{\Omega_{\varepsilon}} 
+    k^2 G_k(x,y) d\sigma_{y}\right) 
+   - \mu(x_0) \int\limits_{\substack{y \in \Omega^{c} \\ \|y - x_{0}\| =
+  \varepsilon}}
+\underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
+\end{align*}
+Without loss of generality we can set $x_0$ to be the north pole, and
+compute the last integral above  to find, for all $x_{0}$: 
+\begin{align*}
+  \lim_{\varepsilon\rightarrow 0}
+  \int\limits_{\substack{y \in \Gamma \\ \|y - x_{0}\| = \varepsilon}}
+  \underline{\mbox{curl}}_{\S}\,G(x,y)\cdot\vec{t}(y)\,ds_{y}
+  =\frac{\alpha(x_0)}{2\pi}.
+\end{align*}
+Putting the parts together we see that
+\begin{align*}
+  \lim_{\varepsilon\rightarrow 0} \lim_{x\rightarrow x_0}
+  \left((\widetilde{W}\mu)(x)-(K_{\varepsilon}\mu)(x_0)\right)
+  =\left(1-\frac{\alpha(x_0)}{2\pi}\right)\mu(x_0).
+\end{align*}
+\end{proof}
+
+From Lemma~\ref{l:DLPjump}, we see that the kernel of the double layer
+operator $\underline{\mbox{curl}}_{\S}\, G_{k}(x,y)\cdot\vec{t}(y)$, is
+continuous at $x \in \Gamma$ as a function of $y$.  We need to record
+one further property of this kernel, which will be used to understand
+the convergence properties of our quadrature rule in
+Section~\ref{s:numerics}.
 
 \begin{lemma}
 \label{regularity}
 Let $x_0,x$ be points on the sphere, connected by the smooth curve
 $\Gamma$. Let $x_0$ be fixed, and let $\Gamma$ be parametrized by
-$x=x(s), s\in[-A,A]$ such that $x(0)=x_{0}$. Then the kernel of the double layer operator is continuously differentiable in $s$, but the second derivative is unbounded. More precisely, 
-the function 
+$x=x(s), s\in[-A,A]$ such that $x(0)=x_{0}$. Then the kernel of the
+double layer operator is continuously differentiable in $s$, but the
+second derivative is unbounded. More precisely, the function 
 \begin{align*}
   f(s):=\underline{\mbox{curl}}_{\S}\,
     G_{k}(x(s),x_0)\cdot\vec{t}(x(s)), \quad s\in[-A,A], s \neq 0,
@@ -1144,132 +1271,6 @@ However,
 is not bounded as $s\rightarrow 0$. This can be shown using calculations
 similar to those above, and we do not include them here.
 \end{proof}
-
-Now that we have established that the kernel of the double layer
-operator is continuous, we prove can establish the jump relations of the
-double-layer potential.
-
-\begin{lemma}
-For $x_0\in\Gamma$ we have:
-\begin{align*} 
-  (\gamma^{\Omega^{c}}_0\widetilde{W}\mu)(x_0):=
-  \lim\limits_{\substack{x \to x_0 \\ x \in \Omega^{c}}}\, 
-  (\widetilde{W}\mu)(x) =
-  (K\mu)(x_0)\,+\,\left(1-\frac{\alpha(x_0)}{2\pi}\right)\,\mu(x_0),
-\end{align*}
-where $\alpha(x_0)$ represents the interior (with respect to
-$\Omega^{c}$) angle of $\Gamma$ at $x_0$. For a smooth curve, $\alpha =
-\pi$. The operator $K$ is defined via the Cauchy principle value: 
-\begin{align*}
-(K\mu)(x_0)&=\lim_{\varepsilon\rightarrow 0}\, (K_{\varepsilon}\mu)(x_0)
-\quad \mbox{where}\qquad
-(K_{\varepsilon}\mu)(x_0)&:=\int\limits_{y\in C_{\epsilon,\geq}} 
-\mu(y)\,\left[\underline{\mbox{curl}}_{\S}\,
-G_k(x_{0},y)\cdot\vec{t}(y)\right]\,ds_{y}.
-\end{align*}
-Hence the double layer potential satisfies:
-\begin{align*}
-  \left[(\gamma_0\widetilde W\mu) \right]_\Gamma := 
-  (\gamma^{\Omega^{c}}_0\widetilde W\mu)+(\gamma^{\Omega}_{0} 
-  \widetilde{W}\mu)=\mu,
-\end{align*}
-where we tacitly assumed the orientation of the tangential vector
-$\vec{t}$ along $\Gamma$ to be in accordance with the orientation of
-$\Omega^{c}$ in the sense of Stoke's theorem.
-\todo{What is $K$?  Should it not be $W$?} \\
-\todo{Should we define $\gamma_{0}^{\Omega_{c}}$ as the trace?}
-\end{lemma}
-
-\begin{proof}
-We provide only a sketch of the proof.  Given $\varepsilon \, > \,0$,
-let $x\in \Omega^{c}$ with $ \| x-x_0\|<\varepsilon$.   We use the same
-notation for $C_{\epsilon,\geq}$ and $C_{\epsilon,<}$ introduced
-earlier.  Then, for fixed $\e>0$, 
-\begin{align}
-  (\widetilde{W}\mu)(x)-(K_{\varepsilon} \mu)(x_0) = 
-  \int_{C_{\e,\geq}}\mu(y)\left[\underline{\mbox{curl}}_{\S}\, 
-  G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_{0},y)
-  \right]\cdot\vec{t}(y)\, ds_{y} \nonumber\\
-  +\int_{C_{\e,<}} \mu(y)\,\underline{\mbox{curl}}_{\S}\,
-  G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
-  \label{eq:Kjump1}
-\end{align}
-We note that the integrand of $\int_{C_{\e,\geq}} \mu(y)
-\left[\underline{\mbox{curl}}_{\S}\,
-G_k(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_0,y)\right]\cdot\vec{t}(y)\,
-ds_{y}$ is continuous in $x$ away from  $x_0$, and therefore 
-\begin{align*}
-  \lim_{x\rightarrow x_0}  \int_{C_{\e,\geq}}
-  \mu(y)\left[\underline{\mbox{curl}}_{\S}\,
-  G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,
-  G_{k}(x_{0},y)\right]\cdot\vec{t}(y)\,ds_{y} = 0.
-\end{align*}
-
-The integral over $C_{\e,<}$ in~\eqref{eq:Kjump1} can be rewritten as
-\begin{align}
-  \int_{C_{\e,<}} \mu(y)\,\underline{\mbox{curl}}_{\S}\,
-    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} 
-  = &\int_{C_{\e,<}} \left[\mu(y)-\mu(x_0)\right]\,
-    \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}
-    \nonumber \\
-  + \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
-    G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
-  \label{interm}
-\end{align}
-For the first integral on the right hand side of~\eqref{interm}, using
-Lemma~\ref{regularity}, we have the estimate (for a fixed $x$)
-\begin{align*}
-  &\left|\int_{C_{\e,<}} \left[\mu(y)-\mu(x_0)\right]\,
-    \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}\right| \\
-  &\qquad \leq \sup_{C_{\e,<}} |\mu(y)-\mu(x_0)|
-    \int_{C_{\e,<}} \left|\underline{\mbox{curl}}_{\S}\,
-    G_k(x,y)\cdot\vec{t}(y)\right|\,ds_{y}\\
-  &\qquad \leq M\,\cdot \mbox{length $(C_{\e,<})$}\;
-    \cdot \sup_{C_{\e,<}} |\mu(y)-\mu(x_0)|
-\end{align*}
-for some constant $M$, and hence the integral vanishes in the limit as
-$\varepsilon\longrightarrow 0$.
-
-For the second integral in~\eqref{interm}, we define
-$\Omega_{\varepsilon}(x_{0}):=\left\{ y\in\Omega^{c}:\; \|x_0-y\|<
-\varepsilon \right\}$ to see
-\begin{align*}
-  \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
-    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \\
-  &= \mu(x_0) \left[ \int\limits_{\partial \Omega_{\varepsilon}(x_0)} 
-  \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y} - 
-  \int\limits_{\substack{y \in \Omega^{c} \\ \|y - x_{0}\| =
-  \varepsilon}}
-\underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \right].
-\end{align*}
-Using the representation formula~\eqref{eq:representationformula} with
-$u=1$ we have
-\begin{align*}
-  \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
-    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \\
-    &=\;\mu(x_0) \left(1 - \int\limits_{\Omega_{\varepsilon}} 
-    k^2 G_k(x,y) d\sigma_{y}\right) 
-   - \mu(x_0) \int\limits_{\substack{y \in \Omega^{c} \\ \|y - x_{0}\| =
-  \varepsilon}}
-\underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
-\end{align*}
-Without loss of generality we can set $x_0$ to be the north pole, and
-compute the last integral above  to find, for all $x_{0}$: 
-\begin{align*}
-  \lim_{\varepsilon\rightarrow 0}
-  \int\limits_{\substack{y \in \Gamma \\ \|y - x_{0}\| = \varepsilon}}
-  \underline{\mbox{curl}}_{\S}\,G(x,y)\cdot\vec{t}(y)\,ds_{y}
-  =\frac{\alpha(x_0)}{2\pi}.
-\end{align*}
-Putting the parts together we see that
-\begin{align*}
-  \lim_{\varepsilon\rightarrow 0} \lim_{x\rightarrow x_0}
-  \left((\widetilde{W}\mu)(x)-(K_{\varepsilon}\mu)(x_0)\right)
-  =\left(1-\frac{\alpha(x_0)}{2\pi}\right)\mu(x_0).
-\end{align*}
-\end{proof}
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
