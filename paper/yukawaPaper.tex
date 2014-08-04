@@ -292,20 +292,21 @@ have
     +\frac{k^{4}r^{2}}{8\pi}K_{0}(kr) - \frac{k^{3}r}{4\pi}K_{1}(kr).
 \end{align*}
 
-While this is a perfectly reasonable parametrix, it is inconvenient from
-the perspective of rewriting the Yukawa-Beltrami boundary value problem
-in terms of a boundary integral equation. The term $\frac{k^{4}r^{2}}{8\pi}K_{0}(kr) - \frac{k^{3}r}{4\pi}K_{1}(kr)$ will result
-in {\it volumetric} constraints  appearing in an integral equation
-representation. Such a term encapsulates the fact that we are on a
-compact manifold, no longer on $\mathbb{R}^2$. Recall that for the
-Laplace-Beltrami case, when $k=0$, this term $\frac{k^{4}r^{2}}{8\pi}K_{0}(kr) - \frac{k^{3}r}{4\pi}K_{1}(kr)$ reduces to a
-constant; it is then possible to use a double layer ansatz in which no
-volumetric terms or constraints appear,~\cite{kro:nig2013}.  
+While this is a perfectly reasonable parametrix, it is inconvenient
+from the perspective of rewriting the Yukawa-Beltrami boundary value
+problem in terms of a boundary integral equation. The term
+$\frac{k^{4}r^{2}}{8\pi}K_{0}(kr) - \frac{k^{3}r}{4\pi}K_{1}(kr)$ will
+result in {\it volumetric} constraints  appearing in an integral
+equation representation. Such a term encapsulates the fact that we are
+on a compact manifold, no longer on $\mathbb{R}^2$. Recall that for the
+Laplace-Beltrami case, when $k=0$, this term
+$\frac{k^{4}r^{2}}{8\pi}K_{0}(kr) - \frac{k^{3}r}{4\pi}K_{1}(kr)$
+reduces to a constant; it is then possible to use a double layer ansatz
+in which no volumetric terms or constraints appear~\cite{kro:nig2013}.  
 
-To avoid
-such complications, we shall instead derive a more convenient
-parametrix. To the best of our knowledge the use of this parametrix and
-the associated boundary integral equations is novel. 
+To avoid such complications, we shall instead derive a more convenient
+parametrix. To the best of our knowledge, the use of this parametrix
+and the associated boundary integral equations is novel. 
 
 Without loss of generality we first set $x_{0}$ to be the point at the
 north pole.  Let $x$ be some other point on the sphere. The parametrix
@@ -475,7 +476,7 @@ subsequent use, we denote
 \begin{align*}
   R(\nu):= \frac{1}{2}\log(2) -\gamma -\psi(\nu+1), 
 \end{align*}
-and therefore for $t$ close to $-1$,
+and therefore for $t$ close to $1$,
 \begin{equation}
   \label{Qasymptotics}
   Q_{\nu}(t)=-\frac{1}{2}\log(1-t) + 
@@ -503,7 +504,8 @@ and~\eqref{Qasymptotics}, we obtain
   P_{\nu}(<x,x_{0}>) - 
       \frac{2}{\pi}\sin(\nu \pi)Q_{\nu}(<x,x_0>)\right) \nonumber \\
   &= \C\cos(\nu\pi)  \\
-  & \qquad - \lim_{x\rightarrow x_0} \frac{2\C}{\pi}\sin(\nu\pi)\left(-\frac{1}{2}\log(1-<x,x_0>) + R(\nu) +
+  & \qquad - \frac{2\C}{\pi}\sin(\nu\pi)\lim_{x\rightarrow x_0} 
+      \left(-\frac{1}{2}\log(1-<x,x_0>) + R(\nu) +
       \bigO(1-<x,x_0>)\right) \nonumber \\
   &=\frac{\C\sin(\nu\pi)}{\pi}\lim_{x\rightarrow x_0}
       \log(1-<x,x_0>) + \C\left[\cos(\nu\pi)-
@@ -556,15 +558,17 @@ we obtain that
   \C (\nu+1)  \left[ P_{\nu+1}(-z) + 
   z P_\nu(-z)\right]\vert_{z=\cos(\theta)} d\phi =: F(\theta)d\phi.
 \end{align}
-The term $F(\theta)= \C (\nu+1)  \left[ P_{\nu+1}(-z) + 
-  z P_\nu(-z)\right]\vert_{z=\cos(\theta)}$ arising in~\eqref{curlT} will be important in subsequent
-sections, and is related to the kernel of the second layer operator. (We
-shall define this operator carefully later on.) For now, however, we are
-interested in the limit of $F(\theta)$ as the point
-$x\rightarrow x_0$, that is, as $\theta \rightarrow 0^+$.  
+The term $F(\theta)= \C (\nu+1)  \left[ P_{\nu+1}(-z) + z
+P_\nu(-z)\right]\vert_{z=\cos(\theta)}$ arising in~\eqref{curlT} will be
+important in subsequent sections, and is related to the kernel of the
+second layer operator. (We shall define this operator carefully later.)
+For now, however, we are interested in the limit of $F(\theta)$ as the
+point $x\rightarrow x_0$, that is, as $\theta \rightarrow 0^+$.  
 
-\begin{lemma} Let $F(\theta)$ be as defined in~\eqref{curlT}. Then
-$\lim_{\theta\rightarrow 0^+} F(\theta)= \frac{2}{\pi}C_k \sin(\nu \pi)$
+\begin{lemma} 
+Let $F(\theta)$ be as defined in~\eqref{curlT}. Then
+$\lim_{\theta\rightarrow 0^+} F(\theta)= \frac{2}{\pi}C_k \sin(\nu
+\pi)$.
 \end{lemma}
 \begin{proof} 
 Using~\eqref{connect}, the term in the square bracket of
@@ -621,7 +625,7 @@ and~\eqref{curlT}, we have
 
 Observe that setting $\C=-\frac{1}{4\sin(\nu \pi)}$, that is, using
 exactly the constant defined in~\eqref{constant-definition} in the
-definition of $G_k(x,x_0)$, we  get $\lim_{\theta\rightarrow
+definition of $G_k(x,x_0)$, we have $\lim_{\theta\rightarrow
 0^+}F(\theta)=\frac{1}{2\pi}.$
 
 
@@ -668,7 +672,7 @@ integrals involved are bounded, and
   \int\limits_{\Omega} u(x)(\lap_{\S}G_{k}(x,x_0) 
       -k^{2}G_{k}(x,x_0)) \, d\sigma_x=0.
 \end{align*}
-Therefore, using~\eqref{Green2} we get 
+Therefore, using~\eqref{Green2} we have 
 \begin{align*}
  0 &= - \int\limits_{\Omega}
     G_k(x,x_{0})\left(\lap_{\S}u(x) -k^2 u(x)\right)\,d\sigma_x \\
@@ -1298,14 +1302,14 @@ where
 \end{align*}
 In~\eqref{e:dlpuEval}, since $x \notin \Gamma$, the integrand is
 periodic and smooth.  Therefore, for a fixed $x\in \Omega$, the
-trapezoid rule has spectral accuracy.  However, the error grows as $x$
-approaches $\Gamma$.  Therefore, our reported errors are only measured
-at points $x$ sufficiently far from $\Gamma$.  We test two quadrature
-formulas for solving~\eqref{e:dlpBIE}.  First, we test the trapezoid
-rule which we expect will achieve third-order accuracy since the
-integrand is once continuously differentiable (Lemma~\ref{regularity}).
-Second, we test a high-order quadrature formula designed for functions
-that contain logarithmic singularities~\cite{alpert}.
+trapezoid rule has spectral accuracy.  However, since the error grows as
+$x$ approaches $\Gamma$, our reported errors are only measured at points
+$x$ sufficiently far from $\Gamma$.  We test two quadrature formulas for
+solving~\eqref{e:dlpBIE}.  First, we test the trapezoid rule which we
+expect will achieve third-order accuracy since the integrand is once
+continuously differentiable (Lemma~\ref{regularity}).  Second, we test a
+high-order hybrid Gauss-trapezoidal quadrature formula designed for
+functions that contain logarithmic singularities~\cite{alpert}.
 
 For all the examples, we discretize each connected component of the
 boundary with $N$ unknowns and solve the resulting linear system with
@@ -1323,17 +1327,17 @@ We present four numerical examples which we now summarize.
 
   \item{\em{The effect of $k$}:} For the same two-ply connected domain,
   we examine the effect of the parameter $k$ on the condition number of
-  the linear system corresponding to~\eqref{e:dlpBIE}, and on the number
-  of GMRES iterations.
+  the linear system corresponding to~\eqref{e:dlpBIE}, and its effect on
+  the number of GMRES iterations.
 
   \item{\em{The effect of the geometry's curvature}:} We consider a
   simply-connected domain and vary the aspect ratio of the major to
-  minor axis of the domain's boundary.  We examine the effect this
-  parameter has on the conditioning and the number of GMRES iterations.
+  minor axis of the domain's boundary.  We examine the effect of this
+  parameter on the conditioning and the number of GMRES iterations.
 
   \item{\em{A complex domain}:} We demonstrate that our method is able
   to solve the Yukawa-Beltrami equation in complex domains by
-  solving~\eqref{DBVP} in a 32-ply connected domain, with an acceptable
+  solving~\eqref{DBVP} in a 36-ply connected domain, with an acceptable
   number of GMRES iterations.
 \end{itemize}
 
@@ -1354,9 +1358,9 @@ quickly decays to the GMRES tolerance.
   \includegraphics[width=0.5\textwidth]{vortexBC1}
   \includegraphics[width=0.5\textwidth]{vortexBC2}
 \caption{\label{f:twoply} A numerical solution of the Yukawa-Beltrami
-equation in a two-ply connected domain with $k=4$.  The exact solution
-is the sum of two fundamental solutions, each one centered inside the
-regions bounded by $\Gamma$.}
+equation with $k=4$ in a two-ply connected domain viewed from two
+different angles.  The exact solution is the sum of two fundamental
+solutions, each one centered inside the regions bounded by $\Gamma$.}
 \end{figure}
 
 \begin{table}[htps]
@@ -1386,7 +1390,7 @@ values of $k$, the conditioning of the linear system improves, and the
 number of GMRES iterations decreases.  In Figure~\ref{f:evalues}, we
 plot the eigenvalues of the linear system for $k=1$ and $k=64$.  We see
 that for larger values of $k$, the eigenvalues cluster more strongly
-around $1/2$, and the result is a smaller number of gmres iterations and
+around $1/2$ resulting in a smaller number of GMRES iterations and
 a smaller condition number.
 
 \begin{table}[htps]
@@ -1404,8 +1408,8 @@ $k$ & Condition Number & \# GMRES \\
 64   & 1.07E0 & 6  \\
 \end{tabular}
 \caption{\label{t:example2} The condition number of the linear system
-corresponding to a high-order discretization of~\eqref{e:dlpBIE} and the
-number of GMRES iterations as a function of the parameter $k$.}
+corresponding to a discretization of~\eqref{e:dlpBIE} and the number of
+GMRES iterations as a function of the parameter $k$.}
 \end{table}
 
 \begin{figure}[htps]
@@ -1432,6 +1436,7 @@ well as on the required number of GMRES iterations.
 \begin{table}[htps]
 \centering
 \begin{tabular}{c>{\centering}m{2cm}c}
+$\frac{a}{b}$ & Condition Number & \# GMRES \\
 \hline
 1   & 1.11E0 & 2   \\ 
 2   & 1.51E0 & 6   \\
@@ -1451,18 +1456,18 @@ iterations with respect to the ratio $a/b$.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{A complex domain}
-We take a 32-ply connected domain and set the boundary condition to be a
+We take a 36-ply connected domain and set the boundary condition to be a
 constant value of one everywhere.  We set the parameter of the PDE to be
-$k=4$ and each boundary is discretized with only $N=32$ points.  The
+$k=4$ and each boundary is discretized with $N=32$ points.  The
 resulting linear system has 1152 unknowns, a condition number of $7.58$,
-and GMRES requires 25 iterations to reach the desired 11 digits of
-accuracy.  A plot of the solution is in Figure~\ref{f:32ply}.
+and GMRES requires 25 iterations to reach the desired tolerance of 11
+digits.  A plot of the solution is in Figure~\ref{f:36ply}.
 
 \begin{figure}
   \centering
   \includegraphics[width=0.5\textwidth]{constBC}
-  \caption{\label{f:32ply} The numerical solution of the Yukawa-Beltrami
-  equation with $k=4$ in a 32-ply connected domain.  The Dirichlet
+  \caption{\label{f:36ply} The numerical solution of the Yukawa-Beltrami
+  equation with $k=4$ in a 36-ply connected domain.  The Dirichlet
   boundary condition is equal to one on each of the boundaries (black
   curves).}
 \end{figure}
