@@ -821,16 +821,16 @@ boundary integral equation over $\Gamma = \partial \Omega$.
 We define the following two layer potentials.
 \begin{itemize}
 \item The {\bf single layer potential} with sufficiently smooth density function $\sigma$:
-  \begin{align*}
+  \begin{align}\label{singlelayerpotential}
     (\widetilde{V_k}\sigma)(x):=\int\limits_{\Gamma}
     G_k(x,y)\,\sigma(y)\,ds_y,\quad\mbox{for $x \notin \Gamma$};
-  \end{align*}
+  \end{align}
 \item and the {\bf double layer potential} with sufficiently smooth density function $\mu$:
-  \begin{align*}
+  \begin{align}\label{doublelayerpotential}
     (\widetilde{W_k}\mu )(x):=\int\limits_{\Gamma}
     \mu(y)\,[\underline{\mbox{curl}}_{\S} G_k(x,y)\cdot \vec{t}(y)]\,
     ds_y, \quad\mbox{for $x\notin\Gamma$}.
-  \end{align*}
+  \end{align}
 \end{itemize}
 By Proposition~\ref{prop:repr}, every solution to the homogeneous
 Yukawa-Beltrami equation can be written as the sum of a single and a
@@ -838,7 +838,7 @@ double layer potential.  This  is the starting point for the so-called
 direct boundary integral approach. However, for the purpose of this
 paper we follow the layer ansatz based on the following observation.
 
-For $x\notin\Gamma, x\in \Omega$, the single layer potential satisfies:
+For $x\notin\Gamma, x\in \Omega$, the single layer potential in \eqref{singlelayerpotential} satisfies:
 \begin{align*}
   (-\lap_{\S} + k^{2}) (\widetilde{V_k}\sigma)(x)& =
   (-\lap_{\S} + k^2) \int\limits_\Gamma G_k(x,y)\, \sigma(y)\,ds_{y} \\
@@ -853,7 +853,7 @@ problem~\eqref{DBVP} in terms of a single layer potential
 \end{align*}
 We would then need to calculate the unknown density $\sigma$.
  
-Similarly, the double layer potential satisfies the Yukawa-Beltrami
+Similarly, the double layer potential in \eqref{doublelayerpotential} satisfies the Yukawa-Beltrami
 equation for $x\in \Omega, x\notin\Gamma$
 \begin{align*}
 (-\lap_{\S} + k^2)(\widetilde{W}\mu)(x) & = (-\lap_{\S}+k^2)
@@ -885,19 +885,18 @@ this paper however, we will restrict ourselves to the Dirichlet case.
 First, consider the single layer potential with density $\sigma$ for $x
 \notin \Gamma$:
 \begin{align*}
-  (\widetilde{V}\sigma)(x) & =  \int\limits_\Gamma
+  (\widetilde{V_k}\sigma)(x) & =  \int\limits_\Gamma
   G_k(x,y)\,\sigma(y)\,ds_{y} \\
   & = \C \int\limits_\Gamma P_{\nu(k)}(-<x,y>)\,\sigma(y)\,ds_{y}.
 \end{align*}
 The following Lemma describes the limit behavior of the single layer potential.
-\begin{lemma}
-For $x_{0}\in\Gamma$ we have:
+\begin{lemma} Let $\widetilde{V_k}$ be the single layer potential defined in \eqref{singlelayerpotential}. For $x_{0}\in\Gamma$ we have:
 \begin{align*} 
   (V\sigma)(x_0) & := \lim\limits_{\substack{
       x \to x_{0} \\ x \in \Omega}}
-  \,(\widetilde{V}\sigma)(x) = \int\limits_\Gamma G_k(x_{0},y)\,\sigma(y)\,ds_{y}
+  \,(\widetilde{V_k}\sigma)(x) = \int\limits_\Gamma G_k(x_{0},y)\,\sigma(y)\,ds_{y}
 \end{align*}
-as a weakly singular line integral and hence $(\widetilde{V}\sigma)$ is continuous across $\Gamma$.
+as a weakly singular line integral and hence $(\widetilde{V_k}\sigma)$ is continuous across $\Gamma$.
 \end{lemma}
 \begin{proof}
 Fix an arbitrary $\varepsilon > 0$. Let $x_0 \in \Gamma$ be fixed, and
@@ -967,17 +966,17 @@ calculation are cumbersome, but the overall strategy is that of Section
 8.2 in~\cite{hackbusch}.
 
 \begin{lemma}
-\label{l:DLPjump}
+\label{l:DLPjump} Let $\widetilde{W_k}$ be the double layer potential defined in \eqref{doublelayerpotential}, and let $\gamma_0^{\Omega}$ (resp. $\gamma_0^{\Omega^c})$ denote the trace operator on $\Gamma$, with traces from inside (respectively outside) $\Omega$. 
 For $x_{0} \in \Gamma$ we have:
 \begin{align*} 
-  (\gamma^{\Omega^{c}}_0\widetilde{W}\mu)(x_0):=
+  (\gamma^{\Omega^{c}}_0\widetilde{W_k}\mu)(x_0)=
   \lim\limits_{\substack{x \to x_0 \\ x \in \Omega^{c}}}\, 
-  (\widetilde{W}\mu)(x) =
+  (\widetilde{W_k}\mu)(x) =
   (K\mu)(x_0)\,+\,\left(1-\frac{\alpha(x_0)}{2\pi}\right)\,\mu(x_0),
 \end{align*}
 where $\alpha(x_{0})$ represents the interior (with respect to
 $\Omega^{c}$) angle of $\Gamma$ at $x_{0}$. For a smooth curve, $\alpha
-= \pi$. The operator $K$ is defined via the Cauchy principle value: 
+= \pi$. The {\it double layer operator} $K$ is defined via the Cauchy principle value: 
 \begin{align*}
 (K\mu)(x_0)&=\lim_{\varepsilon\rightarrow 0}\, (K_{\varepsilon}\mu)(x_0)
 \quad \mbox{where}\qquad
@@ -987,15 +986,14 @@ G_k(x_{0},y)\cdot\vec{t}(y)\right]\,ds_{y}.
 \end{align*}
 Hence the double layer potential satisfies:
 \begin{align*}
-  \left[(\gamma_0\widetilde W\mu) \right]_\Gamma := 
-  (\gamma^{\Omega^{c}}_0\widetilde W\mu)+(\gamma^{\Omega}_{0} 
-  \widetilde{W}\mu)=\mu,
+  \left[(\gamma_0\widetilde W_k\mu) \right]_\Gamma := 
+  (\gamma^{\Omega^{c}}_0\widetilde W_k\mu)+(\gamma^{\Omega}_{0} 
+  \widetilde{W_k}\mu)=\mu,
 \end{align*}
 where we tacitly assumed the orientation of the tangential vector
 $\vec{t}$ along $\Gamma$ to be in accordance with the orientation of
 $\Omega^{c}$ in the sense of Stoke's theorem.
-\todo{What is $K$?  Should it not be $W$?} \\
-\todo{Should we define $\gamma_{0}^{\Omega_{c}}$ as the trace?}
+
 \end{lemma}
 
 \begin{proof}
@@ -1004,7 +1002,7 @@ let $x\in \Omega^{c}$ with $ \| x-x_0\|<\varepsilon$.   We use the same
 notation for $C_{\epsilon,\geq}$ and $C_{\epsilon,<}$ introduced
 earlier.  Then, for fixed $\e>0$, 
 \begin{align}
-  (\widetilde{W}\mu)(x)-(K_{\varepsilon} \mu)(x_0) = 
+  (\widetilde{W_k}\mu)(x)-(K_{\varepsilon} \mu)(x_0) = 
   \int_{C_{\e,\geq}}\mu(y)\left[\underline{\mbox{curl}}_{\S}\, 
   G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_{0},y)
   \right]\cdot\vec{t}(y)\, ds_{y} \nonumber\\
@@ -1103,21 +1101,19 @@ double layer operator is continuously differentiable in $s$, but the
 second derivative is unbounded. More precisely, the function 
 \begin{align*}
   f(s):=\underline{\mbox{curl}}_{\S}\,
-    G_{k}(x(s),x_0)\cdot\vec{t}(x(s)), \quad s\in[-A,A], s \neq 0,
+    G_{k}(x_0,x(s))\cdot\vec{t}(x(s)), \quad s\in[-A,A], s \neq 0,
 \end{align*}
 has the following properties:
 \begin{itemize}
 \item 
 \begin{align*} 
   \lim_{\substack {s \rightarrow 0}} f(s) = 
-   \lim_{\substack {x' \rightarrow x_{0} \\ x' \in \Gamma}}
-   [\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x') \cdot \vec{t}(x')] =  
+   \lim_{\substack {x \rightarrow x_{0} \\ x \in \Gamma}}
+   [\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x) \cdot \vec{t}(x)] =  
    -\frac{1}{4\pi} \kappa \mathbf{t}\cdot(\mathbf{n}_{p}
     \times \mathbf{x}_0)
 \end{align*}
-\todo{Have reversed source and target point in the above expression for
-$G_{k}$.  Not sure how this'll effect all the other instances in the
-proof.}
+
 Here $\kappa$ is the principle curvature of $\Gamma$ at $x_{0}$,
 $\mathbf{x}_0$ is the 3-dimensional vector associated with the point
 $x_0$ (assuming the origin is located at the center of the sphere),
@@ -1131,20 +1127,19 @@ therefore $f$ cannot be extended to be a $C^{2}$ function on $\Gamma$.
 \end{lemma}
 
 \begin{proof}
-\todo{I don't see the need to introduce $\mathbf{x'}$.  Why not just
-use $\mathbf{x}$}
+
 We provide a simple argument via l'H\^{o}pital's rule in the case that
 $\Gamma$ is a simple smooth closed curve. For this argument, it is
 easier  to work with points and vectors in $\mathbb{R}^3$.  Let $x_0$,
-$x'$ be points on the unit sphere. We identify them with the
-3-dimensional vectors $\mathbf{x}_{0}$, $\mathbf{x'}$ respectively.  Let
-$\mathbf{t'}$ and $\mathbf{n'}$ be the unit tangent and normal vectors
-at the point $\mathbf{x'} \in \Gamma$ lying in the tangent plane of
+$x$ be points on the unit sphere. We identify them with the
+3-dimensional vectors $\mathbf{x}_{0}$, $\mathbf{x}$ respectively.  Let
+$\mathbf{t}$ and $\mathbf{n}$ be the unit tangent and normal vectors
+at the point $\mathbf{x} \in \Gamma$ lying in the tangent plane of
 $\mathcal{S}$.  We note for future reference that
-$\mathbf{x'}=\mathbf{e}$, $\mathbf{x'} \cdot \mathbf{x'} = 1$ and that
-$\mathbf{x'} = \mathbf{n'} \times \mathbf{t'}$. Since $\Gamma$ is
+$\mathbf{x}=\mathbf{e_r}$, $\mathbf{x} \cdot \mathbf{x} = 1$ and that
+$\mathbf{x} = \mathbf{n} \times \mathbf{t}$. Since $\Gamma$ is
 parametrized by arc length $s$, we also note the following identities:
-\todo{what is $\mathbf{e}?$}
+
 \begin{align*}
   \mathbf{t} = \frac{d\mathbf{x}}{ds}, \qquad 
   \frac{d\mathbf{t}}{ds} = \kappa \, \mathbf{n}_{p}.
@@ -1161,38 +1156,38 @@ is straightforward to show that
 We now examine the kernel of the double layer potential. Calculating the
 three dimensional gradient of the fundamental solution $G$ yields
 \begin{align*}
-  \nabla' G_k(x_0,x') &= \C \nabla P_\nu\left(
-    \frac{\|x_0-x'\|^2}{2}-1\right) = 
-  -\C P'_\nu\left(\frac{\|x_0-x'\|^2}{2}-1\right)
-    (\mathbf{x}_{0}-\mathbf{x'}),
+  \nabla G_k(x_0,x) &= \C \nabla P_\nu\left(
+    \frac{\|x_0-x\|^2}{2}-1\right) = 
+  -\C P'_\nu\left(\frac{\|x_0-x\|^2}{2}-1\right)
+    (\mathbf{x}_{0}-\mathbf{x}),
 \end{align*}
 which we can decompose into the surface gradient plus a derivative in
 the radial direction. We can write this more concisely as
 \begin{align*}
-\nabla' G_k(x_0,x')=-\C P'_{\nu}(z) (\mathbf{x}_0-\mathbf{x'}), \qquad 
-  z=\frac{\|{ x_0}-{x}'\|^2}{2}-1.
+\nabla G_k(x_0,x)=-\C P'_{\nu}(z) (\mathbf{x}_0-\mathbf{x}), \qquad \mbox{where}\qquad
+  z=\frac{\|{ x_0}-{x}\|^2}{2}-1.
 \end{align*} 
 The kernel of the double layer operator is $f(s): =
-[\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x') \cdot \vec{t}(x')]=
-\frac{\partial}{\partial n'} G_k({x}_{0},{x}')$, which in turn can be
+[\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x) \cdot \vec{t}(x)]=
+\frac{\partial}{\partial n} G_k({x}_{0},{x})$, which in turn can be
 written as 
 \begin{align*}
- f(s)=\frac{\partial \, }{\partial n'} G_{k}(x_{0},x') 
- =\nabla' G_{k} \cdot \mathbf{n'} = \nabla' G_k\cdot \left( \mathbf{t'}
- \times \mathbf{x'} \right) 
- =-\C (\mathbf{x}_0-\mathbf{x'})P'_{\nu}(z)\cdot \left(
- \mathbf{t'} \times \mathbf{x'} \right).
+ f(s)=\frac{\partial \, }{\partial n} G_{k}(x_{0},x) 
+ =\nabla G_{k} \cdot \mathbf{n} = \nabla G_k\cdot \left( \mathbf{t}
+ \times \mathbf{x} \right) 
+ =-\C (\mathbf{x}_0-\mathbf{x})P'_{\nu}(z)\cdot \left(
+ \mathbf{t} \times \mathbf{x} \right).
 \end{align*}
 Recalling that $P'_{\nu}(z)=\frac{-(\nu+1)}{1-z^2}(P_{\nu+1}(z)-z
 P_{\nu}(z))$~\eqref{difflegp},
 \begin{align}
   f(s) &= \C \frac{(\nu+1)}{1-z^2}\left(
   P_{\nu+1}(z)-zP_{\nu}(z)\right) 
-  (\mathbf{x}_0-\mathbf{x'})\cdot \left(
-  \mathbf{t}' \times {\mathbf x}' \right) \nonumber\\
+  (\mathbf{x}_0-\mathbf{x})\cdot \left(
+  \mathbf{t} \times {\mathbf x} \right) \nonumber\\
   &= 2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z} \left[
-  \frac{(\mathbf{x}_0-\mathbf{x'})}{\|\mathbf{x}_{0}-\mathbf{x'}\|^2}
-  \cdot \left( \mathbf{t}' \times \mathbf{x'} \right)\right].
+  \frac{(\mathbf{x}_0-\mathbf{x})}{\|\mathbf{x}_{0}-\mathbf{x}\|^2}
+  \cdot \left( \mathbf{t} \times \mathbf{x} \right)\right].
   \label{kern1}
 \end{align} 
 
@@ -1201,41 +1196,41 @@ Now, the quantity
   2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z}
   =4\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{4-\|{x_0}-{x'}\|^2},
 \end{align*}
-has a well-defined limit as $x' \rightarrow
+has a well-defined limit as $x \rightarrow
 x_{0}$~\eqref{doublelayerwithz}. In fact,
 following~\eqref{doublelayerwithz}
 \begin{align*}
-  \lim_{x'\rightarrow x_0} 
-  \C[\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x') \cdot \vec{t}(x')] 
+  \lim_{x\rightarrow x_0} 
+  \C[\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x) \cdot \vec{t}(x)] 
   = \C(\nu+1)\lim_{z\rightarrow 1^-}
   P_{\nu+1}(-z)+zP_{\nu}(-z)) = -\frac{1}{2\pi}.
 \end{align*}
 
-The remaining term in~\eqref{kern1} is $q(x',x_0) :=
-\frac{(\mathbf{x}_{0}-\mathbf{x'})}{\|\mathbf{x}_{0}-\mathbf{x'}\|^2}
-\cdot \left( \mathbf{t'} \times \mathbf{x'} \right).$  This term can be
-shown to be continuous as $\mathbf{x'} \rightarrow \mathbf{x}_{0}$ by
+The remaining term in~\eqref{kern1} is $q(x,x_0) :=
+\frac{(\mathbf{x}_{0}-\mathbf{x})}{\|\mathbf{x}_{0}-\mathbf{x}\|^2}
+\cdot \left( \mathbf{t} \times \mathbf{x} \right).$  This term can be
+shown to be continuous as $\mathbf{x} \rightarrow \mathbf{x}_{0}$ by
 l'H\^{o}pital's rule.  A first application of l'H\^{o}pital's rule to
-evaluate $q(x',x_0)$ at the point of singularity, $x' = x_{0}$, 
+evaluate $q(x,x_0)$ at the point of singularity, $x = x_{0}$, 
 \begin{align*}
-  \lim_{x' \rightarrow x_{0}}q(x',x_{0}) & = 
-  \lim_{x' \rightarrow x_{0}} 
-  \frac{ -\mathbf{t'} \cdot \left(\mathbf{t'} \times \mathbf{x'} \right)
-  + (\mathbf{x}_{0}-\mathbf{x'}) \cdot \left( \kappa' \mathbf{n'}_{p}
-  \times \mathbf{x'} \right)}
-  {-2(\mathbf{x}_{0} - \mathbf{x'}) \cdot \mathbf{t'}} \\
-  & = \lim_{\mathbf{x'} \rightarrow \mathbf{x}_{0}} 
-  \frac{(\mathbf{x}_{0}-\mathbf{x'}) \cdot \left(
-  \kappa'\mathbf{n'}_{p} \times \mathbf{x'}\right)}
-  {(\mathbf{x}_{0} - \mathbf{x'}) \cdot \mathbf{t'}}. 
+  \lim_{x \rightarrow x_{0}}q(x,x_{0}) & = 
+  \lim_{x \rightarrow x_{0}} 
+  \frac{ -\mathbf{t} \cdot \left(\mathbf{t} \times \mathbf{x} \right)
+  + (\mathbf{x}_{0}-\mathbf{x}) \cdot \left( \kappa \mathbf{n}_{p}
+  \times \mathbf{x} \right)}
+  {-2(\mathbf{x}_{0} - \mathbf{x}) \cdot \mathbf{t}} \\
+  & = \lim_{\mathbf{x} \rightarrow \mathbf{x}_{0}} 
+  \frac{(\mathbf{x}_{0}-\mathbf{x}) \cdot \left(
+  \kappa\mathbf{n}_{p} \times \mathbf{x}\right)}
+  {(\mathbf{x}_{0} - \mathbf{x}) \cdot \mathbf{t}}. 
 \end{align*}
 Proceeding with a second application of l'H\^{o}pital's rule yields
 \begin{align*}
-  \lim_{x' \rightarrow x_{0}} q(x',x_0)  
-  & = \lim_{x' \rightarrow x_{0}} \frac{-\mathbf{t'} \cdot 
-  \left( \kappa' \mathbf{n'}_{p} \times \mathbf{x'} \right) +
-  \mathcal{O}(\mathbf{x}-\mathbf{x'})}
-  {-2\mathbf{t'} \cdot \mathbf{t'} + \mathcal{O}(\mathbf{x}-\mathbf{x'})}
+  \lim_{x \rightarrow x_{0}} q(x,x_0)  
+  & = \lim_{x \rightarrow x_{0}} \frac{-\mathbf{t} \cdot 
+  \left( \kappa \mathbf{n}_{p} \times \mathbf{x} \right) +
+  \mathcal{O}(\mathbf{x}-\mathbf{x})}
+  {-2\mathbf{t} \cdot \mathbf{t} + \mathcal{O}(\mathbf{x}-\mathbf{x})}
   = \frac{1}{2} \mathbf{t} \cdot \left( \kappa \mathbf{n}_{p} \times 
   \mathbf{x}_{0} \right).
 \end{align*}
@@ -1245,22 +1240,22 @@ operator can therefore be made continuous in the arc-length parameter.
 
 If we now examine $\frac{d}{ds}f(s)$, we obtain
 \begin{align*} 
-  f'(s)&= -\C \frac{d}{ds}\left( P'_\nu(z)(\mathbf{x_0}-\mathbf{x'}) \cdot 
-    \mathbf{n'} \right) \\
+  f'(s)&= -\C \frac{d}{ds}\left( P'_\nu(z)(\mathbf{x_0}-\mathbf{x}) \cdot 
+    \mathbf{n} \right) \\
   &=-C_{k} \left\{P''_{\nu}(z) \frac{dz}{ds}
-    (\mathbf{x}_{0}-\mathbf{x'})  \cdot \mathbf{n'} - P'_{\nu}(z)
-    (-\mathbf{t'} \cdot \mathbf{n'}) + P'_\nu(z)((\mathbf{x}_{0} -
-    \mathbf{x'}) \cdot \frac{d}{ds}\mathbf{n'})\right\}.
+    (\mathbf{x}_{0}-\mathbf{x})  \cdot \mathbf{n} - P'_{\nu}(z)
+    (-\mathbf{t} \cdot \mathbf{n}) + P'_\nu(z)((\mathbf{x}_{0} -
+    \mathbf{x}) \cdot \frac{d}{ds}\mathbf{n})\right\}.
  \end{align*}
 Since $P_\nu(z)$ solves Legendre's equation~\eqref{LegendrePequation}
-and since $\mathbf{x'},\mathbf{t'}, \mathbf{n'}$ form an orthogonal set,
+and since $\mathbf{x},\mathbf{t}, \mathbf{n}$ form an orthogonal set,
 we have
 \begin{align*}
   \lim_{\substack {s \rightarrow 0}} f'(s) =-C_k
   \left\{\frac{2zP'_{\nu}(z)-\nu(\nu+1)P_{\nu}(z)}{1-z^2}
-  \frac{dz}{ds}(\mathbf{x_0}-\mathbf{x'})\cdot \mathbf{n'} + \kappa
-  P'_\nu(z)((\mathbf{x}_{0}-\mathbf{x'})\cdot (\mathbf{n}'_{p} \times 
-  \mathbf{x'})\right\}
+  \frac{dz}{ds}(\mathbf{x_0}-\mathbf{x})\cdot \mathbf{n} + \kappa
+  P'_\nu(z)((\mathbf{x}_{0}-\mathbf{x})\cdot (\mathbf{n}_{p} \times 
+  \mathbf{x})\right\}
 \end{align*}
 Applying L'H\^{o}pital's rule to each of the terms above, we see that
 $f'(s)$ has a well-defined and bounded limit at $s \rightarrow 0$.
@@ -1270,7 +1265,7 @@ the arc length parameter, with bounded derivative as $s \rightarrow 0$.
 However,
 \begin{align*} 
   f''(s) &= -\C \frac{d^2}{ds^2}\left( P'_\nu(z) 
-  (\mathbf{x}_{0}-\mathbf{x'}) \cdot \mathbf{n'} \right)
+  (\mathbf{x}_{0}-\mathbf{x}) \cdot \mathbf{n} \right)
 \end{align*}
 is not bounded as $s\rightarrow 0$. This can be shown using calculations
 similar to those above, and we do not include them here.
