@@ -72,15 +72,15 @@ $\spadesuit$ {\small \tt quaife@ices.utexas.edu}}
 \section{Introduction}
 
 \todo{Write an introduction!}
-In this paper we present a reformulation of a
-boundary value problem for the Yukawa-Beltrami equation on the surface
-of the unit sphere $\S$  in terms of boundary integral equations. 
+In this paper we present a reformulation of a boundary value problem
+for the Yukawa-Beltrami equation on the surface of the unit sphere
+$\S$  in terms of boundary integral equations. 
 
-Concretely, let $\Omega$ denote a sub-manifold of $\S$,
-and let $\Gamma$ denote its boundary. By this we mean that $\Gamma$ is
-a closed curve  on $\S$ which divides $\S$ into two
-(not necessarily connected) parts $\Omega$ and $\Omega^{c}$. In
-particular, $\Gamma = \partial\Omega$ is the boundary curve of $\Omega$.
+Concretely, let $\Omega$ denote a sub-manifold of $\S$, and let
+$\Gamma$ denote its boundary. By this we mean that $\Gamma$ is a closed
+curve  on $\S$ which divides $\S$ into two (not necessarily connected)
+parts $\Omega$ and $\Omega^{c}$. In particular, $\Gamma =
+\partial\Omega$ is the boundary curve of $\Omega$.
 
 We wish to solve the Yukawa boundary value problem:
 \begin{subequations}
@@ -775,8 +775,9 @@ and~\eqref{secondterm} and using the continuity of $u$, we have
 u(x)& [\underline{\mbox{curl}}_{\S}G(x,x_0)\cdot \vec{t}(x)] ds_{x} = -4\C
 \sin(\nu \pi)  u(x_0) = u(x_0).
 \end{align*} 
-Note that $\C=-\frac{1}{4\sin(\nu\pi)}$ is chosen precisely to be this value in~\eqref{constant-definition} to ensure
-this integral, in the limit, is $u(x_0)$.
+Note that $\C=-\frac{1}{4\sin(\nu\pi)}$ is chosen precisely to be this
+value in~\eqref{constant-definition} to ensure this integral, in the
+limit, is $u(x_0)$.
 
 We finally observe that since $u$ is assumed to be smooth enough,
 \begin{align*} 
@@ -838,7 +839,8 @@ double layer potential.  This  is the starting point for the so-called
 direct boundary integral approach. However, for the purpose of this
 paper we follow the layer ansatz based on the following observation.
 
-For $x\notin\Gamma, x\in \Omega$, the single layer potential in \eqref{singlelayerpotential} satisfies:
+For $x\notin\Gamma, x\in \Omega$, the single layer potential
+in~\eqref{singlelayerpotential} satisfies:
 \begin{align*}
   (-\lap_{\S} + k^{2}) (\widetilde{V_k}\sigma)(x)& =
   (-\lap_{\S} + k^2) \int\limits_\Gamma G_k(x,y)\, \sigma(y)\,ds_{y} \\
@@ -853,17 +855,17 @@ problem~\eqref{DBVP} in terms of a single layer potential
 \end{align*}
 We would then need to calculate the unknown density $\sigma$.
  
-Similarly, the double layer potential in \eqref{doublelayerpotential} satisfies the Yukawa-Beltrami
-equation for $x\in \Omega, x\notin\Gamma$
+Similarly, the double layer potential in~\eqref{doublelayerpotential}
+satisfies the Yukawa-Beltrami equation for $x\in \Omega, x\notin\Gamma$
 \begin{align*}
-(-\lap_{\S} + k^2)(\widetilde{W}\mu)(x) & = (-\lap_{\S}+k^2)
-\int\limits_\Gamma \mu(y)\, [\underline{\mbox{curl}}_{\S}
-G(x,y)\cdot\vec{t}(y)]\,ds_{y} \\
-&=\int\limits_\Gamma \mu(y)
-[(\lap_{\S}-k^2)\,\underline{\mbox{curl}}_{\S}\,
-G(x,y)\cdot\vec{t}(y)]\,ds_{y} \\ 
-&=\int\limits_\Gamma \mu(y) [\underline{\mbox{curl}}_{\S} \,
-(\lap_{\S} -k^2)G(x,y)\cdot\vec{t}(y)]\,ds_{y} = 0.
+  (-\lap_{\S} + k^2)(\widetilde{W}\mu)(x) & = (-\lap_{\S}+k^2)
+  \int\limits_\Gamma \mu(y)\, [\underline{\mbox{curl}}_{\S}
+  G(x,y)\cdot\vec{t}(y)]\,ds_{y} \\
+  &=\int\limits_\Gamma \mu(y)
+  [(\lap_{\S}-k^2)\,\underline{\mbox{curl}}_{\S}\,
+  G(x,y)\cdot\vec{t}(y)]\,ds_{y} \\ 
+  &=\int\limits_\Gamma \mu(y) [\underline{\mbox{curl}}_{\S} \,
+  (\lap_{\S} -k^2)G(x,y)\cdot\vec{t}(y)]\,ds_{y} = 0.
 \end{align*}
 We might thus also try to look for the solution to~\eqref{DBVP} in the
 form of a double layer.
@@ -890,7 +892,7 @@ First, consider the single layer potential with density $\sigma$ for $x
   & = \C \int\limits_\Gamma P_{\nu(k)}(-<x,y>)\,\sigma(y)\,ds_{y}.
 \end{align*}
 The following Lemma describes the limit behavior of the single layer potential.
-\begin{lemma} Let $\widetilde{V_k}$ be the single layer potential defined in \eqref{singlelayerpotential}. For $x_{0}\in\Gamma$ we have:
+\begin{lemma} Let $\widetilde{V_k}$ be the single layer potential defined in~\eqref{singlelayerpotential}. For $x_{0}\in\Gamma$ we have:
 \begin{align*} 
   (V\sigma)(x_0) & := \lim\limits_{\substack{
       x \to x_{0} \\ x \in \Omega}}
@@ -966,7 +968,7 @@ calculation are cumbersome, but the overall strategy is that of Section
 8.2 in~\cite{hackbusch}.
 
 \begin{lemma}
-\label{l:DLPjump} Let $\widetilde{W_k}$ be the double layer potential defined in \eqref{doublelayerpotential}, and let $\gamma_0^{\Omega}$ (resp. $\gamma_0^{\Omega^c})$ denote the trace operator on $\Gamma$, with traces from inside (respectively outside) $\Omega$. 
+\label{l:DLPjump} Let $\widetilde{W_k}$ be the double layer potential defined in~\eqref{doublelayerpotential}, and let $\gamma_0^{\Omega}$ (resp. $\gamma_0^{\Omega^c})$ denote the trace operator on $\Gamma$, with traces from inside (respectively outside) $\Omega$. 
 For $x_{0} \in \Gamma$ we have:
 \begin{align*} 
   (\gamma^{\Omega^{c}}_0\widetilde{W_k}\mu)(x_0)=
@@ -1194,7 +1196,7 @@ P_{\nu}(z))$~\eqref{difflegp},
 Now, the quantity
 \begin{align*}
   2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z}
-  =4\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{4-\|{x_0}-{x'}\|^2},
+  =4\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{4-\|{x_0}-{x}\|^2},
 \end{align*}
 has a well-defined limit as $x \rightarrow
 x_{0}$~\eqref{doublelayerwithz}. In fact,
@@ -1235,7 +1237,7 @@ Proceeding with a second application of l'H\^{o}pital's rule yields
   \mathbf{x}_{0} \right).
 \end{align*}
 This shows that $f(s)$ has a well-defined limit as $s\rightarrow 0$,
-that is, as $x'\rightarrow x_0$. The kernel of the double-layer
+that is, as $x \rightarrow x_0$. The kernel of the double-layer
 operator can therefore be made continuous in the arc-length parameter.
 
 If we now examine $\frac{d}{ds}f(s)$, we obtain
