@@ -82,7 +82,9 @@ grestore
 
 
 \title{Integral equation methods for the Yukawa-Beltrami equation on
-the sphere}
+the sphere 
+\thanks{Supported in part by grants from the Natural Sciences and Engineering Research Council of Canada. NN gratefully acknowledges support from the Canada Research Chairs Council, Canada. }
+}
 
 
 \date{$^1$Department of Mathematics, Simon Fraser University, \\[1mm]
@@ -122,8 +124,7 @@ $\spadesuit$ {\small \tt quaife@ices.utexas.edu}}
 \maketitle
 
 \begin{abstract}
-Insert your abstract here. Include keywords, PACS and mathematical
-subject classification numbers as needed.
+An integral equation method for solving the Yukawa-Beltrami equation on a multiply-connected sub-manifold of the unit sphere is presented. A fundamental solution for the Yukawa-Beltrami operator is constructed. This fundamental solution can be represented by  conical functions. Using a suitable representation formula, a Fredholm equation of the second kind with a compact integral operator.  The discretization of this integral equation leads to a linear system whose condition number is bounded independent of the size of the system. Several numerical examples exploring the properties of this integral equation are presented. 
 \keywords{Yukawa-Beltrami boundary value problems \and Integral equations}
 % \PACS{PACS code1 \and PACS code2 \and more}
  \subclass{35J25 \and 45B05}
@@ -133,18 +134,13 @@ subject classification numbers as needed.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-\todo{Write an introduction!}
 In this paper we present a reformulation of a boundary value problem
 for the Yukawa-Beltrami equation on the surface of the unit sphere
-$\S$  in terms of boundary integral equations. 
-
-Concretely, let $\Omega$ denote a sub-manifold of $\S$, and let
+$\S$  in terms of boundary integral equations. Concretely, let $\Omega$ denote a sub-manifold of $\S$, and let
 $\Gamma$ denote its boundary. By this we mean that $\Gamma$ is a closed
 curve  on $\S$ which divides $\S$ into two (not necessarily connected)
 parts $\Omega$ and $\Omega^{c}$. In particular, $\Gamma =
-\partial\Omega$ is the boundary curve of $\Omega$.
-
-We wish to solve the Yukawa boundary value problem:
+\partial\Omega$ is the boundary curve of $\Omega$. We wish to solve the Yukawa boundary value problem:
 \begin{subequations}
 \label{bigmodel}
   \begin{align}
@@ -154,9 +150,9 @@ We wish to solve the Yukawa boundary value problem:
 \end{subequations}
 Here $\lap_{\S}$ is the Laplace-Beltrami operator on $\S$ and $k>0 \in
 \mathbb{R}$ is constant. This  problem arises in the context of solving
-the isotropic heat equation via Rothe's method: first apply a
-semi-implicit time discretization to the heat equation and then
-time-stepping involves repeatedly solve an elliptic PDE  of the
+the isotropic heat equation via Rothe's method. By first applying a
+semi-implicit time discretization to the heat equation,  
+time-stepping then involves repeatedly solve an elliptic PDE  of the
 form~\eqref{bigmodel}. In this context, $k^2 = O(1/\Delta t)$, and with
 this in mind, we restrict our attention to the case $k>1/2$.  This
 approach is discussed in~\cite{rothe:heat} for the heat equation in the
@@ -176,7 +172,7 @@ operator when we move to a compact manifold will be ameliorated for the
 Yukawa-Beltrami operator.  We shall see this is indeed the case: it is
 possible, provided $k>\frac{1}{2}$, for the single layer operator to
 exactly satisfy the boundary value problem. (In case we solve the
-Yukawa-Beltrami problem on a sphere of radius $R$, $kR\frac{1}{R}$.)
+Yukawa-Beltrami problem on a sphere of radius $R$, $kR\frac{1}{R}$. \todo{huh? what is $kR\frac{1}{R}$})
 
 To simplify the exposition and analysis, we shall concentrate on
 locating the homogeneous solution of~\eqref{bigmodel}.  In other words:
@@ -189,12 +185,13 @@ locating the homogeneous solution of~\eqref{bigmodel}.  In other words:
     u(x) &= g(x), &&\mbox{for} \; x \in \Gamma.
   \end{align}
 \end{subequations}
-We wish to solve~\eqref{DBVP} by reformulating this boundary value
-problem as an integral equation. As is expected, the process of
-reformulation is not unique; we shall be employing a layer ansatz, and
-solving an integral equation for an unknown density.  We note that we
+(We note that we
 could equivalently have chosen to study the Neumann or Robin problem for
 the system.
+)
+We wish to solve~\eqref{DBVP} by reformulating this boundary value
+problem as an integral equation. As is expected, the process of
+reformulation is not unique; we shall be employing a layer ansatz based on a parametrix for the Yukawa-Beltrami operator, and solving an integral equation for an unknown density.  The choice of parametrix is not unique, and we derive a particularly convenient parametrix involving conical functions. By proceeding with a double-layer ansatz based on this parametrix,  a well-conditioned Fredholm equation of the second kind results. Several numerical examples are presented which illustrate the analytic properties of this integral equation.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -463,7 +460,7 @@ A more (computationally) convenient representation is in terms of the
 conical function $P_{-\frac{1}{2}+ i \tau}(z)$ of order $\tau\in
 \mathbb{R}$ solves the equation
 \begin{align*}
-  (1-z^2)\,w'' -2zw' - \left[\tau^2+\frac{1}{4}\right]\,w = 0.
+  (1-z^2)\,w'' -2zw' - \left( \tau^2+\frac{1}{4}\right) \,w = 0.
 \end{align*}
 In our specific case, we would pick $\tau = \tau(k)$ such that
 $\tau^2+\frac{1}{4}=k^2 = -\nu(\nu+1).$  It follows that 
@@ -1559,13 +1556,7 @@ digits.  A plot of the solution is in Figure~\ref{f:36ply}.
 \end{figure}
 
 \section{Conclusions and Discussion}
-\todo{Write this section}
 
-\begin{acknowledgements}
-\todo{Put something here}
-If you'd like to thank anyone, place your comments here and remove the
-percent signs.
-\end{acknowledgements}
 
 \bibliographystyle{spmpsci}
 \bibliography{refs}
