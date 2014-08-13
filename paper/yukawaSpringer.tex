@@ -83,7 +83,6 @@ grestore
 
 \title{Integral equation methods for the Yukawa-Beltrami equation on
 the sphere 
-\thanks{Supported in part by grants from the Natural Sciences and Engineering Research Council of Canada. NN gratefully acknowledges support from the Canada Research Chairs Council, Canada. }
 }
 
 
@@ -173,6 +172,7 @@ Yukawa-Beltrami operator.  We shall see this is indeed the case: it is
 possible, provided $k>\frac{1}{2}$, for the single layer operator to
 exactly satisfy the boundary value problem. (In case we solve the
 Yukawa-Beltrami problem on a sphere of radius $R$, $kR\frac{1}{R}$. \todo{huh? what is $kR\frac{1}{R}$})
+\todo{B: I have no idea.  I don't remeber putting this in.}
 
 To simplify the exposition and analysis, we shall concentrate on
 locating the homogeneous solution of~\eqref{bigmodel}.  In other words:
@@ -185,13 +185,18 @@ locating the homogeneous solution of~\eqref{bigmodel}.  In other words:
     u(x) &= g(x), &&\mbox{for} \; x \in \Gamma.
   \end{align}
 \end{subequations}
-(We note that we
-could equivalently have chosen to study the Neumann or Robin problem for
-the system.
-)
-We wish to solve~\eqref{DBVP} by reformulating this boundary value
-problem as an integral equation. As is expected, the process of
-reformulation is not unique; we shall be employing a layer ansatz based on a parametrix for the Yukawa-Beltrami operator, and solving an integral equation for an unknown density.  The choice of parametrix is not unique, and we derive a particularly convenient parametrix involving conical functions. By proceeding with a double-layer ansatz based on this parametrix,  a well-conditioned Fredholm equation of the second kind results. Several numerical examples are presented which illustrate the analytic properties of this integral equation.
+(We note that we could equivalently have chosen to study the Neumann or
+Robin problem for the system.)  We wish to solve~\eqref{DBVP} by
+reformulating this boundary value problem as an integral equation. As is
+expected, the process of reformulation is not unique; we shall be
+employing a layer ansatz based on a parametrix for the Yukawa-Beltrami
+operator, and solving an integral equation for an unknown density.  The
+choice of parametrix is not unique, and we derive a particularly
+convenient parametrix involving conical functions. By proceeding with a
+double-layer ansatz based on this parametrix,  a well-conditioned
+Fredholm equation of the second kind results. Several numerical examples
+are presented which illustrate the analytic properties of this integral
+equation.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1043,7 +1048,8 @@ a logarithmic singularity, the estimates follow the same argument as for
 the Laplace-Beltrami. The details of the calculation are cumbersome, but
 the overall strategy is that of Section 8.2 in~\cite{hackbusch}.
 
-\begin{lemma} \label{l:DLPjump} 
+\begin{lemma} 
+\label{l:DLPjump} 
 Let $\widetilde{W_k}$ be the double layer potential defined
 in~\eqref{doublelayerpotential}, and let $\gamma_0^{\Omega}$ (resp.
 $\gamma_0^{\Omega^c})$ denote the trace operator on $\Gamma$, with
@@ -1171,9 +1177,15 @@ Putting the parts together we see that
 
 From Lemma~\ref{l:DLPjump}, we see that the kernel of the double layer
 operator $\underline{\mbox{curl}}_{\S}\, G_{k}(x,y)\cdot\vec{t}(y)$, is
-continuous at $x \in \Gamma$ as a function of $y$.  We need to record
-one further property of this kernel, which will be used to understand
-the convergence properties of our quadrature rule in
+continuous at $x \in \Gamma$ as a function of $y$.  This allows us to
+conclude that the integral operator $\widetilde{W_k}$ is a compact
+operator from $L^{2}(\Gamma)$ to itself.  The compactness, in
+conjunction with the jump $1-\alpha(x_0)/(2\pi)$
+guarantees that the double layer potential representation will result in
+a second kind Fredholm integral equation with a compact operator.
+
+We need to record one further property of this kernel, which will be
+used to understand the convergence properties of our quadrature rule in
 Section~\ref{s:numerics}.
 
 \begin{lemma}
@@ -1361,7 +1373,7 @@ similar to those above, and we do not include them here.
 \section{Numerical Examples}
 \label{s:numerics}
 In this section, we apply standard numerical methods to solve the
-integral equation
+Fredholm integral equation of the second kind
 \begin{align}
   \label{e:dlpBIE}
   \frac{1}{2}\mu(x_{0}) + \int_{\Gamma}
@@ -1380,6 +1392,10 @@ where
     \frac{\|x - y\|^{2}}{2} - 1\right), \quad 
   \C = \frac{1}{4\cosh\left(\frac{\pi}{2}\sqrt{4k^{2}-1}\right)}.
 \end{align*}
+In~\eqref{e:dlpBIE}, we have assumed that the boundary $\Gamma$ of the
+geometry is a smooth function so that $\alpha(x_{0}) = \pi$, where
+$\alpha$ is defined in Lemma~\ref{l:DLPjump}.
+
 In~\eqref{e:dlpuEval}, since $x \notin \Gamma$, the integrand is
 periodic and smooth.  Therefore, for a fixed $x\in \Omega$, the
 trapezoid rule has spectral accuracy.  However, since the error grows as
@@ -1557,6 +1573,9 @@ digits.  A plot of the solution is in Figure~\ref{f:36ply}.
 
 \section{Conclusions and Discussion}
 
+\begin{acknowledgements}
+Supported in part by grants from the Natural Sciences and Engineering Research Council of Canada. NN gratefully acknowledges support from the Canada Research Chairs Council, Canada.
+\end{acknowledgements}
 
 \bibliographystyle{spmpsci}
 \bibliography{refs}
