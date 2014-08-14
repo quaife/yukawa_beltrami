@@ -134,6 +134,13 @@ An integral equation method for solving the Yukawa-Beltrami equation on a multip
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
+Applications of partial differential equations (PDEs) on surfaces and manifolds include image processing, biology, oceanography and fluid dynamics \cite{Witkin,Myers,Chaplain}. Since solutions of these PDEs depend both on local {\it and} global properties of a given differential operator on the manifold, standard numerical discretization methods developed for PDEs in the plane or in  $\mathbb{R}^3$ need to be modified. Recent work in this direction includes the closest point method \cite{ruuth}, the use of surface parametrization \cite{floater},  the use of embedding functions, \cite{Bertalmio}, and the use of projections onto an approximation of the manifolds by tesselations of simpler, non-curved domains (such as triangles) \cite{lindblom}. 
+
+It is well know that for elliptic PDEs in $\mathbb{R}^2$ or $\mathbb{R}^3$, numerical methods based on integral equation formulations can offer significant advantages: efficiency is achieved through dimension reduction, and superior stability of such methods allows highly accurate solutions to be computed. 
+In addition, the development of efficient numerical techniques such as the fast multipole method or fast direct solvers have made integral-equation approaches significantly faster than many other currently available schemes. 
+Relatively little work has been done, however, on using integral equation methods for numerically investigating elliptic PDEs on subsurfaces of manifolds. 
+Some prior work in this direction for the Laplace-Beltrami operator on the surface $\cal{S}$ of the unit sphere was presented in \cite{gemmrich,kro:nig2013}.
+
 In this paper we present a reformulation of a boundary value problem
 for the Yukawa-Beltrami equation on the surface of the unit sphere
 $\S$  in terms of boundary integral equations. Concretely, let $\Omega$ denote a sub-manifold of $\S$, and let
@@ -172,7 +179,7 @@ operator when we move to a compact manifold will be ameliorated for the
 Yukawa-Beltrami operator.  We shall see this is indeed the case: it is
 possible, provided $k>\frac{1}{2}$, for the single layer operator to
 exactly satisfy the boundary value problem. (In case we solve the
-Yukawa-Beltrami problem on a sphere of radius $R$, $kR\frac{1}{R}$. \todo{huh? what is $kR\frac{1}{R}$})
+Yukawa-Beltrami problem on a sphere of radius $R$, $kR\frac{1}{R}$.
 
 To simplify the exposition and analysis, we shall concentrate on
 locating the homogeneous solution of~\eqref{bigmodel}.  In other words:
@@ -904,10 +911,18 @@ density function $\mu$:
   \begin{align}
     (\widetilde{W_k}\mu )(x):=\int\limits_{\Gamma}
     \mu(y)\,[\underline{\mbox{curl}}_{\S} G_k(x,y)\cdot \vec{t}(y)]\,
-    ds_y, \quad\mbox{for $x\notin\Gamma$}.
+    ds_y, \quad\mbox{for $x\notin\Gamma$},
     \label{doublelayerpotential}
   \end{align}
 \end{itemize}
+We wish to point out here that the form of the double layer potential above is equivalent to the, perhaps, more familiar form:
+  \begin{align}
+    (\widetilde{W_k}\mu )(x):=-\int\limits_{\Gamma}
+    \mu(y) \frac{\partial \,}{\partial n_y} G_k(x,y) \,
+    ds_y, \quad\mbox{for $x\notin\Gamma$}.
+  \end{align}
+where ${\bf n}_y$ is the outward pointing normal to $\Gamma$ at the point $y$ lying in a tangent plane to $\S$. See \cite{kro:nig2013} for a more detailed discussion on this point.
+
 By Proposition~\ref{prop:repr}, every solution to the homogeneous
 Yukawa-Beltrami equation can be written as the sum of a single and a
 double layer potential.  This  is the starting point for the so-called
@@ -1556,7 +1571,10 @@ digits.  A plot of the solution is in Figure~\ref{f:36ply}.
 \end{figure}
 
 \section{Conclusions and Discussion}
-
+We have presented an  integral equation strategy to solve the Dirichlet boundary value problem for the Yukawa-Beltrami equation on a multiply-connected, sub-manifold of the unit sphere. 
+The integral equation formulation is based on a representation of a particularly useful form of the parametrix for the Yukawa-Beltrami operator involving conical functions. 
+Using a double layer ansatz based on this parametrix, a well-conditioned Fredholm equation of the second kind arises. Numerical experiments confirm the analytic properties of this integral equation and by selecting appropriate quadrature rules, we are able to compute highly accurate solutions. 
+This integral equation formulation is amenable to acceleration either by a fast multipole method or a fast direct solver; this is future work. 
 
 \bibliographystyle{spmpsci}
 \bibliography{refs}
