@@ -7,8 +7,7 @@
 \begin{axis}[%
 width=1.8in,
 height=2.0in,
-view={150}{40},
-%view={10}{89},
+view={136}{45},
 scale only axis,
 axis equal image,
 xmin=-1.01,

@@ -1,7 +1,7 @@
 \begin{tikzpicture}[scale = 0.5]
 
 \begin{axis}[
-  title = {\Large{$k=64$}},
+%  title = {\Large{$k=64$}},
   xmin = 0.46,
   xmax = 0.50,
   xlabel = Real,
