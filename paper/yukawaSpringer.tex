@@ -123,7 +123,16 @@ $\spadesuit$ {\small \tt quaife@ices.utexas.edu}}
 \maketitle
 
 \begin{abstract}
-An integral equation method for solving the Yukawa-Beltrami equation on a multiply-connected sub-manifold of the unit sphere is presented. A fundamental solution for the Yukawa-Beltrami operator is constructed. This fundamental solution can be represented by  conical functions. Using a suitable representation formula, a Fredholm equation of the second kind with a compact integral operator.  The discretization of this integral equation leads to a linear system whose condition number is bounded independent of the size of the system. Several numerical examples exploring the properties of this integral equation are presented. 
+An integral equation method for solving the Yukawa-Beltrami equation on
+a multiply-connected sub-manifold of the unit sphere is presented. A
+fundamental solution for the Yukawa-Beltrami operator is constructed.
+This fundamental solution can be represented by conical functions.
+Using a suitable representation formula, a Fredholm equation of the
+second kind with a compact integral operator needs to be solved.  The
+discretization of this integral equation leads to a linear system whose
+condition number is bounded independent of the size of the system.
+Several numerical examples exploring the properties of this integral
+equation are presented. 
 \keywords{Yukawa-Beltrami boundary value problems \and Integral equations}
 % \PACS{PACS code1 \and PACS code2 \and more}
  \subclass{35J25 \and 45B05}
@@ -133,20 +142,40 @@ An integral equation method for solving the Yukawa-Beltrami equation on a multip
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-Applications of partial differential equations (PDEs) on surfaces and manifolds include image processing, biology, oceanography and fluid dynamics \cite{Witkin,Myers,Chaplain}. Since solutions of these PDEs depend both on local {\it and} global properties of a given differential operator on the manifold, standard numerical discretization methods developed for PDEs in the plane or in  $\mathbb{R}^3$ need to be modified. Recent work in this direction includes the closest point method \cite{ruuth}, the use of surface parametrization \cite{floater},  the use of embedding functions, \cite{Bertalmio}, and the use of projections onto an approximation of the manifolds by tesselations of simpler, non-curved domains (such as triangles) \cite{lindblom}. 
+Applications of partial differential equations (PDEs) on surfaces and
+manifolds include image processing, biology, oceanography and fluid
+dynamics~\cite{Chaplain,Myers,Witkin}.  Since solutions of these PDEs
+depend both on local {\it and} global properties of a given
+differential operator on the manifold, standard numerical
+discretization methods developed for PDEs in the plane or in
+$\mathbb{R}^3$ need to be modified. Recent work in this direction
+includes the closest point method~\cite{ruuth}, surface
+parametrization~\cite{floater}, embedding functions,~\cite{Bertalmio},
+and projections onto an approximation of the manifolds by tesselations
+of simpler, non-curved domains (such as triangles)~\cite{lindblom}. 
 
-It is well know that for elliptic PDEs in $\mathbb{R}^2$ or $\mathbb{R}^3$, numerical methods based on integral equation formulations can offer significant advantages: efficiency is achieved through dimension reduction, and superior stability of such methods allows highly accurate solutions to be computed. 
-In addition, the development of efficient numerical techniques such as the fast multipole method or fast direct solvers have made integral-equation approaches significantly faster than many other currently available schemes. 
-Relatively little work has been done, however, on using integral equation methods for numerically investigating elliptic PDEs on subsurfaces of manifolds. 
-Some prior work in this direction for the Laplace-Beltrami operator on the surface $\cal{S}$ of the unit sphere was presented in \cite{gemmrich,kro:nig2013}.
+It is well known that for elliptic PDEs in $\mathbb{R}^2$ or
+$\mathbb{R}^3$, numerical methods based on integral equation
+formulations can offer significant advantages: efficiency is achieved
+through dimension reduction, and superior stability of such methods
+allows highly accurate solutions to be computed.  In addition, the
+development of efficient numerical techniques such as the fast
+multipole method or fast direct solvers have made integral equation
+approaches significantly faster than many other currently available
+schemes.  Relatively little work has been done, however, on using
+integral equation methods for numerically investigating elliptic PDEs
+on subsurfaces of manifolds.  Some prior work in this direction for the
+Laplace-Beltrami operator on the surface $\cal{S}$ of the unit sphere
+was presented in~\cite{gemmrich,kro:nig2013}.
 
 In this paper we present a reformulation of a boundary value problem
 for the Yukawa-Beltrami equation on the surface of the unit sphere
-$\S$  in terms of boundary integral equations. Concretely, let $\Omega$ denote a sub-manifold of $\S$, and let
-$\Gamma$ denote its boundary. By this we mean that $\Gamma$ is a closed
-curve  on $\S$ which divides $\S$ into two (not necessarily connected)
-parts $\Omega$ and $\Omega^{c}$. In particular, $\Gamma =
-\partial\Omega$ is the boundary curve of $\Omega$. We wish to solve the Yukawa boundary value problem:
+$\S$  in terms of boundary integral equations. Concretely, let $\Omega$
+denote a sub-manifold of $\S$, and let $\Gamma$ denote its boundary. By
+this we mean that $\Gamma$ is a closed curve  on $\S$ which divides
+$\S$ into two (not necessarily connected) parts $\Omega$ and
+$\Omega^{c}$. In particular, $\Gamma = \partial\Omega$ is the boundary
+curve of $\Omega$. We wish to solve the Yukawa boundary value problem:
 \begin{subequations}
 \label{bigmodel}
   \begin{align}
@@ -169,16 +198,16 @@ operator $(-\lap + k^2)$  in $\mathbb{R}^2$ is well-posed if we seek
 $H^1$ (weak) solutions, even without the specification of a radiation
 condition (see, e.g.,~\cite{gatica}). This is in contrast to the
 exterior problem for the Laplacian.  In~\cite{gemmrich}, it was observed
-that the single layer operator for the Laplace-Beltrami did not satisfy
+that the single-layer operator for the Laplace-Beltrami did not satisfy
 the associated boundary value problem on $\S$ unless a further
 constraint was satisfied. Experience with the Yukawa operator in
 $\mathbb{R}^2$~\cite{kro:qua2011,qua2011} suggests that any issues
 concerning unique solvability which arise for the Laplace-Beltrami
 operator when we move to a compact manifold will be ameliorated for the
 Yukawa-Beltrami operator.  We shall see this is indeed the case: it is
-possible, provided $k>\frac{1}{2}$, for the single layer operator to
+possible, provided $k>\frac{1}{2}$, for the single-layer operator to
 exactly satisfy the boundary value problem. (In case we solve the
-Yukawa-Beltrami problem on a sphere of radius $R$
+Yukawa-Beltrami problem on a sphere of radius $R$.
 
 To simplify the exposition and analysis, we shall concentrate on
 locating the homogeneous solution of~\eqref{bigmodel}.  In other words:
@@ -199,7 +228,7 @@ employing a layer ansatz based on a parametrix for the Yukawa-Beltrami
 operator, and solving an integral equation for an unknown density.  The
 choice of parametrix is not unique, and we derive a particularly
 convenient parametrix involving conical functions. By proceeding with a
-double-layer ansatz based on this parametrix,  a well-conditioned
+double-layer ansatz based on this parametrix, a well-conditioned
 Fredholm equation of the second kind results. Several numerical examples
 are presented which illustrate the analytic properties of this integral
 equation.
@@ -374,7 +403,7 @@ equation representation. Such a term encapsulates the fact that we are
 on a compact manifold, no longer on $\mathbb{R}^2$. Recall that for the
 Laplace-Beltrami case, when $k=0$, this term
 $\frac{k^{4}r^{2}}{8\pi}K_{0}(kr) - \frac{k^{3}r}{4\pi}K_{1}(kr)$
-reduces to a constant; it is then possible to use a double layer ansatz
+reduces to a constant; it is then possible to use a double-layer ansatz
 in which no volumetric terms or constraints appear~\cite{kro:nig2013}.  
 
 To avoid such complications, we shall instead derive a more convenient
@@ -900,17 +929,17 @@ boundary integral equation over $\Gamma = \partial \Omega$.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Single and double layer potentials}
+\subsection{Single- and double-layer potentials}
 We define the following two layer potentials.
 \begin{itemize}
-\item The {\bf single layer potential} with sufficiently smooth density
+\item The {\bf single-layer potential} with sufficiently smooth density
 function $\sigma$:
   \begin{align}
     (\widetilde{V_k}\sigma)(x):=\int\limits_{\Gamma}
     G_k(x,y)\,\sigma(y)\,ds_y,\quad\mbox{for $x \notin \Gamma$};
     \label{singlelayerpotential}
   \end{align}
-\item and the {\bf double layer potential} with sufficiently smooth
+\item and the {\bf double-layer potential} with sufficiently smooth
 density function $\mu$:
   \begin{align}
     (\widetilde{W_k}\mu )(x):=\int\limits_{\Gamma}
@@ -919,21 +948,23 @@ density function $\mu$:
     \label{doublelayerpotential}
   \end{align}
 \end{itemize}
-We wish to point out here that the form of the double layer potential above is equivalent to the, perhaps, more familiar form:
+We wish to point out here that the form of the double-layer potential above is equivalent to the, perhaps, more familiar form:
   \begin{align}
     (\widetilde{W_k}\mu )(x):=-\int\limits_{\Gamma}
     \mu(y) \frac{\partial \,}{\partial n_y} G_k(x,y) \,
     ds_y, \quad\mbox{for $x\notin\Gamma$}.
   \end{align}
-where ${\bf n}_y$ is the outward pointing normal to $\Gamma$ at the point $y$ lying in a tangent plane to $\S$. See \cite{kro:nig2013} for a more detailed discussion on this point.
+where $n_{y}$ is the outward pointing normal to $\Gamma$ at the point
+$y$ lying in a tangent plane to $\S$.  See~\cite{kro:nig2013} for a
+more detailed discussion on this point.
 
 By Proposition~\ref{prop:repr}, every solution to the homogeneous
-Yukawa-Beltrami equation can be written as the sum of a single and a
-double layer potential.  This  is the starting point for the so-called
+Yukawa-Beltrami equation can be written as the sum of a single- and a
+double-layer potential.  This  is the starting point for the so-called
 direct boundary integral approach. However, for the purpose of this
 paper we follow the layer ansatz based on the following observation.
 
-For $x\notin\Gamma, x\in \Omega$, the single layer potential
+For $x\notin\Gamma, x\in \Omega$, the single-layer potential
 in~\eqref{singlelayerpotential} satisfies:
 \begin{align*}
   (-\lap_{\S} + k^{2}) (\widetilde{V_k}\sigma)(x)& =
@@ -943,13 +974,13 @@ in~\eqref{singlelayerpotential} satisfies:
 \end{align*}
 
 Hence, we may find the general solution of the Dirichlet boundary value
-problem~\eqref{DBVP} in terms of a single layer potential
+problem~\eqref{DBVP} in terms of a single-layer potential
 \begin{align*}
   u(x) & =  \int\limits_\Gamma G_k(x,y) \,\sigma(y) \,ds_{y}. 
 \end{align*}
 We would then need to calculate the unknown density $\sigma$.
  
-Similarly, the double layer potential in~\eqref{doublelayerpotential}
+Similarly, the double-layer potential in~\eqref{doublelayerpotential}
 satisfies the Yukawa-Beltrami equation for $x\in \Omega, x\notin\Gamma$
 \begin{align*}
   (-\lap_{\S} + k^2)(\widetilde{W}\mu)(x) & = (-\lap_{\S}+k^2)
@@ -962,7 +993,7 @@ satisfies the Yukawa-Beltrami equation for $x\in \Omega, x\notin\Gamma$
   (\lap_{\S} -k^2)G(x,y)\cdot\vec{t}(y)]\,ds_{y} = 0.
 \end{align*}
 We might thus also try to look for the solution to~\eqref{DBVP} in the
-form of a double layer.
+form of a double-layer.
 
 
 
@@ -978,15 +1009,15 @@ along $\Gamma$, one has to investigate the limit features of this
 quantity for the layer potentials. In both cases, there will be certain
 jump relations across the curve $\Gamma$. For the purpose of this paper
 however, we will restrict ourselves to the Dirichlet case.  First,
-consider the single layer potential with density $\sigma$ for $x \notin
+consider the single-layer potential with density $\sigma$ for $x \notin
 \Gamma$:
 \begin{align*}
   (\widetilde{V_k}\sigma)(x) & =  \int\limits_\Gamma
   G_k(x,y)\,\sigma(y)\,ds_{y} \\
   & = \C \int\limits_\Gamma P_{\nu(k)}(-<x,y>)\,\sigma(y)\,ds_{y}.
 \end{align*}
-The following Lemma describes the limit behavior of the single layer
-potential.  \begin{lemma} Let $\widetilde{V_k}$ be the single layer
+The following Lemma describes the limit behavior of the single-layer
+potential.  \begin{lemma} Let $\widetilde{V_k}$ be the single-layer
 potential defined in~\eqref{singlelayerpotential}. For $x_{0}\in\Gamma$
 we have:
 \begin{align*} 
@@ -1054,9 +1085,9 @@ assertion.
 \qed
 
 
-The case of the double layer potential is slightly more involved. We
-anticipate that, just as for the Laplace-Beltrami double layer
-potential~\cite{gemmrich}, the Yukawa-Beltrami double layer will possess
+The case of the double-layer potential is slightly more involved. We
+anticipate that, just as for the Laplace-Beltrami double-layer
+potential~\cite{gemmrich}, the Yukawa-Beltrami double-layer will possess
 a jump across the boundary of a domain.  Indeed, since $G_k(x,x_0)$ has
 a logarithmic singularity, the estimates follow the same argument as for
 the Laplace-Beltrami. The details of the calculation are cumbersome, but
@@ -1064,7 +1095,7 @@ the overall strategy is that of Section 8.2 in~\cite{hackbusch}.
 
 \begin{lemma} 
 \label{l:DLPjump} 
-Let $\widetilde{W_k}$ be the double layer potential defined
+Let $\widetilde{W_k}$ be the double-layer potential defined
 in~\eqref{doublelayerpotential}, and let $\gamma_0^{\Omega}$ (resp.
 $\gamma_0^{\Omega^c})$ denote the trace operator on $\Gamma$, with
 traces from inside (respectively outside) $\Omega$.  For $x_{0} \in
@@ -1077,7 +1108,7 @@ traces from inside (respectively outside) $\Omega$.  For $x_{0} \in
 \end{align*}
 where $\alpha(x_{0})$ represents the interior (with respect to
 $\Omega^{c}$) angle of $\Gamma$ at $x_{0}$. For a smooth curve, $\alpha
-= \pi$. The {\it double layer operator} $K$ is defined via the Cauchy
+= \pi$. The {\it double-layer operator} $K$ is defined via the Cauchy
 principle value: 
 \begin{align*}
   (K\mu)(x_0)&=\lim_{\varepsilon\rightarrow 0}
@@ -1086,7 +1117,7 @@ principle value:
   \mu(y)\,\left[\underline{\mbox{curl}}_{\S}
   \,G_k(x_{0},y)\cdot\vec{t}(y)\right]\,ds_{y}.
 \end{align*}
-Hence the double layer potential satisfies:
+Hence the double-layer potential satisfies:
 \begin{align*}
   \left[(\gamma_0\widetilde W_k\mu) \right]_\Gamma := 
   (\gamma^{\Omega^{c}}_0\widetilde W_k\mu)+(\gamma^{\Omega}_{0} 
@@ -1189,13 +1220,13 @@ Putting the parts together we see that
 \end{proof}
 \qed
 
-From Lemma~\ref{l:DLPjump}, we see that the kernel of the double layer
+From Lemma~\ref{l:DLPjump}, we see that the kernel of the double-layer
 operator $\underline{\mbox{curl}}_{\S}\, G_{k}(x,y)\cdot\vec{t}(y)$, is
 continuous at $x \in \Gamma$ as a function of $y$.  This allows us to
 conclude that the integral operator $\widetilde{W_k}$ is a compact
 operator from $L^{2}(\Gamma)$ to itself.  The compactness, in
 conjunction with the jump $1-\alpha(x_0)/(2\pi)$
-guarantees that the double layer potential representation will result in
+guarantees that the double-layer potential representation will result in
 a second kind Fredholm integral equation with a compact operator.
 
 We need to record one further property of this kernel, which will be
@@ -1207,7 +1238,7 @@ Section~\ref{s:numerics}.
 Let $x_0,x$ be points on the sphere, connected by the smooth curve
 $\Gamma$. Let $x_0$ be fixed, and let $\Gamma$ be parametrized by
 $x=x(s), s\in[-A,A]$ such that $x(0)=x_{0}$. Then the kernel of the
-double layer operator is continuously differentiable in $s$, but the
+double-layer operator is continuously differentiable in $s$, but the
 second derivative is unbounded. More precisely, the function 
 \begin{align*}
   f(s):=\underline{\mbox{curl}}_{\S}\,
@@ -1263,7 +1294,7 @@ is straightforward to show that
   \kappa \mathbf{n}_{p} \times \mathbf{x} . 
 \end{align*}
 
-We now examine the kernel of the double layer potential. Calculating the
+We now examine the kernel of the double-layer potential. Calculating the
 three dimensional gradient of the fundamental solution $G$ yields
 \begin{align*}
   \nabla G_k(x_0,x) &= \C \nabla P_\nu\left(
@@ -1277,7 +1308,7 @@ the radial direction. We can write this more concisely as
 \nabla G_k(x_0,x)=-\C P'_{\nu}(z) (\mathbf{x}_0-\mathbf{x}), 
   \qquad \mbox{where}\qquad z=\frac{\|{ x_0}-{x}\|^2}{2}-1.
 \end{align*} 
-The kernel of the double layer operator is $f(s): =
+The kernel of the double-layer operator is $f(s): =
 [\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x) \cdot \vec{t}(x)]=
 \frac{\partial}{\partial n} G_k({x}_{0},{x})$, which in turn can be
 written as 
@@ -1369,7 +1400,7 @@ we have
 \end{align*}
 Applying L'H\^{o}pital's rule to each of the terms above, we see that
 $f'(s)$ has a well-defined and bounded limit at $s \rightarrow 0$.
-Therefore, the kernel of the double layer operator is differentiable in
+Therefore, the kernel of the double-layer operator is differentiable in
 the arc length parameter, with bounded derivative as $s \rightarrow 0$. 
 
 However,
@@ -1586,15 +1617,38 @@ digits.  A plot of the solution is in Figure~\ref{f:36ply}.
 \end{figure}
 
 \section{Conclusions and Discussion}
-We have presented an  integral equation strategy to solve the Dirichlet boundary value problem for the Yukawa-Beltrami equation on a multiply-connected, sub-manifold of the unit sphere. 
-The integral equation formulation is based on a representation of a particularly useful form of the parametrix for the Yukawa-Beltrami operator involving conical functions. 
-Using a double layer ansatz based on this parametrix, a well-conditioned Fredholm equation of the second kind arises. Numerical experiments confirm the analytic properties of this integral equation and by selecting appropriate quadrature rules, we are able to compute highly accurate solutions. 
-This integral equation formulation is amenable to acceleration either by a fast multipole method or a fast direct solver; this is future work. 
+We have presented an integral equation strategy to solve the Dirichlet
+boundary value problem for the Yukawa-Beltrami equation on a
+multiply-connected, sub-manifold of the unit sphere.  The integral
+equation formulation is based on a representation of a particularly
+useful form of the parametrix for the Yukawa-Beltrami operator involving
+conical functions.  Using a double-layer ansatz based on this
+parametrix, a well-conditioned Fredholm equation of the second kind
+arises.  Numerical experiments confirm the analytic properties of this
+integral equation and by selecting appropriate quadrature rules, we are
+able to compute highly accurate solutions.  This integral equation
+formulation is amenable to acceleration either by a fast multipole
+method or a fast direct solver; this is future work.  
+
+The Yukawa-Beltrami equation arises when a temporal discretization is
+applied to the heat equation.  However, the solution of~\eqref{bigmodel}
+requires solving both a forced and a homogeneous problem.  While the
+present work is designed to solve the homogeneous problem, future work
+involves using volume potentials to form solutions to the forced
+problem, as is done in~\cite{rothe:heat} for the heat equation in the
+plane.
+
+Other future work includes extending the presented methods to other
+elliptic PDEs such as the Helmholtz or Stokes equations, and also to
+other two-dimensional manifolds.  This will potentially create a new
+class of methods for solving problems involving scattering or fluid
+mechanics on the surface of smooth manifolds.
 
 \begin{acknowledgements}
-Supported in part by grants from the Natural Sciences and Engineering Research Council of Canada. NN gratefully acknowledges support from the Canada Research Chairs Council, Canada.
+Supported in part by grants from the Natural Sciences and Engineering
+Research Council of Canada. NN gratefully acknowledges support from the
+Canada Research Chairs Council, Canada.
 \end{acknowledgements}
->>>>>>> a37bcd72199cdbbe876f4b743d5f5a226eb1e4d5
 
 \bibliographystyle{spmpsci}
 \bibliography{refs}
