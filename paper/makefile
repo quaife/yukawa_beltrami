@@ -1,4 +1,4 @@
-filename=yukawaPaper
+filename=yukawaSpringer
 compileLatexOptions=--quiet --c-style-errors
 compilePdfOptions=
 
