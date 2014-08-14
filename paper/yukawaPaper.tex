@@ -81,11 +81,12 @@ equation are presented.
 % \subclass{35J25 \and 45B05}
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
 Applications of partial differential equations (PDEs) on surfaces and
-manifolds include image processing, biology, oceanography and fluid
+manifolds include image processing, biology, oceanography, and fluid
 dynamics~\cite{Chaplain,Myers,Witkin}.  Since solutions of these PDEs
 depend both on local {\it and} global properties of a given
 differential operator on the manifold, standard numerical
@@ -96,7 +97,7 @@ parametrization~\cite{floater}, embedding functions,~\cite{Bertalmio},
 and projections onto an approximation of the manifolds by tesselations
 of simpler, non-curved domains (such as triangles)~\cite{lindblom}. 
 
-It is well known that for elliptic PDEs in $\mathbb{R}^2$ or
+It is well-known that for elliptic PDEs in $\mathbb{R}^2$ or
 $\mathbb{R}^3$, numerical methods based on integral equation
 formulations can offer significant advantages: efficiency is achieved
 through dimension reduction, and superior stability of such methods
@@ -128,12 +129,10 @@ curve of $\Omega$. We wish to solve the Yukawa boundary value problem:
 Here $\lap_{\S}$ is the Laplace-Beltrami operator on $\S$ and $k>0 \in
 \mathbb{R}$ is constant. This  problem arises in the context of solving
 the isotropic heat equation via Rothe's method. By first applying a
-semi-implicit time discretization to the heat equation,  
-time-stepping then involves repeatedly solve an elliptic PDE  of the
-form~\eqref{bigmodel}. In this context, $k^2 = O(1/\Delta t)$, and with
-this in mind, we restrict our attention to the case $k>1/2$.  This
-approach is discussed in~\cite{rothe:heat} for the heat equation in the
-plane. 
+semi-implicit time discretization to the heat equation,  time-stepping
+then involves repeatedly solve an elliptic PDE of the
+form~\eqref{bigmodel}, where $k^2 = O(1/\Delta t)$.  This approach is
+discussed in~\cite{rothe:heat} for the heat equation in the plane. 
 
 We recall that the exterior boundary value problem for the Yukawa
 operator $(-\lap + k^2)$  in $\mathbb{R}^2$ is well-posed if we seek
@@ -148,8 +147,8 @@ concerning unique solvability which arise for the Laplace-Beltrami
 operator when we move to a compact manifold will be ameliorated for the
 Yukawa-Beltrami operator.  We shall see this is indeed the case: it is
 possible, provided $k>\frac{1}{2}$, for the single-layer operator to
-exactly satisfy the boundary value problem.  (In case we solve the
-Yukawa-Beltrami problem on a sphere of radius $kR>1/2$.)
+exactly satisfy the boundary value problem. (In case we solve the
+Yukawa-Beltrami problem on a sphere of radius $R$, we require $kR>1/2$.)
 
 To simplify the exposition and analysis, we shall concentrate on
 locating the homogeneous solution of~\eqref{bigmodel}.  In other words:
@@ -162,8 +161,8 @@ locating the homogeneous solution of~\eqref{bigmodel}.  In other words:
     u(x) &= g(x), &&\mbox{for} \; x \in \Gamma.
   \end{align}
 \end{subequations}
-(We note that we could equivalently have chosen to study the Neumann or
-Robin problem for the system.)  We wish to solve~\eqref{DBVP} by
+We note that we could equivalently have chosen to study the Neumann or
+Robin problem for the system.  We wish to solve~\eqref{DBVP} by
 reformulating this boundary value problem as an integral equation. As is
 expected, the process of reformulation is not unique; we shall be
 employing a layer ansatz based on a parametrix for the Yukawa-Beltrami
@@ -215,11 +214,10 @@ Euclidean metric $\|x-y\|$ is given by
     <x,y>= 1-\frac{\|x-y\|^2}{2}.
 \end{align*}
 
-We remind the reader of some useful vectorial
-identities on the sphere. Let $ \vec{e}_\theta,
-\vec{e}_{\varphi} $ be the usual unit vectors in spherical coordinates.
-Recall that we can define the surface gradient of a scalar $f$ on $\S$
-as
+We remind the reader of some useful vectorial identities on the sphere.
+Let $ \vec{e}_\theta, \vec{e}_{\varphi} $ be the usual unit vectors in
+spherical coordinates.  Recall that we can define the surface gradient
+of a scalar $f$ on $\S$ as
 \begin{align*}
   \nabla_{\S} f(x) \,  = \, \frac{1}{\sin \theta}
   \frac{\partial f}{\partial \varphi} \,\vec{e}_{\varphi} + 
@@ -317,7 +315,7 @@ is the distance between the source and evaluation point in the
 two-dimensional Euclidean metric. Here $K_{0}$ is the modified Bessel
 function of order 0 which is analytic for non-zero argument, and has a
 logarithmic singularity when the source and evaluation points coincide,
-ie, when $r=0$.
+that is, when $r=0$.
 
 On the surface of the sphere $\S$, we expect the fundamental solution
 $G_k(x,x_{0})$ for the Yukawa-Beltrami operator to possess a
@@ -379,8 +377,8 @@ Equation~\eqref{LegendrePequation} is the well-known {\it Legendre's
 equation}, which is well-defined for arbitrary real or complex $\nu$.
 Therefore, we can locate two linearly independent solutions
 of~\eqref{LegendrePequation}, the so-called {\it first and second kind
-Legendre functions of degree $\nu(k)$}, denoted $ P_{\nu(k)}(z),
-Q_{\nu(k)}(z)$ respectively. Of these, only the  LegendreP function
+Legendre functions of degree $\nu(k)$}, denoted $ P_{\nu(k)}(z)$ and
+$Q_{\nu(k)}(z)$, respectively. Of these, only the  LegendreP function
 $P_{\nu(k)}(z)$ remains finite as $z$ approaches $1$ (to a limiting
 value of 1 as we will soon see),~\cite{lebedev}.  The function
 $P_{\nu(k)}(z)$ is well-defined for $|1-z|<2$.  This means that
@@ -397,11 +395,12 @@ solution of~\eqref{LegendrePequation}, namely $Q_{\nu(k)}$.
   \caption{\label{f:legendreP} The LegendreP function
   $P_{\nu(k)}(-\cos\theta)$, for $\theta \in (0,\pi]$ and $k=1$}
 \end{figure}  
+We also recall that $P_{\nu}$ is well-defined for all $\nu \in
+\mathbb{C}$, whereas $Q_\nu$ is well-defined for $\nu \not=
+0,-1,-2,...$. 
 
-We recall that $P_{\nu}$ is well-defined for all $\nu \in \mathbb{C}$,
-whereas $Q_\nu$ is well-defined for $\nu \not= 0,-1,-2,...$. 
-
-On $\S$, from~\eqref{LegendrePequation} we obtain\begin{align*}  
+On $\S$, from~\eqref{LegendrePequation} we obtain
+\begin{align*}  
   \nu(k):=\frac{-1+\sqrt{1-4k^2}}{2}.
 \end{align*}
 If $0<k^2<\frac{1}{4}$ then $\nu \in (-1,0)$. If $k^2\geq\frac{1}{4}$ then 
@@ -412,6 +411,8 @@ If $0<k^2<\frac{1}{4}$ then $\nu \in (-1,0)$. If $k^2\geq\frac{1}{4}$ then
 We observe that since $k^{2}>0$, $\nu(k) \notin \mathbb{Z}$. Moreover,
 if $k>\frac{1}{2}$ then $Im(\nu)\not=0$. This is the regime in which we
 shall work, and in what follows we shall make this assumption on $k$.
+Recall that in $k^{2} = bigO(1/\Delta t)$ in the our applications of
+interest.
 
 A further substitution allows us to write~\eqref{LegendrePequation} as
 a hypergeometric equation, (see, e.g., Section 7.3,~\cite{lebedev}).
@@ -423,7 +424,6 @@ This in turn allows us to write the solution of $\mathcal{D}_k(u)=0$ as
     &=\tensor[_2]{F}{_1}\left(-\nu(k), \nu(k)+  1; 1;
     \frac{1+\cos(\theta)}{2}\right).
 \end{align*} 
-
 Here, $\tensor[_2]{F}{_1}(a,b;c;z)$ is a hypergeometric function. Since
 the argument $\frac{1+\cos(\theta)}{2}$ lies between $-1$ and $1$, and
 $a+b = 1$, the representation in terms of the hypergeometric function is
@@ -510,7 +510,7 @@ have the asymptotic behaviour
   \label{Pasymptotics}
   \lim_{t\rightarrow 1^- } P_\nu(t)&= \frac{1}{\Gamma(1)}=1.
 \end{align}
-Also following~\cite{fatAbramowitz}, as $t\rightarrow 1^{-}$,
+Next, following~\cite{fatAbramowitz}, as $t\rightarrow 1^{-}$,
 \begin{align*}
   Q_{\nu}(t)=\frac{1}{2}\log\left(\frac{2}{1-t}\right)-\gamma
   -\psi(\nu+1)+\bigO(1-t),\: \nu \neq -1,-2,...
@@ -551,8 +551,8 @@ and~\eqref{Qasymptotics}, we obtain
   &= \lim_{x\rightarrow x_{0} }\C\left(\cos(\nu\pi)
   P_{\nu}(<x,x_{0}>) - 
       \frac{2}{\pi}\sin(\nu \pi)Q_{\nu}(<x,x_0>)\right) \nonumber \\
-  &= \C\cos(\nu\pi)  \\
-  & \qquad - \frac{2\C}{\pi}\sin(\nu\pi)\lim_{x\rightarrow x_0} 
+  &= \C\cos(\nu\pi) \nonumber \\
+  & \quad - \frac{2\C}{\pi}\sin(\nu\pi)\lim_{x\rightarrow x_0} 
       \left(-\frac{1}{2}\log(1-<x,x_0>) + R(\nu) +
       \bigO(1-<x,x_0>)\right) \nonumber \\
   &=\frac{\C\sin(\nu\pi)}{\pi}\lim_{x\rightarrow x_0}
@@ -608,11 +608,11 @@ we obtain that
   z P_\nu(-z)\right]\vert_{z=\cos(\theta)} d\phi =: F(\theta)d\phi.
 \end{align}
 The term $F(\theta)= \C (\nu+1)  \left[ P_{\nu+1}(-z) + z
-P_\nu(-z)\right]\vert_{z=\cos(\theta)}$ arising in~\eqref{curlT} will be
-important in subsequent sections, and is related to the kernel of the
-second layer operator. (We shall define this operator carefully later.)
-For now, however, we are interested in the limit of $F(\theta)$ as the
-point $x\rightarrow x_0$, that is, as $\theta \rightarrow 0^+$.  
+P_\nu(-z)\right]\vert_{z=\cos(\theta)}$ will be important in subsequent
+sections, and is related to the kernel of the second layer operator.
+(We shall define this operator carefully later.) For now, however, we
+are interested in the limit of $F(\theta)$ as the point $x\rightarrow
+x_0$, that is, as $\theta \rightarrow 0^+$.  
 
 \begin{lemma} 
 Let $F(\theta)$ be as defined in~\eqref{curlT}. Then
@@ -659,7 +659,7 @@ involving the Legendre functions of the second kind in~\eqref{bigmess1}:
     -\frac{2}{\pi}\sin(\nu\pi)\left[zQ_\nu\left(z\right) - 
     Q_{\nu+1}\left(z\right)\right] 
   &= -\frac{2}{\pi}\sin(\nu\pi)\left[
-    \psi(\nu+2)-\psi(\nu+1) \right] \\
+    \psi(\nu+2)-\psi(\nu+1) \right] \nonumber \\
   &= -\frac{2}{\pi (\nu+1)}\sin(\nu \pi).
   \label{smallermess2}
 \end{align}
@@ -735,7 +735,7 @@ Therefore, using~\eqref{Green2} we have
 \end{align*}
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{proof1}
+  \input{proof1.tikz}
   \caption{\label{f:proof1} The points $x,x_0$ belong to $\Omega$. We
   denote by $\Omega_\varepsilon:=\Omega\setminus B_{\varepsilon}(x_0)$}
 \end{figure}
@@ -1009,13 +1009,11 @@ $\sigma$:
 To finish the proof, note that we can estimate
 \begin{align*}
   \int_{C_{\e,\leq}} \left| G_k(x,y)\right|\,ds_{y}\,\leq\,
-  \hspace*{-8mm} \int\limits_{\footnotesize
-  \begin{array}{c}y \in \Gamma \\ |y-x| \leq 2\varepsilon\end{array}} 
-  \hspace*{-6mm} \left| G_k(x,y)\right|\,ds_{y}
+  \int\limits_{\substack{y \in \Gamma \\ |y-x| \leq 2\varepsilon}}
+  \left| G_k(x,y)\right|\,ds_{y}
   \buildrel {x\rightarrow x_{0}}\over\longrightarrow 
-  \hspace*{-8mm} \int\limits_{\footnotesize
-  \begin{array}{c}y \in \Gamma \\ |y-x_0| \leq 2\varepsilon\end{array}} 
-  \hspace*{-6mm} \left| G_k(x_0,y)\right|\,ds_{y}
+  \int\limits_{\substack{y \in \Gamma \\ |y-x_{0}| \leq 2\varepsilon}}
+  \left| G_k(x_0,y)\right|\,ds_{y}
   \buildrel{\varepsilon\rightarrow 0}\over\longrightarrow 0.
 \end{align*}
 As before, the final limit holds since $G_{k}(x_{0},y)$ has a
@@ -1025,7 +1023,6 @@ together, we see that  $\displaystyle \lim_{\varepsilon\rightarrow
 assertion.
 \end{proof}
 %\qed
-
 
 The case of the double-layer potential is slightly more involved. We
 anticipate that, just as for the Laplace-Beltrami double-layer
@@ -1163,13 +1160,13 @@ Putting the parts together we see that
 %\qed
 
 From Lemma~\ref{l:DLPjump}, we see that the kernel of the double-layer
-operator $\underline{\mbox{curl}}_{\S}\, G_{k}(x,y)\cdot\vec{t}(y)$, is
-continuous at $x \in \Gamma$ as a function of $y$.  This allows us to
-conclude that the integral operator $\widetilde{W_k}$ is a compact
-operator from $L^{2}(\Gamma)$ to itself.  The compactness, in
-conjunction with the jump $1-\alpha(x_0)/(2\pi)$
-guarantees that the double-layer potential representation will result in
-a second kind Fredholm integral equation with a compact operator.
+operator, $\underline{\mbox{curl}}_{\S}\, G_{k}(x,y)\cdot\vec{t}(y)$,
+is continuous at $x \in \Gamma$ as a function of $y$.  This allows us
+to conclude that the integral operator $\widetilde{W_k}$ is a compact
+operator from $L^{2}(\Gamma)$ to itself.  The compactness, in addition
+to the jump $1-\alpha(x_0)/(2\pi)$ guarantees that the double-layer
+potential representation will result in a second kind Fredholm integral
+equation with a compact operator.
 
 We need to record one further property of this kernel, which will be
 used to understand the convergence properties of our quadrature rule in
@@ -1377,11 +1374,11 @@ where
 \begin{align*}
   G_{k}(x,y) = \C P_{\nu(k)} \left(
     \frac{\|x - y\|^{2}}{2} - 1\right), \quad 
-  \C = \frac{1}{4\cosh\left(\frac{\pi}{2}\sqrt{4k^{2}-1}\right)}.
+  \C=-\frac{1}{4\sin(\nu\pi)}.
 \end{align*}
-In~\eqref{e:dlpBIE}, we have assumed that the boundary $\Gamma$ of the
-geometry is a smooth function so that $\alpha(x_{0}) = \pi$, where
-$\alpha$ is defined in Lemma~\ref{l:DLPjump}.
+We have assumed that the boundary $\Gamma$ of the geometry is a smooth
+function so that $\alpha(x_{0}) = \pi$, where $\alpha$ is defined in
+Lemma~\ref{l:DLPjump}.
 
 In~\eqref{e:dlpuEval}, since $x \notin \Gamma$, the integrand is
 periodic and smooth.  Therefore, for a fixed $x\in \Omega$, the
@@ -1465,7 +1462,7 @@ $N$ & \# GMRES & Trapezoid Error & Alpert Error  \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The effect of $k$}
-We consider again the same two-ply connected geometry illustrated in
+We consider the same two-ply connected geometry illustrated in
 Figure~\ref{f:twoply}.  We solve~\eqref{e:dlpBIE} for varying values of
 $k > 1/2$ using Alpert's quadrature rule with $N=32$.  We report the
 condition number of the resulting linear system and the required number
@@ -1474,8 +1471,8 @@ values of $k$, the conditioning of the linear system improves, and the
 number of GMRES iterations decreases.  In Figure~\ref{f:evalues}, we
 plot the eigenvalues of the linear system for $k=1$ and $k=64$.  We see
 that for larger values of $k$, the eigenvalues cluster more strongly
-around $1/2$ resulting in a smaller number of GMRES iterations and
-a smaller condition number.
+around $1/2$ resulting in a smaller number of GMRES iterations and a
+smaller condition number.
 
 \begin{table}[htps]
 \caption{\label{t:example2} The condition number of the linear system
@@ -1510,10 +1507,11 @@ of~\eqref{e:dlpBIE} for $k=1$ (left) and $k=64$ (right)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The effect of the geometry's curvature}
-We let $\Omega$ be exterior of an ellipse with a varying aspect ratio of
-its major and minor axis.  The boundary $\Gamma$ is parameterized by
-$x(\alpha) = a\cos(\alpha)$, $y(\alpha) = b\sin(\alpha)$, and $z(\alpha)
-= \sqrt{1-x^{2}(\alpha)-y^{2}(\alpha)}$, where $a = 0.8$ and $b$ is
+We let $\Omega$ be exterior of an ellipse with a varying aspect ratio
+of its major and minor axis.  The boundary $\Gamma$ is discretized with
+$N=512$ points and is parameterized by $x(\alpha) = a\cos(\alpha)$,
+$y(\alpha) = b\sin(\alpha)$, and $z(\alpha) =
+\sqrt{1-x^{2}(\alpha)-y^{2}(\alpha)}$, where $a = 0.8$ and $b$ is
 varied in Table~\ref{t:example3}.  We see that the curvature does have
 an effect on the condition number of the corresponding linear system as
 well as on the required number of GMRES iterations.
@@ -1563,7 +1561,7 @@ We have presented an integral equation strategy to solve the Dirichlet
 boundary value problem for the Yukawa-Beltrami equation on a
 multiply-connected, sub-manifold of the unit sphere.  The integral
 equation formulation is based on a representation of a particularly
-useful form of the parametrix for the Yukawa-Beltrami operator involving
+useful form of a parametrix for the Yukawa-Beltrami operator involving
 conical functions.  Using a double-layer ansatz based on this
 parametrix, a well-conditioned Fredholm equation of the second kind
 arises.  Numerical experiments confirm the analytic properties of this
@@ -1585,6 +1583,7 @@ elliptic PDEs such as the Helmholtz or Stokes equations, and also to
 other two-dimensional manifolds.  This will potentially create a new
 class of methods for solving problems involving scattering or fluid
 mechanics on the surface of smooth manifolds.
+
 
 %\begin{acknowledgements}
 \subsubsection*{\bf Acknowledgements}
