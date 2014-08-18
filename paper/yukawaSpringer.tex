@@ -110,7 +110,8 @@ the sphere
               \email{nigam@math.sfu.ca}           %  \\
           \and
           B.~Quaife \at 
-              Institute for Computational and Engineering and Sciences, University of Texas \\
+              Institute for Computational Engineering and Science,
+              University of Texas \\
               Tel.: +1-512-232-3509 \\
               Fax: +1-512-471-8694 \\
               \email{quaife@ices.utexas.edu}
@@ -256,8 +257,10 @@ is defined as
   \right] u(x(\varphi,\theta)).
 \end{align*}
 
-If two points $x,y$ lie on the unit sphere, with
-spherical coordinates $x=x(\phi,\theta), y=(\alpha,\beta)$ then we describe the solid angle between them (a measure of their distance in the metric on $\S$) by
+If two points $x,y$ lie on the unit sphere, with spherical coordinates
+$x=x(\phi,\theta)$ and $y=(\alpha,\beta)$, then we describe the solid
+angle between them (a measure of their distance in the metric on $\S$)
+by
 \begin{align*}
   <x,y> =\cos(\phi-\alpha)\sin(\theta)\sin(\beta)+
     \cos(\theta)\cos(\beta).
@@ -469,8 +472,7 @@ If $0<k^2<\frac{1}{4}$ then $\nu \in (-1,0)$. If $k^2\geq\frac{1}{4}$ then
 We observe that since $k^{2}>0$, $\nu(k) \notin \mathbb{Z}$. Moreover,
 if $k>\frac{1}{2}$ then $Im(\nu)\not=0$. This is the regime in which we
 shall work, and in what follows we shall make this assumption on $k$.
-Recall that in $k^{2} = bigO(1/\Delta t)$ in the our applications of
-interest.
+Recall that $k^{2} = \bigO(1/\Delta t)$ in our applications of interest.
 
 A further substitution allows us to write~\eqref{LegendrePequation} as
 a hypergeometric equation, (see, e.g., Section 7.3,~\cite{lebedev}).
@@ -631,7 +633,6 @@ in~\cite{fatAbramowitz}):
 \begin{align*} 
   (1-z^2) P'_\nu(z) = (-\nu-1) P_{\nu+1}(z) + (\nu+1)z P_\nu(z).
 \end{align*}
-
 Suppose, again without loss of generality, that $x_0$ is the North Pole.
 Let $x=x(\theta,\phi)$. Then, $G_k(x,x_0) = \C P_\nu(-\cos(\theta))$,
 and
@@ -930,30 +931,30 @@ boundary integral equation over $\Gamma = \partial \Omega$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Single- and double-layer potentials}
-We define the following two layer potentials.
+We define the following two layer potentials:
 \begin{itemize}
-\item The {\bf single-layer potential} with sufficiently smooth density
-function $\sigma$:
+\item the {\bf single-layer potential} with sufficiently smooth density
+function $\sigma$
   \begin{align}
     (\widetilde{V_k}\sigma)(x):=\int\limits_{\Gamma}
     G_k(x,y)\,\sigma(y)\,ds_y,\quad\mbox{for $x \notin \Gamma$};
     \label{singlelayerpotential}
   \end{align}
 \item and the {\bf double-layer potential} with sufficiently smooth
-density function $\mu$:
+density function $\mu$
   \begin{align}
     (\widetilde{W_k}\mu )(x):=\int\limits_{\Gamma}
     \mu(y)\,[\underline{\mbox{curl}}_{\S} G_k(x,y)\cdot \vec{t}(y)]\,
-    ds_y, \quad\mbox{for $x\notin\Gamma$},
+    ds_y, \quad\mbox{for $x\notin\Gamma$}.
     \label{doublelayerpotential}
   \end{align}
 \end{itemize}
 We wish to point out here that the form of the double-layer potential above is equivalent to the, perhaps, more familiar form:
-  \begin{align}
-    (\widetilde{W_k}\mu )(x):=-\int\limits_{\Gamma}
-    \mu(y) \frac{\partial \,}{\partial n_y} G_k(x,y) \,
-    ds_y, \quad\mbox{for $x\notin\Gamma$}.
-  \end{align}
+\begin{align*}
+  (\widetilde{W_k}\mu )(x):=-\int\limits_{\Gamma}
+  \mu(y) \frac{\partial \,}{\partial n_y} G_k(x,y) \,
+  ds_y, \quad\mbox{for $x\notin\Gamma$},
+\end{align*}
 where $n_{y}$ is the outward pointing normal to $\Gamma$ at the point
 $y$ lying in a tangent plane to $\S$.  See~\cite{kro:nig2013} for a
 more detailed discussion on this point.
@@ -964,7 +965,7 @@ double-layer potential.  This  is the starting point for the so-called
 direct boundary integral approach. However, for the purpose of this
 paper we follow the layer ansatz based on the following observation.
 
-For $x\notin\Gamma, x\in \Omega$, the single-layer potential
+For $x \in \Omega, x \notin \Gamma$, the single-layer potential
 in~\eqref{singlelayerpotential} satisfies:
 \begin{align*}
   (-\lap_{\S} + k^{2}) (\widetilde{V_k}\sigma)(x)& =
@@ -972,7 +973,6 @@ in~\eqref{singlelayerpotential} satisfies:
   & = \int\limits_\Gamma (-\lap_{\S}+k^2) G_k(x,y)\, 
     \sigma(y)\,ds_{y}= \, 0.
 \end{align*}
-
 Hence, we may find the general solution of the Dirichlet boundary value
 problem~\eqref{DBVP} in terms of a single-layer potential
 \begin{align*}
@@ -993,7 +993,7 @@ satisfies the Yukawa-Beltrami equation for $x\in \Omega, x\notin\Gamma$
   (\lap_{\S} -k^2)G(x,y)\cdot\vec{t}(y)]\,ds_{y} = 0.
 \end{align*}
 We might thus also try to look for the solution to~\eqref{DBVP} in the
-form of a double-layer.
+form of a double-layer potential.
 
 
 
@@ -1217,14 +1217,6 @@ Putting the parts together we see that
 \end{proof}
 \qed
 
-From Lemma~\ref{l:DLPjump}, we see that the kernel of the double-layer
-operator, $\underline{\mbox{curl}}_{\S}\, G_{k}(x,y)\cdot\vec{t}(y)$,
-is continuous at $x \in \Gamma$ as a function of $y$.  This allows us
-to conclude that the integral operator $\widetilde{W_k}$ is a compact
-operator from $L^{2}(\Gamma)$ to itself.  The compactness, in addition
-to the jump $1-\alpha(x_0)/(2\pi)$ guarantees that the double-layer
-potential representation will result in a second kind Fredholm integral
-equation with a compact operator.
 
 We need to record one further property of this kernel, which will be
 used to understand the convergence properties of our quadrature rule in
@@ -1410,6 +1402,14 @@ similar to those above, and we do not include them here.
 \end{proof}
 \qed
 
+From Lemma~\ref{regularity}, we see that the kernel of the double-layer
+operator, $\underline{\mbox{curl}}_{\S}\, G_{k}(x,y)\cdot\vec{t}(y)$, is
+continuous at $x \in \Gamma$ as a function of $y$.  This allows us to
+conclude that the integral operator $\widetilde{W_k}$ is a compact
+operator from $L^{2}(\Gamma)$ to itself.  The compactness, in addition
+to the jump $1-\alpha(x_0)/(2\pi)$ (Lemma~\ref{l:DLPjump}) guarantees
+that the double-layer potential representation will result in a second
+kind Fredholm integral equation with a compact operator.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Numerical Examples}
@@ -1454,7 +1454,7 @@ boundary with $N$ unknowns and solve the resulting linear system with
 unrestarted GMRES and a tolerance of $10^{-11}$.  The error of the
 Alpert quadrature formula is $\mathcal{O}(h^{16}\log h)$, and we use
 Fourier interpolation to assign values to the density function $\mu$ at
-points that are intermediate to the regular grid.
+quadrature nodes that are intermediate to the regular grid.
 
 We present four numerical examples which we now summarize.
 \begin{itemize}
