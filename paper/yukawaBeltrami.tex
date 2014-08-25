@@ -452,7 +452,7 @@ want $u(r_0(\pi))$ to be finite, we do not use the other possible
 solution of~\eqref{LegendrePequation}, namely $Q_{\nu(k)}$.
 \begin{figure}[htps]
   \centering
-  \input{legendre1D.tikz}
+  \input{legendre1D.tex}
   \caption{\label{f:legendreP} The LegendreP function
   $P_{\nu(k)}(-\cos\theta)$, for $\theta \in (0,\pi]$ and $k=1$}
 \end{figure}  
@@ -492,7 +492,7 @@ kind},~\cite{fatAbramowitz}.
 
 \begin{figure}
   \centering
-  \input{legendre3D.tikz}
+  \input{legendre3D.tex}
   \caption{\label{f:greensFun} $G_1(x,x_0)$ when $x_0=(0,0,1)^T$. The
   singularity at the north pole is logarithmic. Only the top hemisphere
   is shown here for purpose of illustration}
@@ -794,7 +794,7 @@ Therefore, using~\eqref{Green2} we have
 \end{align*}
 \begin{figure}
   \centering
-  \input{proof1.tikz}
+  \input{proof1.tex}
   \caption{\label{f:proof1} The points $x,x_0$ belong to $\Omega$. We
   denote by $\Omega_\varepsilon:=\Omega\setminus B_{\varepsilon}(x_0)$}
 \end{figure}
@@ -1493,8 +1493,10 @@ third-order accuracy, and the error of the Alpert quadrature formula
 quickly decays to the GMRES tolerance.
 
 \begin{figure}[htps]
-  \includegraphics[width=0.5\textwidth]{vortexBC1}
-  \includegraphics[width=0.5\textwidth]{vortexBC2}
+%  \includegraphics[width=0.5\textwidth]{vortexBC1}
+%  \includegraphics[width=0.5\textwidth]{vortexBC2}
+  \includegraphics[width=0.5\textwidth]{Fig1}
+  \includegraphics[width=0.5\textwidth]{Fig2}
 \caption{\label{f:twoply} A numerical solution of the Yukawa-Beltrami
 equation with $k=4$ in a two-ply connected domain viewed from two
 different angles.  The exact solution is the sum of two fundamental
@@ -1555,8 +1557,8 @@ $k$ & Condition Number & \# GMRES \\
 \begin{figure}[htps]
 \centering
 \begin{tabular}{cc}
-\input{eigsk1.tikz} &
-\input{eigsk64.tikz}
+\input{eigsk1.tex} &
+\input{eigsk64.tex}
 \end{tabular}
 \caption{\label{f:evalues} The eigenvalues of a discretization
 of~\eqref{e:dlpBIE} for $k=1$ (left) and $k=64$ (right)}
@@ -1607,7 +1609,8 @@ digits.  A plot of the solution is in Figure~\ref{f:36ply}.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{constBC}
+%  \includegraphics[width=0.5\textwidth]{constBC}
+  \includegraphics[width=0.5\textwidth]{Fig3}
   \caption{\label{f:36ply} The numerical solution of the Yukawa-Beltrami
   equation with $k=4$ in a 36-ply connected domain.  The Dirichlet
   boundary condition is equal to one on each of the boundaries (black
@@ -1648,9 +1651,127 @@ Research Council of Canada. NN gratefully acknowledges support from the
 Canada Research Chairs Council, Canada.
 \end{acknowledgements}
 
-\bibliographystyle{spmpsci}
-\bibliography{refs}
+%\bibliographystyle{spmpsci}
+%\bibliography{refs}
 
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+
+\bibitem{alpert}
+Alpert, B.K.: {Hybrid Gauss-Trapezoidal Quadrature Rules}.
+\newblock SIAM Journal on Scientific Computing \textbf{20}, 1551--1584 (1999)
+
+\bibitem{Bertalmio}
+Bertalmio, M., Cheng, L.T., Osher, S., Sapiro, G.: {Variational Problems and
+  Partial Differential Equations on Implicit Surfaces}.
+\newblock Journal of Computational Physics \textbf{174}(2), 759--780 (2001).
+\newblock \doi{10.1006/jcph.2001.6937}.
+\newblock
+  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S0021999101969372}
+
+\bibitem{Chaplain}
+Chaplain, M., Ganesh, M., Graham, I.: {Spatio-temporal Pattern Formation on
+  Spherical Surfaces: Numerical Simulation and Application to Solid Tumour
+  Growth}.
+\newblock J. Math. Biology \textbf{42}, 387--423 (2001)
+
+\bibitem{floater}
+Floater, M.S., Hormann, K.: {Surface Parameterization: a Tutorial and Survey}.
+\newblock In: N.A. Dodgson, M.S. Floater, M.A. Sabin (eds.) Advances in
+  Multiresolution for Geometric Modelling, Mathematics and Visualization, pp.
+  157--186. Springer Berlin Heidelberg (2005).
+\newblock \doi{10.1007/3-540-26808-1\_9}.
+\newblock \urlprefix\url{http://dx.doi.org/10.1007/3-540-26808-1\_9}
+
+\bibitem{gatica}
+Gatica, G.N., Hsiao, G.C., Sayas, F.J.: Relaxing the hypotheses of
+  {B}ielak-{M}ac{C}amy's {BEM}-{FEM} coupling.
+\newblock Numer. Math. \textbf{120}(3), 465--487 (2012).
+\newblock \doi{10.1007/s00211-011-0414-z}.
+\newblock \urlprefix\url{http://dx.doi.org/10.1007/s00211-011-0414-z}
+
+\bibitem{gemmrich}
+Gemmrich, S., Nigam, N., Steinbach, O.: {B}oundary {I}ntegral {E}quations for
+  the {L}aplace-{B}eltrami {O}perator.
+\newblock Mathematics and Computation, a Contemporary View \textbf{3}, 21--37
+  (2008)
+
+\bibitem{hackbusch}
+Hackbusch, W.: Integral equations, \emph{International Series of Numerical
+  Mathematics}, vol. 120.
+\newblock Birkh\"auser Verlag, Basel (1995).
+\newblock \doi{10.1007/978-3-0348-9215-5}.
+\newblock \urlprefix\url{http://dx.doi.org/10.1007/978-3-0348-9215-5}.
+\newblock {Theory and numerical treatment, Translated and revised by the author
+  from the 1989 German original}
+
+\bibitem{kro:qua2011}
+Kropinski, M., Quaife, B.: Fast integral equation methods for the modified
+  {H}elmholtz equation.
+\newblock Journal of Computational Physics \textbf{230}, 425--434 (2011)
+
+\bibitem{kro:nig2013}
+Kropinski, M.C.A., Nigam, N.: {Fast integral equation methods of the
+  Laplace-Beltrami equation on the sphere}.
+\newblock Advances in Computational Mathematics \textbf{40}, 577--596 (2014)
+
+\bibitem{rothe:heat}
+Kropinski, M.C.A., Quaife, B.: {Fast Integral Equation Methods for Rothe's
+  Method Applied to the Isotropic Heat Equation}.
+\newblock Comput. Math. Appl. \textbf{61}(9), 2436--2446 (2011)
+
+\bibitem{lebedev}
+Lebedev, N.N.: Special functions and their applications.
+\newblock Dover Publications Inc., New York (1972).
+\newblock Revised edition, translated from the Russian and edited by Richard A.
+  Silverman, Unabridged and corrected republication
+
+\bibitem{lindblom}
+Lindblom, L., Szil\'{a}gyi, B.: {Solving partial differential equations
+  numerically on manifolds with arbitrary spatial topologies}.
+\newblock Journal of Computational Physics \textbf{243}, 151--175 (2013)
+
+\bibitem{Myers}
+Myers, T., Charpin, J.: A mathematical model for atmospheric ice accretion and
+  water flow on a cold surface.
+\newblock International Journal of Heat and Mass Transfer \textbf{47}(25),
+  5483--5500 (2004).
+\newblock \doi{10.1016/j.ijheatmasstransfer.2004.06.037}.
+\newblock
+  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S0017931004002807}
+
+\bibitem{fatAbramowitz}
+Olver, F.W.J., Lozier, D.W., Boisvert, R.F., Clark, C.W. (eds.): N{IST}
+  handbook of mathematical functions.
+\newblock U.S. Department of Commerce National Institute of Standards and
+  Technology, Washington, DC (2010).
+\newblock With 1 CD-ROM (Windows, Macintosh and UNIX)
+
+\bibitem{qua2011}
+Quaife, B.: {Fast Integral Equation Methods for the Modified Helmholtz
+  Equation}.
+\newblock Ph.D. thesis, Simon Fraser University (2011)
+
+\bibitem{ruuth}
+Ruuth, S.J., Merriman, B.: A simple embedding method for solving partial
+  differential equations on surfaces.
+\newblock Journal of Computational Physics \textbf{227}(3), 1943--1961 (2008).
+\newblock \doi{10.1016/j.jcp.2007.10.009}.
+\newblock
+  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S002199910700441X}
+
+\bibitem{Witkin}
+Witkin, A., Kass, M.: Reaction-diffusion textures.
+\newblock SIGGRAPH Comput. Graph. \textbf{25}(4), 299--308 (1991).
+\newblock \doi{10.1145/127719.122750}.
+\newblock \urlprefix\url{http://doi.acm.org/10.1145/127719.122750}
+
+\end{thebibliography}
 
 \end{document}
 

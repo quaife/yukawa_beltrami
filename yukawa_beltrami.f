@@ -172,7 +172,7 @@ c     exact solution
 c     read in the one parameter in the PDE
       read (12,*) freq
 c     read in the number of points for discretizing the meshgrid
-      read(12,*) nth, nphi
+      read(12,*) jth, nphi
       do kbod = 1, k
         read(12,*) ak(kbod), bk(kbod), th_k(kbod), phi_k(kbod)
 c       compute center of each componenet curve
