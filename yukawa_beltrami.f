@@ -171,7 +171,7 @@ c     exact solution
 c     read in the one parameter in the PDE
       read (12,*) freq
 c     read in the number of points for discretizing the meshgrid
-      read(12,*) nth, nphi
+      read(12,*) jth, nphi
       do kbod = 1, k
         read(12,*) ak(kbod), bk(kbod), th_k(kbod), phi_k(kbod)
 c       compute center of each componenet curve
@@ -546,10 +546,16 @@ c Construct points on the sphere
           call r_func (alpha, ak(kbod), bk(kbod), th_k(kbod), 
      1                 phi_k(kbod), xs(istart+i), ys(istart+i), 
      2                 zs(istart+i))
+c          xs(istart+i) = dcos(alpha)
+c          ys(istart+i) = dsin(alpha)
+c          zs(istart+i) = 0.d0
 c Construct derivatives of points on the sphere
           call dr_func (alpha, ak(kbod), bk(kbod), th_k(kbod), 
      1                  phi_k(kbod), dx(istart+i), dy(istart+i), 
      2                  dz(istart+i))
+c          dx(istart+i) = -dsin(alpha)
+c          dy(istart+i) = dcos(alpha)
+c          dz(istart+i) = 0.d0
 c
 c Construct normal to surface of sphere
           r(1) = xs(istart+i)
@@ -577,12 +583,19 @@ c Construct the diagonal entry
           d2x(istart+i) = pn(1)
           d2y(istart+i) = pn(2)
           d2z(istart+i) = pn(3)
+c          d2x(istart+i) = -dcos(alpha)
+c          d2y(istart+i) = -dsin(alpha)
+c          d2z(istart+i) = 0.d0
+c          pn(1) = d2x(istart+i)
+c          pn(2) = d2y(istart+i)
+c          pn(3) = d2z(istart+i)
           pn(1) = pn(1)/(dsda(istart+i))**2
           pn(2) = pn(2)/(dsda(istart+i))**2
           pn(3) = pn(3)/(dsda(istart+i))**2
           call cross(pn,r,vn)
           call dot (t,vn,t_dot_vn)
           diag(istart+i) = -t_dot_vn*dsda(istart+i)/(4.d0*pi)
+          print*,diag(istart+i)
         end do
         istart = istart + nd
       end do
