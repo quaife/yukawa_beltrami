@@ -1,5 +1,5 @@
       program yukawa_beltrami 
-c     ------------------------------------------------------------------
+c     -----------------------------------------------------------------
 c
 c
 c  Solves integral equation for Yukawa-Beltrami on the Sphere 
@@ -50,7 +50,7 @@ c       before restarting.
 c  lrwork is the dimension of a real workspace needed by DGMRES.
 c  liwork is the dimension of an integer workspace needed by DGMRES.
 c  gmwork and iwork are work arrays used by DGMRES
-      parameter (maxl = 200,liwork=30,  
+      parameter (maxl = 400,liwork=30,  
      1           lrwork=10+(nmax+kmax)*(maxl+6)+maxl*(maxl+3))
       dimension gmwork(lrwork), igwork(liwork)
       dimension rhs(nmax)
@@ -73,10 +73,9 @@ c Construct hole geometry and grid on surface of sphere
      1               dx, dy, dz, d2x, d2y, d2z, xn, yn, zn, dsda, 
      2               arcLength, diag)
 
-cc Construct the system matrix so that we can look at conditioning
+c Construct the system matrix so that we can look at conditioning
 c      call SYSTEM_MAT (nbk)
-c      return
-
+c
 c Construct grid on surface of sphere
       call SURFACE_GRID (k, nd, nbk, freq, nth, nphi, ak, bk,
      1                   cx, cy, cz, th_k, phi_k, th_gr, phi_gr, 
@@ -458,6 +457,7 @@ c
       enddo
 
       do i = 1,n
+        print*,n-i
         x(i) = 1.d0
         call matvecYukawa (n, x, y)
         x(i) = 0.d0
@@ -793,6 +793,7 @@ c
 
 
       dth = 2.d0*pi/nth
+c      dth = pi/nth
       dphi = pi/(nphi-1)
       do i = 1, nth
         theta = (i-1)*dth
@@ -1113,7 +1114,7 @@ c
       dalph = 2.d0*pi/nd
 
 c     flag for deciding if we do Alpert corrections or not
-      ialpert = 0
+      ialpert = 1
       call AlpertQuadrature(k,nd,xs,ys,zs,xn,yn,zn,
      1        dsda,freq,xx,ialpert,yy)
 
@@ -1884,16 +1885,32 @@ c      enddo
               enddo !k
             elseif (near_gr(i,j,ihole) .eq. 0 .and. 
      1          igrid(i,j) .ne. 0) then
-              u_gr(i,j) = 1.d-5
+              do k = 1,nd*nup
+                dist2 = (x_gr(i,j) - xsUp(k + istartUp))**2.d0 + 
+     1                  (y_gr(i,j) - ysUp(k + istartUp))**2.d0 + 
+     2                  (z_gr(i,j) - zsUp(k + istartUp))**2.d0 
+                rdotn = (x_gr(i,j) - xsUp(k + istartUp))*
+     1                      xnUp(k + istartUp) + 
+     2                  (y_gr(i,j) - ysUp(k + istartUp))*
+     3                      ynUp(k + istartUp) + 
+     4                  (z_gr(i,j) - zsUp(k + istartUp))*
+     5                      znUp(k + istartUp)
 
-              call nearInterp(freq,nd*nup,
-     1          x_gr(i,j),y_gr(i,j),z_gr(i,j),
-     2          xsUp(istartUp+1),ysUp(istartUp+1),zsUp(istartUp+1),
-     3          xnUp(istartUp+1),ynUp(istartUp+1),znUp(istartUp+1),
-     4          densityUp(istartUp+1),dsdaUp(istartUp+1),
-     5          arcLength(ihole), valNear)
+                u_gr(i,j) = u_gr(i,j) + 
+     1            yukawaDLP(freq,dist2,rdotn)*
+     2            densityUp(k+istartUp)*dsdaUp(k+istartUp)*dalph/nup
+              enddo !k
 
-              u_gr(i,j) = u_gr(i,j) + valNear
+c              u_gr(i,j) = 1.d-5
+c
+c              call nearInterp(freq,nd*nup,
+c     1          x_gr(i,j),y_gr(i,j),z_gr(i,j),
+c     2          xsUp(istartUp+1),ysUp(istartUp+1),zsUp(istartUp+1),
+c     3          xnUp(istartUp+1),ynUp(istartUp+1),znUp(istartUp+1),
+c     4          densityUp(istartUp+1),dsdaUp(istartUp+1),
+c     5          arcLength(ihole), valNear)
+c
+c              u_gr(i,j) = u_gr(i,j) + valNear
 
             else
 c              u_gr(i,j) = 1.d0
@@ -2226,12 +2243,12 @@ c     1      absErrorIntermediate, 1)
       else
         print*,'Intermediate region is empty'
       endif
-c      if (uExactNearMax .gt. 0.d0) then
+      if (uExactNearMax .gt. 0.d0) then
 c        call PRIN2(' Absolute Error (Near) = *',absErrorNear, 1)
-c        call PRIN2(' Relative Error (Near)= *', relErrorNear, 1)
-c      else
-c        print*,'Near region is empty'
-c      endif
+        call PRIN2(' Relative Error (Near)= *', relErrorNear, 1)
+      else
+        print*,'Near region is empty'
+      endif
 
       return ! CHECK_ERROR
       end
