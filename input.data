@@ -1,3 +1,20 @@
+1 16 0         number of holes  number of points per hole
+1.0            parameter in pde
+32 32        number of azimuthal and z-uthal discretization points
+0.2 0.4 1.0 1.0
+1.0 1.0 1.0
+
+
+
+
+1 64 0
+1.0
+50 50
+0.99999999 0.99999999 0 0
+1.0 3.0 2.0
+
+
+
 36 32 0
 4.0
 200 200
@@ -51,22 +68,11 @@
 1.0 1.0 -1.1     
 
 
-1 64 1
-1.0
-50 50
-0.99999999 0.99999999 0 0
-1.0 3.0 2.0
 
 2 256 2            number of holes  number of points per hole
 8.0                  parameter in pde
 
 
-
-1 64 0         number of holes  number of points per hole
-1.0            parameter in pde
-32 32        number of azimuthal and z-uthal discretization points
-0.2 0.4 1.0 1.0
-1.0 1.0 1.0
 
 
 

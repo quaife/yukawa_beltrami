@@ -12,8 +12,8 @@ c
 c     ------------------------------------------------------------------
       implicit real*8 (a-h, o-z)
 c Maximum number of holes and points per hole
-      parameter (kmax = 50, npmax = 512, nmax = kmax*npmax)
-      parameter (nvortmax = 10)
+      parameter (kmax = 50, npmax = 128, nmax = kmax*npmax)
+      parameter (nvortmax = 5)
 c
 c Geometry of holes
       dimension ak(kmax), bk(kmax), th_k(kmax), phi_k(kmax), cx(kmax),
@@ -31,7 +31,7 @@ c     vortex strength
 
 c
 c  Grid variables
-      parameter (nth_max = 1000, nphi_max = 1000, 
+      parameter (nth_max = 300, nphi_max = 300, 
      1          ng_max = nth_max*nphi_max)
       dimension igrid(ng_max), near_gr(ng_max*kmax), 
      1          th_gr(ng_max), phi_gr(ng_max),
@@ -56,7 +56,7 @@ c  gmwork and iwork are work arrays used by DGMRES
       dimension rhs(nmax)
 c
 c Variables to time different components
-      real*4 timep(2), etime
+c      real*4 timep(2), etime
 c
 c common blocks
       common /sys_size/ k, nd, nbk
@@ -67,7 +67,7 @@ c Initial Hole Geometry is given by reading in data
       call READ_DATA (freq, k, nd, nbk, nth, nphi, ak, bk, 
      1                      cx, cy, cz, th_k, phi_k,
      2                      nvort, x1Vort, x2Vort, x3Vort, vortK)
-c
+
 c Construct hole geometry and grid on surface of sphere
       call MAKE_GEO (k, nd, nbk, ak, bk, th_k, phi_k, xs, ys, zs,
      1               dx, dy, dz, d2x, d2y, d2z, xn, yn, zn, dsda, 
@@ -87,27 +87,28 @@ c Construct the RHS and solve
       call getRHS (k, nd, nbk, nvort, freq, xs, ys, zs, 
      1    x1Vort, x2Vort, x3Vort, vortK, rhs)
 
+
 c Find the density function defined on the boundaries of the
 c geometry
       call solveBIE (nd, k, nbk, rhs, density, gmwork, 
      1            lrwork, igwork, liwork, dsda, maxl)
 
-c Construct solution on surface grid
-       call SOL_GRID (freq, nd, k, nbk, nth, nphi, density, 
-     1        xs, ys, zs, xn, yn, zn, dsda, arcLength, 
-     2        x_gr, y_gr, z_gr, igrid, near_gr, u_gr)
-
-c Check the infinity norm of the error in the far, intermediate
-c and near regions
-       call CHECK_ERROR (k, nth, nphi, near_gr, u_gr, uExact_gr)
-
-c Create a matlab file that plots the solution on the surface
-c of the sphere
-      open (unit = 35, file = 'surfPlot.m')
-      call dump_movie (nth, nphi, x_gr, y_gr, z_gr, 
-     1          u_gr, uExact_gr, 35)
-      close(35)
-
+cc Construct solution on surface grid
+c       call SOL_GRID (freq, nd, k, nbk, nth, nphi, density, 
+c     1        xs, ys, zs, xn, yn, zn, dsda, arcLength, 
+c     2        x_gr, y_gr, z_gr, igrid, near_gr, u_gr)
+c
+cc Check the infinity norm of the error in the far, intermediate
+cc and near regions
+cc       call CHECK_ERROR (k, nth, nphi, near_gr, u_gr, uExact_gr)
+c
+cc Create a matlab file that plots the solution on the surface
+cc of the sphere
+c      open (unit = 35, file = 'surfPlot.m')
+c      call dump_movie (nth, nphi, x_gr, y_gr, z_gr, 
+c     1          u_gr, uExact_gr, 35)
+c      close(35)
+c
 
 
       stop
@@ -171,7 +172,7 @@ c     exact solution
 c     read in the one parameter in the PDE
       read (12,*) freq
 c     read in the number of points for discretizing the meshgrid
-      read(12,*) jth, nphi
+      read(12,*) nth, nphi
       do kbod = 1, k
         read(12,*) ak(kbod), bk(kbod), th_k(kbod), phi_k(kbod)
 c       compute center of each componenet curve
@@ -595,7 +596,7 @@ c          pn(3) = d2z(istart+i)
           call cross(pn,r,vn)
           call dot (t,vn,t_dot_vn)
           diag(istart+i) = -t_dot_vn*dsda(istart+i)/(4.d0*pi)
-          print*,diag(istart+i)
+c          print*,diag(istart+i)
         end do
         istart = istart + nd
       end do
@@ -804,7 +805,6 @@ c
       pi = 4.d0*datan(1.d0)
 c
 
-
       dth = 2.d0*pi/nth
 c      dth = pi/nth
       dphi = pi/(nphi-1)
@@ -934,7 +934,7 @@ c
       dimension x1Vort(nvort), x2Vort(nvort), x3Vort(nvort)
       dimension vortK(nvort)
       dimension rhs(nbk)
-c
+
       istart = 0
       do kbod = 1, k
         do j = 1, nd
@@ -1051,21 +1051,21 @@ c  provide initial guess density
 c
       t0 = etime(timep)
 c  Solve linear system with GMRES
-      call DGMRES (nbk, rhs, density, nelt, ia, ja, a, isym,
-     1            matvecYukawa, msolve, itol, tol, itmax, iter, err,  
-     1            ierr, 6, sb, sx, rwork, lrwork, iwork, 
-     1            liwork, rw, iw)
-      call PRIN2 (' after yukawa solve, err = *', err, 1)
-      call PRINF ('  # GMRES ITERATIONS = *',iter,1)
-      if (ierr.gt.2) then
-        call PRINF ('  SOMETHING WRONG IN GMRES, IERR = *',ierr,1)
-        call PRINF ('  iwork = *',iwork,10)
-        stop
-      elseif (ierr.ge.0) then
-        t1 = etime(timep)
-        tsec = t1 - t0
-        call PRIN2 (' time in solve = *', tsec, 1)
-      end if
+c      call DGMRES (nbk, rhs, density, nelt, ia, ja, a, isym,
+c     1            matvecYukawa, msolve, itol, tol, itmax, iter, err,  
+c     1            ierr, 6, sb, sx, rwork, lrwork, iwork, 
+c     1            liwork, rw, iw)
+c      call PRIN2 (' after yukawa solve, err = *', err, 1)
+c      call PRINF ('  # GMRES ITERATIONS = *',iter,1)
+c      if (ierr.gt.2) then
+c        call PRINF ('  SOMETHING WRONG IN GMRES, IERR = *',ierr,1)
+c        call PRINF ('  iwork = *',iwork,10)
+c        stop
+c      elseif (ierr.ge.0) then
+c        t1 = etime(timep)
+c        tsec = t1 - t0
+c        call PRIN2 (' time in solve = *', tsec, 1)
+c      end if
 
 c Dump it out
       open (unit = 24, file = 'solution.dat')
