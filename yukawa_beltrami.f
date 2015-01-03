@@ -87,7 +87,6 @@ c Construct the RHS and solve
       call getRHS (k, nd, nbk, nvort, freq, xs, ys, zs, 
      1    x1Vort, x2Vort, x3Vort, vortK, rhs)
 
-
 c Find the density function defined on the boundaries of the
 c geometry
       call solveBIE (nd, k, nbk, rhs, density, gmwork, 
@@ -1051,10 +1050,10 @@ c  provide initial guess density
 c
       t0 = etime(timep)
 c  Solve linear system with GMRES
-c      call DGMRES (nbk, rhs, density, nelt, ia, ja, a, isym,
-c     1            matvecYukawa, msolve, itol, tol, itmax, iter, err,  
-c     1            ierr, 6, sb, sx, rwork, lrwork, iwork, 
-c     1            liwork, rw, iw)
+      call DGMRES (nbk, rhs, density, nelt, ia, ja, a, isym,
+     1            matvecYukawa, msolve, itol, tol, itmax, iter, err,  
+     1            ierr, 6, sb, sx, rwork, lrwork, iwork, 
+     1            liwork, rw, iw)
 c      call PRIN2 (' after yukawa solve, err = *', err, 1)
 c      call PRINF ('  # GMRES ITERATIONS = *',iter,1)
 c      if (ierr.gt.2) then
@@ -1110,8 +1109,8 @@ c
       implicit real *8 (a-h,o-z)
 c
       dimension xx(n), yy(n)
-      parameter (kmax = 50, npmax = 512, nmax = kmax*npmax)
-      parameter (nth_max = 1000, nphi_max = 1000, 
+      parameter (kmax = 50, npmax = 128, nmax = kmax*npmax)
+      parameter (nth_max = 300, nphi_max = 300, 
      1          ng_max = nth_max*nphi_max)
 c
 c common blocks
