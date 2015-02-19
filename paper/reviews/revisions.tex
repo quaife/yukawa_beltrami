@@ -1,0 +1,211 @@
+\documentclass[11pt]{article}
+
+
+\usepackage{fullpage}
+\usepackage{amsmath,amsfonts,amssymb,stmaryrd}
+\usepackage{color}
+\newcommand{\comment}[1]{{\color{blue} #1}}
+\newcommand{\todo}[1]{{\color{red} #1}}
+\newcommand{\note}[1]{{\color{green} #1}}
+\newcommand{\grad}{{\triangledown}}
+\newcommand{\nn}{{\mathbf{n}}}
+\newcommand{\uu}{{\mathbf{u}}}
+\newcommand{\xx}{{\mathbf{x}}}
+\newcommand{\DD}{{\mathcal{D}}}
+\renewcommand{\SS}{{\mathcal{S}}}
+
+\begin{document}
+
+We thank the reviewers for thoroughly reading the manuscript and for
+their useful comments.  Below is a list of the revisions that we have
+applied to the manuscript.
+
+
+\section*{Reviewer 1}
+
+\comment{This manuscript presents an integral equation method for
+solving the Yukawa-Beltrami equation on the sphere. All the material in
+the manuscript are straightforward and fairly standard. That is, the
+Green’s formula on a Riemannian manifold is well-known to any
+researcher working on PDEs and differential geometry. The jump
+relations of layer potentials in Riemannian manifolds are also
+well-known (as a local property, it is obvious that the jump relations
+are the same for the Yukawa-Beltrami and Laplace-Beltrami operators).
+Just to name a reference, Mitrea and Taylor [1] discussed in detail the
+boundary layer methods for Lipschitz domains in Riemannian manifolds.
+Indeed, the paper actually discussed a much harder problem in greater
+generality. The authors should first try to find all relevant work that
+has already been done by analysts (for example, do a simple search over
+the work by Mitrea and Taylor and check the references therein),
+instead of trying to produce unsatisfactory proofs for much simpler and
+specific cases. The numerical part of the manuscript uses the Alpert
+quadrature for logarithmically singular kernels, which is also quite
+standard and well-known.}
+\begin{itemize}
+  \item We have removed some of the proofs and cited paper [1].
+  \item While this reference addresses several key results, it is our
+  opinion that our manuscript adds a significant contribution to the
+  literature.  For instance, the numerical methods that we present, to
+  the best of our knowledge, are absent in the literature.  We are also
+  unaware of any groups that are using integral equation methods to do
+  time stepping for PDEs on surfaces.
+  \item Reference [1] does present much more general results then ours.
+  However, we are interested in one particular PDE (Yukawa-Beltrami) so
+  that we can do time stepping on the surface of the sphere.
+  \item While Alpert quadrature is now standard and well-known, it is a
+  required tool for us to establish high-order accuracy.  We, in no
+  form, are claiming that we are producing new results concerning
+  quadrature formula for functions with logarithmic singularities.
+ \end{itemize}
+
+\comment{In the introduction part, the authors mentioned very briefly
+that the motivation of their work is solving the heat equation on the
+sphere.  I would like to see at least three {\bf application} papers
+which really need to solve the heat equation on the sphere. Otherwise,
+the motivation is not justified and it does not seem to be appropriate
+to publish the manuscript since one could then write so many papers
+with each particular PDE on a specific manifold without any real
+applications.}
+\begin{itemize}
+  \item In the manuscript, we did motivate the Yukawa-Beltrami equation
+  with the isotropic heat equation.  However, the bigger picture is to
+  consider PDEs that involve both stiff (diffusion) and non-stiff
+  (reaction) terms and then apply an IMEX method.  This has several
+  applications, and 3 applications are cited in the first sentence of
+  the manuscript.
+  \item We added a few sentences to discuss the bigger picture.
+\end{itemize}
+
+\comment{All the theoretical results in the manuscript are
+straightforward and standard and analysts have proven them in a more
+general form. It is strongly recommended that the authors study
+previous work done by analysts and cite their work. The authors should
+also shorten the manuscript by deleting the “proofs” of Proposition 1,
+Lemmas 2 and 3 in the manuscript.}
+\begin{itemize}
+  \item The proof or Proposition 1 is in Mitrea and Taylor 1999 in
+  equation (7.37).  We now reference this equation.
+  \item For Lemmas 2 and 3, we now reference Mitrea and Taylor 1999
+  Proposition 3.8.
+\end{itemize}
+
+\comment{It seems that the kernel of the double layer potential has
+high-order logarithmically singular terms even though it is continuous
+at the diagonal. Instead of presenting numerical example 1, the authors
+should do a little analysis to show that this is indeed true.
+Numerical example 2 is also not needed since the operator becomes
+increasingly coercive as $k$ increases.}
+\begin{itemize}
+  \item The reviewer is correct that there is a logarithmic singularity
+  in the kernel.  We did do the analysis in the original manuscript in
+  Section 2.1.  In particular, equation (11) gives the nature of the
+  singularity.
+  \item We have left in the first numerical example since it numerically
+  verifies our analysis, and also shows that the number of GMRES
+  iterations is mesh-independent.
+  \item We have removed the second numerical example.
+\end{itemize}
+
+\comment{The authors need to clarify the real distinction on the
+integral equation method for $k > \frac{1}{2}$ and $k \leq
+\frac{1}{2}$.  The PDE itself does not seem to have any essential
+differences between these two cases. The comment that $k^{2} =
+\mathcal{O}(1/\Delta t)$ does not really justify the neglect of the
+discussion of the case $k\leq\frac{1}{2}.$}
+\begin{itemize}
+  \item The reviewer is correct that the fundamental solution defined in
+  terms of the Legendre function is valid for all $k > 0$.  However, in
+  order to use the Conical function representation (which we do both in
+  our analysis and numerical code), we require that $\sqrt{4k^{2}-1}$ is
+  real.
+  \item We now clarify the fact that the restriction $k > \frac{1}{2}$
+  is one of convenience and is not essential.
+\end{itemize}
+
+\comment{Lemma 1 is a little unsatisfactory as the authors do not
+explain why $\lim_{\theta \rightarrow 0^{+}}F(\theta)$ should be
+$\frac{1}{2\pi}$.  Standard approach of finding the constant $C_{k}$
+would utilize the fact that the Green’s function satisfies the PDE with
+the Dirac delta function as the right hand side and carry out an
+integration procedure. The authors could add one sentence or two for
+this.}
+\begin{itemize}
+  \item In equation (7), we define the constant $C_{k}$, but we don't
+  justify this value until Section 2.2
+  \item Instead of using the standard method of finding the constant
+  that guarantees that the PDE applied to the Green's function results
+  in the dirac delta function, we choose the constant so that the
+  limiting value of the double-layer potential is $\frac{1}{2\pi}$.
+  \item These two methods result in the same constant $C_{k}$ which we
+  now state after the proof of Lemma 1.
+\end{itemize}
+
+\comment{It seems weird to use $\tilde{V}$ and $\tilde{W}$ instead of
+simple $S$ and $D$ to denote the single and double layer potentials,
+respectively. Is there any particular reason to do so?  Also, the
+justification of single and double layer potentials satisfying the PDE
+is totally unnecessary since it uses just simple exchange of order of
+differentiation and integration.  The authors should remove it.}
+\begin{itemize}
+  \item \todo{Nilima: Why do we use $V$ and $W$.  Your paper with Simon
+  and Olaf is the first instance I could find of it being used.}
+  \item We removed the equations that showed how the layer potentials
+  satisfy the PDE.
+\end{itemize}
+
+\comment{In summary, the authors should justify the application of the
+manuscript and shorten the manuscript (definitely less than ten pages)
+in order to get it published. I would recommend the publication of the
+manuscript only if the changes are made to accommodate the above
+comments.}
+\begin{itemize}
+  \item The applications are further motivated
+  \item We have removed the proofs that were addressed by the reviewer.
+  \item While a 10 page paper would be nice, we feel that this is
+  unrealistic given the amount of content.  The introduction, numerical
+  results, and bibliography take 6 pages alone.  Four pages is not
+  sufficient to compute the fundamental solution (in several forms),
+  define the layer potentials,  look at their asymptotics, and present
+  several results.
+\end{itemize}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Reviewer 2}
+\comment{My only suggestion
+has to do with the confusing terminology. A parametrix is usually just
+an approximation to a fundamental solution of a partial differential
+equation, [1]. In this paper, the terms ``parametrix'' and
+``fundamental solution'' are used somewhat interchangeably, e.g.,
+Proposition 1 indicates that $G_k$ is a fundamental solution, but it
+is referred to as a parametrix in Section 3. The authors might want to
+clarify their choice - obviously, strictly at the authors'
+discretion. We would also like to point out that similar techniques
+have been used to derive fundamental solutions for toroidal
+geometries, [2]-[3], and in describing Yukawa scattering, [4].
+
+To summarize, this is an excellent paper, very much acceptable for
+publication in ACOM. It requires no further revision.
+
+References:
+
+[1] http://en.wikipedia.org/wiki/Parametrix
+
+[2] Conical functions: http://dlmf.nist.gov/14.19
+
+[3] Toroidal (ring) functions: http://dlmf.nist.gov/14.20
+
+[4] D.I. Fivel. New formulation of dispersion relations for
+potential scattering. Phys. Rev., 125(3):1085-1087, 1962.
+}
+
+\begin{itemize}
+  \item We have clarified that the parametrix that we use for the
+  majority of the manuscript is in fact the fundamental solution.
+
+  \item We thank the reviewer for pointing out the three references.
+\end{itemize}
+
+
+\end{document}

@@ -1,0 +1,109 @@
+Ref.:  Ms. No. ACOM-D-14-00174
+Integral equation methods for the Yukawa-Beltrami equation on the sphere
+Advances in Computational Mathematics
+
+Dear Dr Quaife,
+
+Reviewers have now commented on your paper. You will see that they are
+advising that you revise your manuscript. If you are prepared to
+undertake the work required, I would be pleased to reconsider the
+revised manuscript.
+
+The reviewers' comments can be found at the end of this email or can be
+accessed by following the provided link.
+
+This is your login information:
+Your username is: ********
+Your password is: ********
+
+When revising your work, please submit a list of changes or a rebuttal
+against each point which is being raised when you submit the revised
+manuscript.
+
+Your revision is due by May 13, 2015.
+
+To submit a revision, go to http://acom.edmgr.com/ and log in as an
+Author. You will see a menu item called 'Submissions Needing Revision'.
+You will find your submission record there.
+
+Yours sincerely
+
+Michael Shelley and John Lowengrub
+Editors
+Advances in Computational Mathematics
+
+Reviewers' comments:
+
+Dear Dr Quaife,
+
+Based on the reviews, we will accept your article but only after
+certain revisions,
+namely to fix some of the very good points raised by reviewer #1.
+Review #1 is attached, and Review #2 pasted below.
+
+I would suggest the following:
+* read the Mitrea-Taylor work, and explain that your proofs are not
+new, rather already covered by them,
+if you agree (I looked at Mitrea and it seems to have all the theory
+needed, but you will have to point to the relevant theorems). Cut
+such proofs or move to appendix; state whatever you keep are given
+for convenience.
+* while the <10 pages requested may be unrealistic, the paper
+should be a bit shorter, and cutting early proofs (or the growing k
+study) is a way to do this.
+* Items 1,3,4,5 of reviewer #1 are important to fix.
+* Item 3 is a bit unclear to me, but I think what is being asked is
+to justify that Alpert's log correction will give high-order
+accuracy. This is more than just proving the DLP kernel is in C^1.
+Rather, it would
+involve showing the kernel is of the form f(s,t) + log|s-t| g(s,t)
+where f,g are C^infty or analytic.
+It seems, by analogy with the Helmholtz case, this is probably true
+(for the DLP then g(s,s) = (d/dt) g(s,t)|_{t=s} = 0, ie the leading
+singularity in the kernel is (s-t)^2 log|s-t| ). At least some
+discussion to address this, or a proof if you have one, is needed.
+* Reviewer #2 finds the notation re separatrix unclear, so this is
+important to fix.
+
+We usually give 90 days for this. Yours sincerely,      Alex
+Barnett, editorial board.
+
+
+Reviewer #2:
+I have read the paper ``Integral equation methods for the
+Yukawa-Beltrami equation on the sphere'' by M. C. Kropinski, N.
+Nigam,
+and B. Quaife.  This is an excellent and timely paper that no doubt
+should be published in Advances in Computational Mathematics. The
+paper introduces a closed form of a fundamental solution for the
+Yukawa-Beltrami equation on a unit sphere thus extending classical
+results for the Laplace-Beltrami operator.
+
+The paper is well-written, and it pleasure to read. My only
+suggestion
+has to do with the confusing terminology. A parametrix is usually
+just
+an approximation to a fundamental solution of a partial differential
+equation, [1]. In this paper, the terms ``parametrix'' and
+``fundamental solution'' are used somewhat interchangeably, e.g.,
+Proposition 1 indicates that $G_k$ is a fundamental solution, but it
+is referred to as a parametrix in Section 3. The authors might want
+to
+clarify their choice - obviously, strictly at the authors'
+discretion. We would also like to point out that similar techniques
+have been used to derive fundamental solutions for toroidal
+geometries, [2]-[3], and in describing Yukawa scattering, [4].
+
+To summarize, this is an excellent paper, very much acceptable for
+publication in ACOM. It requires no further revision.
+
+References:
+
+[1] http://en.wikipedia.org/wiki/Parametrix
+
+[2] Conical functions: http://dlmf.nist.gov/14.19
+
+[3] Toroidal (ring) functions: http://dlmf.nist.gov/14.20
+
+[4] D.I. Fivel. New formulation of dispersion relations for
+potential scattering. Phys. Rev., 125(3):1085-1087, 1962.

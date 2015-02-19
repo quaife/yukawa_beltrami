@@ -187,16 +187,11 @@ curve of $\Omega$. We wish to solve the Yukawa boundary value problem:
 \end{subequations}
 Here $\lap_{\S}$ is the Laplace-Beltrami operator on $\S$ and $k>0 \in
 \mathbb{R}$ is constant. This  problem arises in the context of solving
-the isotropic heat equation via Rothe's method.  By first applying a
-semi-implicit time discretization to the heat equation, time-stepping
-then involves repeatedly solving an elliptic PDE of the
-form~\eqref{bigmodel}, where $k^2 = O(1/\Delta t)$.  In fact, this
-strategy is not restricted to the heat equation since the
-PDE~\cite{bigmodel} also arises when an IMEX
-method~\cite{asc:ruu:set1995} is applied to PDEs that involve the heat
-operator.  Therefore, possible applications span many fields of science
-such as fluid dynamics.  This approach is discussed in~\cite{rothe:heat}
-for several PDEs in the plane.
+the isotropic heat equation via Rothe's method. By first applying a
+semi-implicit time discretization to the heat equation,  time-stepping
+then involves repeatedly solve an elliptic PDE of the
+form~\eqref{bigmodel}, where $k^2 = O(1/\Delta t)$.  This approach is
+discussed in~\cite{rothe:heat} for the heat equation in the plane. 
 
 We recall that the exterior boundary value problem for the Yukawa
 operator $(-\lap + k^2)$  in $\mathbb{R}^2$ is well-posed if we seek
@@ -413,10 +408,12 @@ reduces to a constant; it is then possible to use a double-layer ansatz
 in which no volumetric terms or constraints appear~\cite{kro:nig2013}.  
 
 To avoid such complications, we shall instead derive a more convenient
-parametrix.  In particular, we use the fundamental solution of the
-Yukawa-Beltrami equation.  Without loss of generality we first set
-$x_{0}$ to be the point at the north pole.  Let $x$ be some other point
-on the sphere. The fundamental solution $G_k(x,x_0)$ depends on
+parametrix. To the best of our knowledge, the use of this parametrix
+and the associated boundary integral equations is novel. 
+
+Without loss of generality we first set $x_{0}$ to be the point at the
+north pole.  Let $x$ be some other point on the sphere. The parametrix
+$G_k(x,x_0)$ we seek depends on
 $r_0(\theta)=\|x-x_0\|=\sqrt{2-2\cos(\theta)}$. Since there is no
 angular dependence in $\phi$, the Yukawa-Beltrami operator reduces to
 the second order ODE operator
@@ -473,12 +470,9 @@ If $0<k^2<\frac{1}{4}$ then $\nu \in (-1,0)$. If $k^2\geq\frac{1}{4}$ then
 \end{align*}
 
 We observe that since $k^{2}>0$, $\nu(k) \notin \mathbb{Z}$. Moreover,
-if $k>\frac{1}{2}$ then $Im(\nu)\not=0$.  This is the regime in which we
+if $k>\frac{1}{2}$ then $Im(\nu)\not=0$. This is the regime in which we
 shall work, and in what follows we shall make this assumption on $k$.
-This assumption on $k$ is not essential, but is convenient in both our
-analysis and numerical methods.  In particular, it allows us to use
-conical functions.  Moreover, in the applications we are considering, we
-expect $k$ to be large since $k^{2} = \bigO(1/\Delta t)$.
+Recall that $k^{2} = \bigO(1/\Delta t)$ in our applications of interest.
 
 A further substitution allows us to write~\eqref{LegendrePequation} as
 a hypergeometric equation, (see, e.g., Section 7.3,~\cite{lebedev}).
@@ -742,23 +736,18 @@ and~\eqref{curlT}, we have
 Observe that setting $\C=-\frac{1}{4\sin(\nu \pi)}$, that is, using
 exactly the constant defined in~\eqref{constant-definition} in the
 definition of $G_k(x,x_0)$, we have $\lim_{\theta\rightarrow
-0^+}F(\theta)=\frac{1}{2\pi}.$  While this formulation is a
-normalization of the second layer potential (defined in the next
-section), it is equivalent to imposing that $G(x,x_{0})$ is the
-fundamental solution of the Yukawa-Beltrami equation.  That is, this
-choice of $C_{k}$ guarantees that $(-\Delta_{\S} + k^{2})G_{k}(x,x_{0})
-= \delta(x-x_{0})$, where $\delta$ is the usual dirac delta function.
+0^+}F(\theta)=\frac{1}{2\pi}.$
+
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Representation formula}
 \label{s:representation}
-The following representation formula can be found in~\cite{mit:tay1999}
-(equation (7.37)).  Let $\Omega$ and
-$\Omega^{c}:=\S\setminus{\overline{\Omega}}$ be a simply-connected
-submanifold and its complement on the sphere. We can then derive a
-representation formula in terms of the fundamental solution
+Let $\Omega$ and $\Omega^{c}:=\S\setminus{\overline{\Omega}}$ be a
+simply-connected submanifold and its complement on the sphere. We can
+then derive a representation formula in terms of the fundamental
+solution
 $G_k(x,x_{0})$ of the previous section.
 \begin{proposition}
 \label{prop:repr}
@@ -776,166 +765,167 @@ C^{1}(\overline{\Omega})$ satisfies the representation formula
   0 & \mbox{ if  $x_0\in{\Omega}_c$}. 
   \end{array} \right.
 \end{align}
+
 \end{proposition}
 
-%\begin{proof} 
-%We let $x\in \Omega$, and $x_0$ be a point either in $\Omega$ or
-%$\Omega^c$.  We proceed by examining the two possible cases.
-%
-%{\bf Case 1}:  $x_{0} \in \Omega^{c}$.  In this situation, the
-%fundamental solution $G_{k}(x,x_{0})$ satisfies the Yukawa-Beltrami
-%equation point-wise at all $x\in \Omega$. Since $x \neq x_0$,
-%$G_{k}(x,x_0)$ is a smooth function and we can therefore use Green's
-%second identity~\eqref{Green2} with $v(x)$ replaced by
-%$G_{k}(x,x_{0})$. Since $x_0\not \in \Omega$ all the
-%integrals involved are bounded, and 
-%\begin{align*}
-%  \int\limits_{\Omega} u(x)(\lap_{\S}G_{k}(x,x_0) 
-%      -k^{2}G_{k}(x,x_0)) \, d\sigma_x=0.
-%\end{align*}
-%Therefore, using~\eqref{Green2} we have 
-%\begin{align*}
-% 0 &= - \int\limits_{\Omega}
-%    G_k(x,x_{0})\left(\lap_{\S}u(x) -k^2 u(x)\right)\,d\sigma_x \\
-%    &-\int\limits_{{\Gamma}} G_k(x,x_{0}) \, \underline{\mbox{curl}}_{\S}
-%    u(x) \cdot \vec{t}(x) ds_{x} 
-% + \int\limits_{{\Gamma}}  u(x)
-% \,\underline{\mbox{curl}}_{{\S}} G_k(x,x_0) \cdot \vec{t}(x) ds_{x}.
-%\end{align*}
-%\begin{figure}
-%  \centering
-%  \input{proof1.tex}
-%  \caption{\label{f:proof1} The points $x,x_0$ belong to $\Omega$. We
-%  denote by $\Omega_\varepsilon:=\Omega\setminus B_{\varepsilon}(x_0)$}
-%\end{figure}
-%
-%{\bf Case 2}:  $x_0\in \Omega$.  In this situation  we cannot directly
-%use Green's second identity, since the fundamental solution has a
-%logarithmic singularity when $x=x_0$. Instead, we first define the
-%$\varepsilon$-neighbourhood of $x_0$,
-%$B_{\varepsilon}(x_0):=\{y\in{\S}:\, |y-x_0| \,<\, \varepsilon\}$. We
-%choose $\varepsilon>0$ small enough such that
-%$B_\varepsilon(x_{0})\subset \Omega$ (see Figure~\ref{f:proof1}). We
-%then set ${\Omega}_{\varepsilon}:=\Omega\setminus B_{\varepsilon}(x_0)$.
-%For $x\in \Omega_\varepsilon$, once again $G_k(x,x_0)$ satisfies the
-%Yukawa-Beltrami equation exactly.   The second Green's formula for
-%$\Omega_{\varepsilon}$ with $v(x)=G_k(x,x_0)$ yields:
-%\begin{align}
-%  - \int\limits_{\Omega_{\varepsilon}} G_k(x,x_0)\,
-%    (\lap_{\S}& u(x) -k^2u(x))\,d\sigma_x = 
-%    \int\limits_\Gamma [ G_k(x,x_0)\,\underline{\mbox{curl}}_{\S} 
-%    u(x) - u(x)\,\underline{\mbox{curl}}_{\S} G_k(x,x_0)] \cdot 
-%    \vec{t}(x) ds_x \nonumber \\
-%  &+\int\limits_{\partial B_{\varepsilon}(x_0)} [
-%    G_k(x,x_0)\,\underline{\mbox{curl}}_{\S} u(x) -
-%    u(x)\,\underline{\mbox{curl}}_{\S} G_k(x,x_0)]\cdot 
-%    \vec{t}(x) ds_{x}.
-%  \label{Green_S1eps}
-%\end{align}
-%We shall discuss each of these terms. We first note that since $x_{0}\in
-%\Omega$, the integrals over $\Gamma$ in~\eqref{Green_S1eps} are
-%well-defined. So we must examine the volume integral over
-%$\Omega_\varepsilon$ and the integrals over $\partial B_\varepsilon$.
-%For ease of exposition and without loss of generality, we take
-%$x_{0}=(0,0,1)$.  The curve $\partial B_{\varepsilon}$ is then fully
-%described by the latitude $\theta_{\varepsilon}$.  In this case, if
-%$x\in \partial B_\varepsilon$, then $<x,x_{0}> =
-%\cos(\theta_\varepsilon)$, and  $G_k(x,x_0) = \C
-%P_{\nu(k)}\left(-<x,x_{0}>\right) = \C
-%P_{\nu(k)}\left(-\cos(\theta_\varepsilon)\right).$ Therefore, since
-%$\cos(\theta_\varepsilon) = 1- \theta^2_\varepsilon/2 + \cdots$, we can
-%use the asymptotic result~\eqref{e:logSingularity} to compute
-%\begin{align*}
-% \int\limits_{\partial B_{\varepsilon}}\vert G_k(x,x_0)\,\vert  ds_x 
-%  &\leq \int_{0}^{2\pi}\vert \C P_{\nu(k)}(-\cos\theta_{\varepsilon})  
-%    \, \sin\theta_{\varepsilon}| \, d\varphi \\
-%  &= \C|\sin\theta_{\varepsilon}|
-%    |P_{\nu(k)}(-\cos\theta_{\varepsilon}) | 2\pi \\
-%  &= 2 \pi |\sin\theta_{\varepsilon}|\C \left(\cos(\nu\pi) 
-%    P_{\nu(k)}(\cos \theta_\varepsilon) - 
-%    \frac{2}{\pi}\sin(\nu \pi)
-%    Q_\nu(\cos \theta_{\varepsilon})\right) \\
-%  &\rightarrow 0 \quad \mbox{ (as $\varepsilon\rightarrow 0$)},
-%\end{align*}
-%where the limit holds since the singularity of $P_{\nu(k)}$ is only
-%logarithmic.  We can therefore estimate the first integral over
-%$\partial B_\varepsilon$ in~\eqref{Green_S1eps} as
-%\begin{align*}
-%  \left|\int\limits_{\partial B_{\varepsilon}} 
-%  G_{k}(x,x_{0})\,\underline{\mbox{curl}}_{\S} 
-%  u(x)\cdot\vec{t}(x)\, ds_x\right|\, \leq\, 
-%  \|\underline{\mbox{curl}}_{\S}u\|_{L^{\infty}} \,
-%  \int\limits_{\partial B_{\varepsilon}} |G_k(x,x_0)|\,ds_x 
-%  \rightarrow 0, \, \mbox{as}\, \varepsilon \rightarrow 0.
-%\end{align*}
-%
-%To analyse the second contribution along $\partial B_{\varepsilon}$
-%in~\eqref{Green_S1eps}, we again assume $x_{0}=(0,0,1)$.
-%Using~\eqref{curlT} we deduce that (note the orientation of $\partial
-%B_{\varepsilon}$)
-%\begin{align}
-%  \label{secondterm}
-%  -\int\limits_{\partial B_{\varepsilon}}
-%    [u(x)&\underline{\mbox{curl}}_{\S}G(x,x_0)\cdot \vec{t}(x)] ds_x 
-%    \nonumber \\
-%  &=\frac{\C(\nu+1) \sin^{2}\theta_{\varepsilon}}
-%         {\cos^{2}\theta_{\varepsilon} -1} 
-%  \left[ P_{\nu+1}(-\cos\theta_{\varepsilon}) +   
-%  (\cos \theta_\varepsilon) P_{\nu}(-\cos \theta_\varepsilon)\right] 
-%  \int_{2\pi}^0 u(\varphi,\theta_{\varepsilon})\, d\varphi  \nonumber\\
-%  &= \C(\nu+1) \left[ P_{\nu+1}(-\cos\theta_\varepsilon)
-%  + (\cos \theta_\varepsilon) P_\nu(-\cos\theta_\varepsilon)\right] 
-%  \int_{0}^{2\pi} u(\varphi,\theta_{\varepsilon})\, d\varphi.
-%\end{align}
-%
-%Combining~\eqref{smallermess1},~\eqref{smallermess2}
-%and~\eqref{secondterm} and using the continuity of $u$, we have
-%\begin{align*}
-%  -\lim_{\varepsilon\rightarrow 0}\int\limits_{\partial B_{\varepsilon}}
-%  u(x)& [\underline{\mbox{curl}}_{\S}G(x,x_0)\cdot \vec{t}(x)] ds_{x}
-%  = -4\C\sin(\nu \pi)  u(x_0) = u(x_0).
-%\end{align*} 
-%Note that $\C=-\frac{1}{4\sin(\nu\pi)}$ is chosen precisely to be this
-%value in~\eqref{constant-definition} to ensure this integral, in the
-%limit, is $u(x_0)$.
-%
-%We finally observe that since $u$ is assumed to be smooth enough,
-%\begin{align*} 
-%  \left| \int\limits_{\Omega} G_k(x,x_0)\,(\lap_{\S} u(x)-k^2u(x)) 
-%  \, d\sigma_x\right|\,&\leq \,
-%  \|\lap_{\S}\,u -k^2 u\|_{L^{\infty}(\Omega)} 
-%  \int\limits_{\Omega} |G_k(x,x_0)| \, d\sigma_x\,\\
-%  & \leq \|\lap_{\S}\,u -k^2 u\|_{L^{\infty}(\Omega)}M,
-%\end{align*}
-%where $M$ is a constant which depends on the volume of $\Omega$.
-%Specifically, since $P_\nu(k)(-t)$ is smooth away from the
-%(logarithmic) singularity at $t=1$, we have 
-%\begin{align*}
-%  M := \int\limits_{\Omega} |G_k(x,x_0)| \, d\sigma_x
-%  = \int_{B_{\varepsilon}(x_0)}|G_k(x,x_0)| \, d\sigma_x + M_1.
-%\end{align*}
-%The first integral is bounded since the logarithm is integrable over
-%${B_{\varepsilon}(x_0)}$, and $M_1$ is some finite constant depending
-%on the area of $\Omega$. Hence $M$ is a finite positive
-%constant depending on $\Omega$ and
-%\begin{align*}
-%  \lim_{\varepsilon\rightarrow 0}
-%  \int\limits_{\Omega_{\varepsilon}} G_k(x,x_0)\,(\lap_{\S} u(x)
-%  -k^2u(x)) \,d\sigma_x = \int\limits_{\Omega} G_k(x,x_0)\,
-%  (\lap_{\S} u(x) -k^2u(x))\,d\sigma_x.
-%\end{align*}
-%
-%Therefore, taking limits in~\eqref{Green_S1eps} proves the result.
-%\end{proof}
-%\qed
+\begin{proof} 
+We let $x\in \Omega$, and $x_0$ be a point either in $\Omega$ or
+$\Omega^c$.  We proceed by examining the two possible cases.
+
+{\bf Case 1}:  $x_{0} \in \Omega^{c}$.  In this situation, the
+fundamental solution $G_{k}(x,x_{0})$ satisfies the Yukawa-Beltrami
+equation point-wise at all $x\in \Omega$. Since $x \neq x_0$,
+$G_{k}(x,x_0)$ is a smooth function and we can therefore use Green's
+second identity~\eqref{Green2} with $v(x)$ replaced by
+$G_{k}(x,x_{0})$. Since $x_0\not \in \Omega$ all the
+integrals involved are bounded, and 
+\begin{align*}
+  \int\limits_{\Omega} u(x)(\lap_{\S}G_{k}(x,x_0) 
+      -k^{2}G_{k}(x,x_0)) \, d\sigma_x=0.
+\end{align*}
+Therefore, using~\eqref{Green2} we have 
+\begin{align*}
+ 0 &= - \int\limits_{\Omega}
+    G_k(x,x_{0})\left(\lap_{\S}u(x) -k^2 u(x)\right)\,d\sigma_x \\
+    &-\int\limits_{{\Gamma}} G_k(x,x_{0}) \, \underline{\mbox{curl}}_{\S}
+    u(x) \cdot \vec{t}(x) ds_{x} 
+ + \int\limits_{{\Gamma}}  u(x)
+ \,\underline{\mbox{curl}}_{{\S}} G_k(x,x_0) \cdot \vec{t}(x) ds_{x}.
+\end{align*}
+\begin{figure}
+  \centering
+  \input{proof1.tex}
+  \caption{\label{f:proof1} The points $x,x_0$ belong to $\Omega$. We
+  denote by $\Omega_\varepsilon:=\Omega\setminus B_{\varepsilon}(x_0)$}
+\end{figure}
+
+{\bf Case 2}:  $x_0\in \Omega$.  In this situation  we cannot directly
+use Green's second identity, since the fundamental solution has a
+logarithmic singularity when $x=x_0$. Instead, we first define the
+$\varepsilon$-neighbourhood of $x_0$,
+$B_{\varepsilon}(x_0):=\{y\in{\S}:\, |y-x_0| \,<\, \varepsilon\}$. We
+choose $\varepsilon>0$ small enough such that
+$B_\varepsilon(x_{0})\subset \Omega$ (see Figure~\ref{f:proof1}). We
+then set ${\Omega}_{\varepsilon}:=\Omega\setminus B_{\varepsilon}(x_0)$.
+For $x\in \Omega_\varepsilon$, once again $G_k(x,x_0)$ satisfies the
+Yukawa-Beltrami equation exactly.   The second Green's formula for
+$\Omega_{\varepsilon}$ with $v(x)=G_k(x,x_0)$ yields:
+\begin{align}
+  - \int\limits_{\Omega_{\varepsilon}} G_k(x,x_0)\,
+    (\lap_{\S}& u(x) -k^2u(x))\,d\sigma_x = 
+    \int\limits_\Gamma [ G_k(x,x_0)\,\underline{\mbox{curl}}_{\S} 
+    u(x) - u(x)\,\underline{\mbox{curl}}_{\S} G_k(x,x_0)] \cdot 
+    \vec{t}(x) ds_x \nonumber \\
+  &+\int\limits_{\partial B_{\varepsilon}(x_0)} [
+    G_k(x,x_0)\,\underline{\mbox{curl}}_{\S} u(x) -
+    u(x)\,\underline{\mbox{curl}}_{\S} G_k(x,x_0)]\cdot 
+    \vec{t}(x) ds_{x}.
+  \label{Green_S1eps}
+\end{align}
+We shall discuss each of these terms. We first note that since $x_{0}\in
+\Omega$, the integrals over $\Gamma$ in~\eqref{Green_S1eps} are
+well-defined. So we must examine the volume integral over
+$\Omega_\varepsilon$ and the integrals over $\partial B_\varepsilon$.
+For ease of exposition and without loss of generality, we take
+$x_{0}=(0,0,1)$.  The curve $\partial B_{\varepsilon}$ is then fully
+described by the latitude $\theta_{\varepsilon}$.  In this case, if
+$x\in \partial B_\varepsilon$, then $<x,x_{0}> =
+\cos(\theta_\varepsilon)$, and  $G_k(x,x_0) = \C
+P_{\nu(k)}\left(-<x,x_{0}>\right) = \C
+P_{\nu(k)}\left(-\cos(\theta_\varepsilon)\right).$ Therefore, since
+$\cos(\theta_\varepsilon) = 1- \theta^2_\varepsilon/2 + \cdots$, we can
+use the asymptotic result~\eqref{e:logSingularity} to compute
+\begin{align*}
+ \int\limits_{\partial B_{\varepsilon}}\vert G_k(x,x_0)\,\vert  ds_x 
+  &\leq \int_{0}^{2\pi}\vert \C P_{\nu(k)}(-\cos\theta_{\varepsilon})  
+    \, \sin\theta_{\varepsilon}| \, d\varphi \\
+  &= \C|\sin\theta_{\varepsilon}|
+    |P_{\nu(k)}(-\cos\theta_{\varepsilon}) | 2\pi \\
+  &= 2 \pi |\sin\theta_{\varepsilon}|\C \left(\cos(\nu\pi) 
+    P_{\nu(k)}(\cos \theta_\varepsilon) - 
+    \frac{2}{\pi}\sin(\nu \pi)
+    Q_\nu(\cos \theta_{\varepsilon})\right) \\
+  &\rightarrow 0 \quad \mbox{ (as $\varepsilon\rightarrow 0$)},
+\end{align*}
+where the limit holds since the singularity of $P_{\nu(k)}$ is only
+logarithmic.  We can therefore estimate the first integral over
+$\partial B_\varepsilon$ in~\eqref{Green_S1eps} as
+\begin{align*}
+  \left|\int\limits_{\partial B_{\varepsilon}} 
+  G_{k}(x,x_{0})\,\underline{\mbox{curl}}_{\S} 
+  u(x)\cdot\vec{t}(x)\, ds_x\right|\, \leq\, 
+  \|\underline{\mbox{curl}}_{\S}u\|_{L^{\infty}} \,
+  \int\limits_{\partial B_{\varepsilon}} |G_k(x,x_0)|\,ds_x 
+  \rightarrow 0, \, \mbox{as}\, \varepsilon \rightarrow 0.
+\end{align*}
+
+To analyse the second contribution along $\partial B_{\varepsilon}$
+in~\eqref{Green_S1eps}, we again assume $x_{0}=(0,0,1)$.
+Using~\eqref{curlT} we deduce that (note the orientation of $\partial
+B_{\varepsilon}$)
+\begin{align}
+  \label{secondterm}
+  -\int\limits_{\partial B_{\varepsilon}}
+    [u(x)&\underline{\mbox{curl}}_{\S}G(x,x_0)\cdot \vec{t}(x)] ds_x 
+    \nonumber \\
+  &=\frac{\C(\nu+1) \sin^{2}\theta_{\varepsilon}}
+         {\cos^{2}\theta_{\varepsilon} -1} 
+  \left[ P_{\nu+1}(-\cos\theta_{\varepsilon}) +   
+  (\cos \theta_\varepsilon) P_{\nu}(-\cos \theta_\varepsilon)\right] 
+  \int_{2\pi}^0 u(\varphi,\theta_{\varepsilon})\, d\varphi  \nonumber\\
+  &= \C(\nu+1) \left[ P_{\nu+1}(-\cos\theta_\varepsilon)
+  + (\cos \theta_\varepsilon) P_\nu(-\cos\theta_\varepsilon)\right] 
+  \int_{0}^{2\pi} u(\varphi,\theta_{\varepsilon})\, d\varphi.
+\end{align}
+
+Combining~\eqref{smallermess1},~\eqref{smallermess2}
+and~\eqref{secondterm} and using the continuity of $u$, we have
+\begin{align*}
+  -\lim_{\varepsilon\rightarrow 0}\int\limits_{\partial B_{\varepsilon}}
+  u(x)& [\underline{\mbox{curl}}_{\S}G(x,x_0)\cdot \vec{t}(x)] ds_{x}
+  = -4\C\sin(\nu \pi)  u(x_0) = u(x_0).
+\end{align*} 
+Note that $\C=-\frac{1}{4\sin(\nu\pi)}$ is chosen precisely to be this
+value in~\eqref{constant-definition} to ensure this integral, in the
+limit, is $u(x_0)$.
+
+We finally observe that since $u$ is assumed to be smooth enough,
+\begin{align*} 
+  \left| \int\limits_{\Omega} G_k(x,x_0)\,(\lap_{\S} u(x)-k^2u(x)) 
+  \, d\sigma_x\right|\,&\leq \,
+  \|\lap_{\S}\,u -k^2 u\|_{L^{\infty}(\Omega)} 
+  \int\limits_{\Omega} |G_k(x,x_0)| \, d\sigma_x\,\\
+  & \leq \|\lap_{\S}\,u -k^2 u\|_{L^{\infty}(\Omega)}M,
+\end{align*}
+where $M$ is a constant which depends on the volume of $\Omega$.
+Specifically, since $P_\nu(k)(-t)$ is smooth away from the
+(logarithmic) singularity at $t=1$, we have 
+\begin{align*}
+  M := \int\limits_{\Omega} |G_k(x,x_0)| \, d\sigma_x
+  = \int_{B_{\varepsilon}(x_0)}|G_k(x,x_0)| \, d\sigma_x + M_1.
+\end{align*}
+The first integral is bounded since the logarithm is integrable over
+${B_{\varepsilon}(x_0)}$, and $M_1$ is some finite constant depending
+on the area of $\Omega$. Hence $M$ is a finite positive
+constant depending on $\Omega$ and
+\begin{align*}
+  \lim_{\varepsilon\rightarrow 0}
+  \int\limits_{\Omega_{\varepsilon}} G_k(x,x_0)\,(\lap_{\S} u(x)
+  -k^2u(x)) \,d\sigma_x = \int\limits_{\Omega} G_k(x,x_0)\,
+  (\lap_{\S} u(x) -k^2u(x))\,d\sigma_x.
+\end{align*}
+
+Therefore, taking limits in~\eqref{Green_S1eps} proves the result.
+\end{proof}
+\qed
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Layer potentials and boundary integral operators}
-Now that we have the fundamental solution $G_k(x,x_0)$ defined in
+Now that we have a convenient parametrix $G_k(x,x_0)$ defined in
 Definition~\ref{fundamentaldef} for the Yukawa-Beltrami equation and a
 representation formula~\eqref{eq:representationformula}, we can define
 convenient layer potentials which in turn will be used to reduce the
-boundary value problem~\eqref{DBVP} over the domain $\Omega$ to a
+boundary value problem~\eqref{DBVP}  over the domain $\Omega$ to a
 boundary integral equation over $\Gamma = \partial \Omega$.
 
 
@@ -975,37 +965,35 @@ double-layer potential.  This  is the starting point for the so-called
 direct boundary integral approach. However, for the purpose of this
 paper we follow the layer ansatz based on the following observation.
 
-For $x \in \Omega, x \notin \Gamma$, the single-layer
-potential~\eqref{singlelayerpotential} satisfies $(-\lap_{\S} + k^{2})
-(\widetilde{V_k}\sigma)(x)=0$.  Hence, we may find the general solution
-of the Dirichlet boundary value problem~\eqref{DBVP} in terms of a
-single-layer potential.  Similarly, the double-layer
-potential~\eqref{doublelayerpotential} satisfies $(-\lap_{\S} +
-k^2)(\widetilde{W}\mu)(x)=0$.  We might thus also try to look for the
-solution to~\eqref{DBVP} in the form of a double-layer potential.  In
-either case, we need to calculate the unknown density $\sigma$.  In
-order to find the boundary integral equation that $\sigma$ solves, we
-require the jump relations of the layer potentials.
-
-%\begin{align*}
-%  u(x) & =  \int\limits_\Gamma G_k(x,y) \,\sigma(y) \,ds_{y}. 
-%\end{align*}
-%\begin{align*}
-%  (-\lap_{\S} + k^2)(\widetilde{W}\mu)(x) & = (-\lap_{\S}+k^2)
-%  \int\limits_\Gamma \mu(y)\, [\underline{\mbox{curl}}_{\S}
-%  G(x,y)\cdot\vec{t}(y)]\,ds_{y} \\
-%  &=\int\limits_\Gamma \mu(y)
-%  [(\lap_{\S}-k^2)\,\underline{\mbox{curl}}_{\S}\,
-%  G(x,y)\cdot\vec{t}(y)]\,ds_{y} \\ 
-%  &=\int\limits_\Gamma \mu(y) [\underline{\mbox{curl}}_{\S} \,
-%  (\lap_{\S} -k^2)G(x,y)\cdot\vec{t}(y)]\,ds_{y} = 0.
-%\end{align*}
-%\begin{align*}
-%  (-\lap_{\S} + k^{2}) (\widetilde{V_k}\sigma)(x)& =
-%  (-\lap_{\S} + k^2) \int\limits_\Gamma G_k(x,y)\, \sigma(y)\,ds_{y} \\
-%  & = \int\limits_\Gamma (-\lap_{\S}+k^2) G_k(x,y)\, 
-%    \sigma(y)\,ds_{y}= \, 0.
-%\end{align*}
+For $x \in \Omega, x \notin \Gamma$, the single-layer potential
+in~\eqref{singlelayerpotential} satisfies:
+\begin{align*}
+  (-\lap_{\S} + k^{2}) (\widetilde{V_k}\sigma)(x)& =
+  (-\lap_{\S} + k^2) \int\limits_\Gamma G_k(x,y)\, \sigma(y)\,ds_{y} \\
+  & = \int\limits_\Gamma (-\lap_{\S}+k^2) G_k(x,y)\, 
+    \sigma(y)\,ds_{y}= \, 0.
+\end{align*}
+Hence, we may find the general solution of the Dirichlet boundary value
+problem~\eqref{DBVP} in terms of a single-layer potential
+\begin{align*}
+  u(x) & =  \int\limits_\Gamma G_k(x,y) \,\sigma(y) \,ds_{y}. 
+\end{align*}
+We would then need to calculate the unknown density $\sigma$.
+ 
+Similarly, the double-layer potential in~\eqref{doublelayerpotential}
+satisfies the Yukawa-Beltrami equation for $x\in \Omega, x\notin\Gamma$
+\begin{align*}
+  (-\lap_{\S} + k^2)(\widetilde{W}\mu)(x) & = (-\lap_{\S}+k^2)
+  \int\limits_\Gamma \mu(y)\, [\underline{\mbox{curl}}_{\S}
+  G(x,y)\cdot\vec{t}(y)]\,ds_{y} \\
+  &=\int\limits_\Gamma \mu(y)
+  [(\lap_{\S}-k^2)\,\underline{\mbox{curl}}_{\S}\,
+  G(x,y)\cdot\vec{t}(y)]\,ds_{y} \\ 
+  &=\int\limits_\Gamma \mu(y) [\underline{\mbox{curl}}_{\S} \,
+  (\lap_{\S} -k^2)G(x,y)\cdot\vec{t}(y)]\,ds_{y} = 0.
+\end{align*}
+We might thus also try to look for the solution to~\eqref{DBVP} in the
+form of a double-layer potential.
 
 
 
@@ -1028,11 +1016,10 @@ consider the single-layer potential with density $\sigma$ for $x \notin
   G_k(x,y)\,\sigma(y)\,ds_{y} \\
   & = \C \int\limits_\Gamma P_{\nu(k)}(-<x,y>)\,\sigma(y)\,ds_{y}.
 \end{align*}
-The following Lemma, which is proved in~\cite{mit:tay1999} (Proposition
-3.8), describes the limit behavior of the single-layer potential.  
-\begin{lemma}
-Let $\widetilde{V_k}$ be the single-layer potential defined
-in~\eqref{singlelayerpotential}. For $x_{0}\in\Gamma$ we have:
+The following Lemma describes the limit behavior of the single-layer
+potential.  \begin{lemma} Let $\widetilde{V_k}$ be the single-layer
+potential defined in~\eqref{singlelayerpotential}. For $x_{0}\in\Gamma$
+we have:
 \begin{align*} 
   (V\sigma)(x_0) & := \lim\limits_{\substack{
       x \to x_{0} \\ x \in \Omega}}
@@ -1041,72 +1028,68 @@ in~\eqref{singlelayerpotential}. For $x_{0}\in\Gamma$ we have:
 as a weakly singular line integral and hence $(\widetilde{V_k}\sigma)$
 is continuous across $\Gamma$.
 \end{lemma}
-%\begin{proof}
-%Fix an arbitrary $\varepsilon > 0$. Let $x_0 \in \Gamma$ be fixed, and
-%$x \in \Omega$ satisfy $|x-x_0| < \varepsilon$.  Introduce the notation 
-%\begin{align*}
-%  C_{\e,\leq}:=\{y \in \Gamma,\|y-x_0\|\leq\e\},\qquad  
-%  C_{\e,>}:=\{y\in \Gamma,\|y-x_0\|>\e\}.
-%\end{align*}
-%
-%Then, if we define
-%\begin{align*}
-%  I_{\varepsilon}(x) &: = \int\limits_\Gamma G_k(x,y)
-%  \,\sigma(y) \,ds_{y} - \int_{C_{\e,>}} G_k(x_0,y)
-%  \,\sigma(y)\,ds_{y},
-%\end{align*} 
-%we can easily show
-%\begin{align}
-%  I_{\varepsilon}& =  \int_{C_{\e,>}}
-%  \left[ G_k(x,y)\,-\, G_k(x_0,y) \right]\,\sigma(y)\,ds_{y} +    
-%    \int_{C_{\e,\leq}} G_k(x,y)\, \sigma(y)\, ds_{y}.
-%  \label{lemm}
-%\end{align}
-%The first integral in~\eqref{lemm} vanishes in the limit as
-%$x\rightarrow x_0$ since $P_{\nu(k)}(1-<x,x_0>)$ is continuous away from
-%$<x,x_0>=1$, i.e. where $x=x_0$.  That is, 
-%\begin{align*}
-%  \lim\limits_{x \to x_0} \int_{C_{\e,>}}
-%  \left[G_k(x,y)\,-\,G_k(x_0,y) \right]\,\sigma(y)\,ds_{y} = 0 .
-%\end{align*}
-%The second term in~\eqref{lemm} can be bound in terms of the density
-%$\sigma$:
-%\begin{align*}
-%  &\left|\int_{C_{\e,\leq}}
-%  G_k(x,y)\,\sigma(y)\,ds_{y}\,\right| \, \leq \,
-%  \| \sigma \|_{L_\infty(\Gamma)} \int_{C_{\e,\leq}}
-%  \left| G_k(x,y)\right|\,ds_{y}.
-%\end{align*}
-%To finish the proof, note that we can estimate
-%\begin{align*}
-%  \int_{C_{\e,\leq}} \left| G_k(x,y)\right|\,ds_{y}\,\leq\,
-%  \int\limits_{\substack{y \in \Gamma \\ |y-x| \leq 2\varepsilon}}
-%  \left| G_k(x,y)\right|\,ds_{y}
-%  \buildrel {x\rightarrow x_{0}}\over\longrightarrow 
-%  \int\limits_{\substack{y \in \Gamma \\ |y-x_{0}| \leq 2\varepsilon}}
-%  \left| G_k(x_0,y)\right|\,ds_{y}
-%  \buildrel{\varepsilon\rightarrow 0}\over\longrightarrow 0.
-%\end{align*}
-%As before, the final limit holds since $G_{k}(x_{0},y)$ has a
-%logarithmic singularity at $y = x_{0}$.  Putting these estimates
-%together, we see that  $\displaystyle \lim_{\varepsilon\rightarrow
-%0}\lim_{x\rightarrow x_{0}} I_{\varepsilon}(x)=0$, which proves the
-%assertion.
-%\end{proof}
-%\qed
+\begin{proof}
+Fix an arbitrary $\varepsilon > 0$. Let $x_0 \in \Gamma$ be fixed, and
+$x \in \Omega$ satisfy $|x-x_0| < \varepsilon$.  Introduce the notation 
+\begin{align*}
+  C_{\e,\leq}:=\{y \in \Gamma,\|y-x_0\|\leq\e\},\qquad  
+  C_{\e,>}:=\{y\in \Gamma,\|y-x_0\|>\e\}.
+\end{align*}
 
-%The case of the double-layer potential is slightly more involved. We
-%anticipate that, just as for the Laplace-Beltrami double-layer
-%potential~\cite{gemmrich}, the Yukawa-Beltrami double-layer will possess
-%a jump across the boundary of a domain.  Indeed, since $G_k(x,x_0)$ has
-%a logarithmic singularity, the estimates follow the same argument as for
-%the Laplace-Beltrami. The details of the calculation are cumbersome, but
-%the overall strategy is that of Section 8.2 in~\cite{hackbusch}.
+Then, if we define
+\begin{align*}
+  I_{\varepsilon}(x) &: = \int\limits_\Gamma G_k(x,y)
+  \,\sigma(y) \,ds_{y} - \int_{C_{\e,>}} G_k(x_0,y)
+  \,\sigma(y)\,ds_{y},
+\end{align*} 
+we can easily show
+\begin{align}
+  I_{\varepsilon}& =  \int_{C_{\e,>}}
+  \left[ G_k(x,y)\,-\, G_k(x_0,y) \right]\,\sigma(y)\,ds_{y} +    
+    \int_{C_{\e,\leq}} G_k(x,y)\, \sigma(y)\, ds_{y}.
+  \label{lemm}
+\end{align}
+The first integral in~\eqref{lemm} vanishes in the limit as
+$x\rightarrow x_0$ since $P_{\nu(k)}(1-<x,x_0>)$ is continuous away from
+$<x,x_0>=1$, i.e. where $x=x_0$.  That is, 
+\begin{align*}
+  \lim\limits_{x \to x_0} \int_{C_{\e,>}}
+  \left[G_k(x,y)\,-\,G_k(x_0,y) \right]\,\sigma(y)\,ds_{y} = 0 .
+\end{align*}
+The second term in~\eqref{lemm} can be bound in terms of the density
+$\sigma$:
+\begin{align*}
+  &\left|\int_{C_{\e,\leq}}
+  G_k(x,y)\,\sigma(y)\,ds_{y}\,\right| \, \leq \,
+  \| \sigma \|_{L_\infty(\Gamma)} \int_{C_{\e,\leq}}
+  \left| G_k(x,y)\right|\,ds_{y}.
+\end{align*}
+To finish the proof, note that we can estimate
+\begin{align*}
+  \int_{C_{\e,\leq}} \left| G_k(x,y)\right|\,ds_{y}\,\leq\,
+  \int\limits_{\substack{y \in \Gamma \\ |y-x| \leq 2\varepsilon}}
+  \left| G_k(x,y)\right|\,ds_{y}
+  \buildrel {x\rightarrow x_{0}}\over\longrightarrow 
+  \int\limits_{\substack{y \in \Gamma \\ |y-x_{0}| \leq 2\varepsilon}}
+  \left| G_k(x_0,y)\right|\,ds_{y}
+  \buildrel{\varepsilon\rightarrow 0}\over\longrightarrow 0.
+\end{align*}
+As before, the final limit holds since $G_{k}(x_{0},y)$ has a
+logarithmic singularity at $y = x_{0}$.  Putting these estimates
+together, we see that  $\displaystyle \lim_{\varepsilon\rightarrow
+0}\lim_{x\rightarrow x_{0}} I_{\varepsilon}(x)=0$, which proves the
+assertion.
+\end{proof}
+\qed
 
-Unlike the single-layer potential, the double-layer potential is
-discontinuous across the boundary of the domain.  In particular, we have
-the following Lemma which is proved in~\cite{mit:tay1999} (Proposition
-3.8).
+The case of the double-layer potential is slightly more involved. We
+anticipate that, just as for the Laplace-Beltrami double-layer
+potential~\cite{gemmrich}, the Yukawa-Beltrami double-layer will possess
+a jump across the boundary of a domain.  Indeed, since $G_k(x,x_0)$ has
+a logarithmic singularity, the estimates follow the same argument as for
+the Laplace-Beltrami. The details of the calculation are cumbersome, but
+the overall strategy is that of Section 8.2 in~\cite{hackbusch}.
+
 \begin{lemma} 
 \label{l:DLPjump} 
 Let $\widetilde{W_k}$ be the double-layer potential defined
@@ -1143,96 +1126,97 @@ $\Omega^{c}$ in the sense of Stoke's theorem.
 
 \end{lemma}
 
-%\begin{proof}
-%We provide only a sketch of the proof.  Given $\varepsilon \, > \,0$,
-%let $x\in \Omega^{c}$ with $ \| x-x_0\|<\varepsilon$.   We use the same
-%notation for $C_{\epsilon,\geq}$ and $C_{\epsilon,<}$ introduced
-%earlier.  Then, for fixed $\e>0$, 
-%\begin{align}
-%  (\widetilde{W_k}\mu)(x)-(K_{\varepsilon} \mu)(x_0) = 
-%  \int_{C_{\e,\geq}}\mu(y)\left[\underline{\mbox{curl}}_{\S}\, 
-%  G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_{0},y)
-%  \right]\cdot\vec{t}(y)\, ds_{y} \nonumber\\
-%  +\int_{C_{\e,<}} \mu(y)\,\underline{\mbox{curl}}_{\S}\,
-%  G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
-%  \label{eq:Kjump1}
-%\end{align}
-%We note that the integrand of $\int_{C_{\e,\geq}} \mu(y)
-%\left[\underline{\mbox{curl}}_{\S}\,
-%G_k(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_0,y)\right]\cdot\vec{t}(y)\,
-%ds_{y}$ is continuous in $x$ away from  $x_0$, and therefore 
-%\begin{align*}
-%  \lim_{x\rightarrow x_0}  \int_{C_{\e,\geq}}
-%  \mu(y)\left[\underline{\mbox{curl}}_{\S}\,
-%  G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,
-%  G_{k}(x_{0},y)\right]\cdot\vec{t}(y)\,ds_{y} = 0.
-%\end{align*}
-%
-%The integral over $C_{\e,<}$ in~\eqref{eq:Kjump1} can be rewritten as
-%\begin{align}
-%  \int_{C_{\e,<}} \mu(y)\,\underline{\mbox{curl}}_{\S}\,
-%    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} 
-%  = &\int_{C_{\e,<}} \left[\mu(y)-\mu(x_0)\right]\,
-%    \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}
-%    \nonumber \\
-%  + \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
-%    G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
-%  \label{interm}
-%\end{align}
-%For the first integral on the right hand side of~\eqref{interm}, using
-%Lemma~\ref{regularity}, we have the estimate (for a fixed $x$)
-%\begin{align*}
-%  &\left|\int_{C_{\e,<}} \left[\mu(y)-\mu(x_0)\right]\,
-%  \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)
-%  \,ds_{y}\right| \\
-%  &\qquad \leq \sup_{y \in C_{\e,<}} |\mu(y)-\mu(x_0)|
-%  \int_{C_{\e,<}} \left|\underline{\mbox{curl}}_{\S}\,
-%  G_k(x,y)\cdot\vec{t}(y)\right|\,ds_{y}\\
-%  &\qquad \leq M\,\cdot \mbox{length $(C_{\e,<})$}\;
-%  \cdot \sup_{y \in C_{\e,<}} |\mu(y)-\mu(x_0)|
-%\end{align*}
-%for some constant $M$, and hence the integral vanishes in the limit as
-%$\varepsilon\longrightarrow 0$.
-%
-%For the second integral in~\eqref{interm}, we define
-%$\Omega_{\varepsilon}(x_{0}):=\left\{ y\in\Omega^{c}:\; \|x_0-y\|<
-%\varepsilon \right\}$ to see
-%\begin{align*}
-%  \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
-%    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \\
-%  &= \mu(x_0) \left[ \int\limits_{\partial \Omega_{\varepsilon}(x_0)} 
-%  \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y} - 
-%  \int\limits_{\substack{y \in \Omega^{c} \\ \|y - x_{0}\| =
-%  \varepsilon}}
-%\underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \right].
-%\end{align*}
-%Using the representation formula~\eqref{eq:representationformula} with
-%$u=1$ we have
-%\begin{align*}
-%  \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
-%    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \\
-%    &=\;\mu(x_0) \left(1 - \int\limits_{\Omega_{\varepsilon}} 
-%    k^2 G_k(x,y) d\sigma_{y}\right) 
-%   - \mu(x_0) \int\limits_{\substack{y \in \Omega^{c} \\ \|y - x_{0}\| =
-%  \varepsilon}}
-%\underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
-%\end{align*}
-%Without loss of generality we can set $x_0$ to be the north pole, and
-%compute the last integral above  to find, for all $x_{0}$: 
-%\begin{align*}
-%  \lim_{\varepsilon\rightarrow 0}
-%  \int\limits_{\substack{y \in \Gamma \\ \|y - x_{0}\| = \varepsilon}}
-%  \underline{\mbox{curl}}_{\S}\,G(x,y)\cdot\vec{t}(y)\,ds_{y}
-%  =\frac{\alpha(x_0)}{2\pi}.
-%\end{align*}
-%Putting the parts together we see that
-%\begin{align*}
-%  \lim_{\varepsilon\rightarrow 0} \lim_{x\rightarrow x_0}
-%  \left((\widetilde{W}\mu)(x)-(K_{\varepsilon}\mu)(x_0)\right)
-%  =\left(1-\frac{\alpha(x_0)}{2\pi}\right)\mu(x_0).
-%\end{align*}
-%\end{proof}
-%\qed
+\begin{proof}
+We provide only a sketch of the proof.  Given $\varepsilon \, > \,0$,
+let $x\in \Omega^{c}$ with $ \| x-x_0\|<\varepsilon$.   We use the same
+notation for $C_{\epsilon,\geq}$ and $C_{\epsilon,<}$ introduced
+earlier.  Then, for fixed $\e>0$, 
+\begin{align}
+  (\widetilde{W_k}\mu)(x)-(K_{\varepsilon} \mu)(x_0) = 
+  \int_{C_{\e,\geq}}\mu(y)\left[\underline{\mbox{curl}}_{\S}\, 
+  G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_{0},y)
+  \right]\cdot\vec{t}(y)\, ds_{y} \nonumber\\
+  +\int_{C_{\e,<}} \mu(y)\,\underline{\mbox{curl}}_{\S}\,
+  G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
+  \label{eq:Kjump1}
+\end{align}
+We note that the integrand of $\int_{C_{\e,\geq}} \mu(y)
+\left[\underline{\mbox{curl}}_{\S}\,
+G_k(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_0,y)\right]\cdot\vec{t}(y)\,
+ds_{y}$ is continuous in $x$ away from  $x_0$, and therefore 
+\begin{align*}
+  \lim_{x\rightarrow x_0}  \int_{C_{\e,\geq}}
+  \mu(y)\left[\underline{\mbox{curl}}_{\S}\,
+  G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,
+  G_{k}(x_{0},y)\right]\cdot\vec{t}(y)\,ds_{y} = 0.
+\end{align*}
+
+The integral over $C_{\e,<}$ in~\eqref{eq:Kjump1} can be rewritten as
+\begin{align}
+  \int_{C_{\e,<}} \mu(y)\,\underline{\mbox{curl}}_{\S}\,
+    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} 
+  = &\int_{C_{\e,<}} \left[\mu(y)-\mu(x_0)\right]\,
+    \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}
+    \nonumber \\
+  + \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
+    G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
+  \label{interm}
+\end{align}
+For the first integral on the right hand side of~\eqref{interm}, using
+Lemma~\ref{regularity}, we have the estimate (for a fixed $x$)
+\begin{align*}
+  &\left|\int_{C_{\e,<}} \left[\mu(y)-\mu(x_0)\right]\,
+  \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)
+  \,ds_{y}\right| \\
+  &\qquad \leq \sup_{y \in C_{\e,<}} |\mu(y)-\mu(x_0)|
+  \int_{C_{\e,<}} \left|\underline{\mbox{curl}}_{\S}\,
+  G_k(x,y)\cdot\vec{t}(y)\right|\,ds_{y}\\
+  &\qquad \leq M\,\cdot \mbox{length $(C_{\e,<})$}\;
+  \cdot \sup_{y \in C_{\e,<}} |\mu(y)-\mu(x_0)|
+\end{align*}
+for some constant $M$, and hence the integral vanishes in the limit as
+$\varepsilon\longrightarrow 0$.
+
+For the second integral in~\eqref{interm}, we define
+$\Omega_{\varepsilon}(x_{0}):=\left\{ y\in\Omega^{c}:\; \|x_0-y\|<
+\varepsilon \right\}$ to see
+\begin{align*}
+  \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
+    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \\
+  &= \mu(x_0) \left[ \int\limits_{\partial \Omega_{\varepsilon}(x_0)} 
+  \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y} - 
+  \int\limits_{\substack{y \in \Omega^{c} \\ \|y - x_{0}\| =
+  \varepsilon}}
+\underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \right].
+\end{align*}
+Using the representation formula~\eqref{eq:representationformula} with
+$u=1$ we have
+\begin{align*}
+  \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
+    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \\
+    &=\;\mu(x_0) \left(1 - \int\limits_{\Omega_{\varepsilon}} 
+    k^2 G_k(x,y) d\sigma_{y}\right) 
+   - \mu(x_0) \int\limits_{\substack{y \in \Omega^{c} \\ \|y - x_{0}\| =
+  \varepsilon}}
+\underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
+\end{align*}
+Without loss of generality we can set $x_0$ to be the north pole, and
+compute the last integral above  to find, for all $x_{0}$: 
+\begin{align*}
+  \lim_{\varepsilon\rightarrow 0}
+  \int\limits_{\substack{y \in \Gamma \\ \|y - x_{0}\| = \varepsilon}}
+  \underline{\mbox{curl}}_{\S}\,G(x,y)\cdot\vec{t}(y)\,ds_{y}
+  =\frac{\alpha(x_0)}{2\pi}.
+\end{align*}
+Putting the parts together we see that
+\begin{align*}
+  \lim_{\varepsilon\rightarrow 0} \lim_{x\rightarrow x_0}
+  \left((\widetilde{W}\mu)(x)-(K_{\varepsilon}\mu)(x_0)\right)
+  =\left(1-\frac{\alpha(x_0)}{2\pi}\right)\mu(x_0).
+\end{align*}
+\end{proof}
+\qed
+
 
 We need to record one further property of this kernel, which will be
 used to understand the convergence properties of our quadrature rule in
@@ -1456,14 +1440,12 @@ Lemma~\ref{l:DLPjump}.
 
 In~\eqref{e:dlpuEval}, since $x \notin \Gamma$, the integrand is
 periodic and smooth.  Therefore, for a fixed $x\in \Omega$, the
-trapezoid rule has spectral accuracy.  However, since the error grows
-as $x$ approaches $\Gamma$, our reported errors are only measured at
-points $x$ sufficiently far from $\Gamma$.  We test two quadrature
-formulas for solving~\eqref{e:dlpBIE}.  First, we test the trapezoid
-rule which we expect will achieve third-order accuracy since the
-integrand is once continuously differentiable
-(Lemma~\ref{regularity}).  Second, since we know that the kernel
-contains a logarithmic term~\eqref{e:logSingularity}, we test a
+trapezoid rule has spectral accuracy.  However, since the error grows as
+$x$ approaches $\Gamma$, our reported errors are only measured at points
+$x$ sufficiently far from $\Gamma$.  We test two quadrature formulas for
+solving~\eqref{e:dlpBIE}.  First, we test the trapezoid rule which we
+expect will achieve third-order accuracy since the integrand is once
+continuously differentiable (Lemma~\ref{regularity}).  Second, we test a
 high-order hybrid Gauss-trapezoidal quadrature formula designed for
 functions that contain logarithmic singularities~\cite{alpert}.
 
@@ -1481,10 +1463,10 @@ We present four numerical examples which we now summarize.
   We also establish that the number of GMRES iterations is independent
   of the mesh size.
 
-%  \item{\em{The effect of $k$}:} For the same two-ply connected
-%  domain, we examine the effect of the parameter $k$ on the condition
-%  number of the linear system corresponding to~\eqref{e:dlpBIE}, and
-%  its effect on the number of GMRES iterations.
+  \item{\em{The effect of $k$}:} For the same two-ply connected domain,
+  we examine the effect of the parameter $k$ on the condition number of
+  the linear system corresponding to~\eqref{e:dlpBIE}, and its effect on
+  the number of GMRES iterations.
 
   \item{\em{The effect of the geometry's curvature}:} We consider a
   simply-connected domain and vary the aspect ratio of the major to
@@ -1538,50 +1520,50 @@ $N$ & \# GMRES & Trapezoid Error & Alpert Error  \\
 \end{tabular*}
 \end{table}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{The effect of $k$}
-%We consider the same two-ply connected geometry illustrated in
-%Figure~\ref{f:twoply}.  We solve~\eqref{e:dlpBIE} for varying values of
-%$k > 1/2$ using Alpert's quadrature rule with $N=32$.  We report the
-%condition number of the resulting linear system and the required number
-%of GMRES iterations in Table~\ref{t:example2}.  We see that for larger
-%values of $k$, the conditioning of the linear system improves, and the
-%number of GMRES iterations decreases.  In Figure~\ref{f:evalues}, we
-%plot the eigenvalues of the linear system for $k=1$ and $k=64$.  We see
-%that for larger values of $k$, the eigenvalues cluster more strongly
-%around $1/2$ resulting in a smaller number of GMRES iterations and a
-%smaller condition number.
-%
-%\begin{table}[htps]
-%\caption{\label{t:example2} The condition number of the linear system
-%corresponding to a discretization of~\eqref{e:dlpBIE} and the number of
-%GMRES iterations as a function of the parameter $k$.}
-%\centering
-%\begin{tabular*}{0.8\textwidth}{@{\extracolsep{\fill}}lll}
-%$k$ & Condition Number & \# GMRES \\
-%\hline\noalign{\smallskip}
-%0.51 & 4.22E1 & 14 \\
-%1    & 1.22E1 & 13 \\
-%2    & 4.50E0 & 11 \\
-%4    & 2.17E0 & 9  \\
-%8    & 1.45E0 & 8  \\  
-%16   & 1.24E0 & 7  \\ 
-%32   & 1.13E0 & 6  \\
-%64   & 1.07E0 & 6  \\
-%\noalign{\smallskip}\hline
-%\end{tabular*}
-%\end{table}
-%
-%\begin{figure}[htps]
-%\centering
-%\begin{tabular}{cc}
-%\input{eigsk1.tex} &
-%\input{eigsk64.tex}
-%\end{tabular}
-%\caption{\label{f:evalues} The eigenvalues of a discretization
-%of~\eqref{e:dlpBIE} for $k=1$ (left) and $k=64$ (right)}
-%\end{figure}
-%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{The effect of $k$}
+We consider the same two-ply connected geometry illustrated in
+Figure~\ref{f:twoply}.  We solve~\eqref{e:dlpBIE} for varying values of
+$k > 1/2$ using Alpert's quadrature rule with $N=32$.  We report the
+condition number of the resulting linear system and the required number
+of GMRES iterations in Table~\ref{t:example2}.  We see that for larger
+values of $k$, the conditioning of the linear system improves, and the
+number of GMRES iterations decreases.  In Figure~\ref{f:evalues}, we
+plot the eigenvalues of the linear system for $k=1$ and $k=64$.  We see
+that for larger values of $k$, the eigenvalues cluster more strongly
+around $1/2$ resulting in a smaller number of GMRES iterations and a
+smaller condition number.
+
+\begin{table}[htps]
+\caption{\label{t:example2} The condition number of the linear system
+corresponding to a discretization of~\eqref{e:dlpBIE} and the number of
+GMRES iterations as a function of the parameter $k$.}
+\centering
+\begin{tabular*}{0.8\textwidth}{@{\extracolsep{\fill}}lll}
+$k$ & Condition Number & \# GMRES \\
+\hline\noalign{\smallskip}
+0.51 & 4.22E1 & 14 \\
+1    & 1.22E1 & 13 \\
+2    & 4.50E0 & 11 \\
+4    & 2.17E0 & 9  \\
+8    & 1.45E0 & 8  \\  
+16   & 1.24E0 & 7  \\ 
+32   & 1.13E0 & 6  \\
+64   & 1.07E0 & 6  \\
+\noalign{\smallskip}\hline
+\end{tabular*}
+\end{table}
+
+\begin{figure}[htps]
+\centering
+\begin{tabular}{cc}
+\input{eigsk1.tex} &
+\input{eigsk64.tex}
+\end{tabular}
+\caption{\label{f:evalues} The eigenvalues of a discretization
+of~\eqref{e:dlpBIE} for $k=1$ (left) and $k=64$ (right)}
+\end{figure}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The effect of the geometry's curvature}
@@ -1640,23 +1622,22 @@ We have presented an integral equation strategy to solve the Dirichlet
 boundary value problem for the Yukawa-Beltrami equation on a
 multiply-connected, sub-manifold of the unit sphere.  The integral
 equation formulation is based on a representation of a particularly
-useful form of a parametrix for the Yukawa-Beltrami operator, in
-particular, the fundamental solution, involving conical functions.
-Using a double-layer ansatz based on this parametrix, a well-conditioned
-Fredholm equation of the second kind arises.  Numerical experiments
-confirm the analytic properties of this integral equation and by
-selecting appropriate quadrature rules, we are able to compute highly
-accurate solutions.  This integral equation formulation is amenable to
-acceleration either by a fast multipole method or a fast direct solver;
-this is future work.  
+useful form of a parametrix for the Yukawa-Beltrami operator involving
+conical functions.  Using a double-layer ansatz based on this
+parametrix, a well-conditioned Fredholm equation of the second kind
+arises.  Numerical experiments confirm the analytic properties of this
+integral equation and by selecting appropriate quadrature rules, we are
+able to compute highly accurate solutions.  This integral equation
+formulation is amenable to acceleration either by a fast multipole
+method or a fast direct solver; this is future work.  
 
 The Yukawa-Beltrami equation arises when a temporal discretization is
-applied to the heat equation and other PDEs that involve the heat
-operator.  However, the solution of~\eqref{bigmodel} requires solving
-both a forced and a homogeneous problem.  While the present work is
-designed to solve the homogeneous problem, future work involves using
-volume potentials to form solutions to the forced problem, as is done
-in~\cite{rothe:heat} for the heat equation in the plane.
+applied to the heat equation.  However, the solution of~\eqref{bigmodel}
+requires solving both a forced and a homogeneous problem.  While the
+present work is designed to solve the homogeneous problem, future work
+involves using volume potentials to form solutions to the forced
+problem, as is done in~\cite{rothe:heat} for the heat equation in the
+plane.
 
 Other future work includes extending the presented methods to other
 elliptic PDEs such as the Helmholtz or Stokes equations, and also to
@@ -1670,127 +1651,127 @@ Research Council of Canada. NN gratefully acknowledges support from the
 Canada Research Chairs Council, Canada.
 \end{acknowledgements}
 
-\bibliographystyle{spmpsci}
-\bibliography{refs}
+%\bibliographystyle{spmpsci}
+%\bibliography{refs}
 
-%\begin{thebibliography}{10}
-%\providecommand{\url}[1]{{#1}}
-%\providecommand{\urlprefix}{URL }
-%\expandafter\ifx\csname urlstyle\endcsname\relax
-%  \providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
-%  \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup
-%  \urlstyle{rm}\Url}\fi
-%
-%\bibitem{alpert}
-%Alpert, B.K.: {Hybrid Gauss-Trapezoidal Quadrature Rules}.
-%\newblock SIAM Journal on Scientific Computing \textbf{20}, 1551--1584 (1999)
-%
-%\bibitem{Bertalmio}
-%Bertalmio, M., Cheng, L.T., Osher, S., Sapiro, G.: {Variational Problems and
-%  Partial Differential Equations on Implicit Surfaces}.
-%\newblock Journal of Computational Physics \textbf{174}(2), 759--780 (2001).
-%\newblock \doi{10.1006/jcph.2001.6937}.
-%\newblock
-%  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S0021999101969372}
-%
-%\bibitem{Chaplain}
-%Chaplain, M., Ganesh, M., Graham, I.: {Spatio-temporal Pattern Formation on
-%  Spherical Surfaces: Numerical Simulation and Application to Solid Tumour
-%  Growth}.
-%\newblock J. Math. Biology \textbf{42}, 387--423 (2001)
-%
-%\bibitem{floater}
-%Floater, M.S., Hormann, K.: {Surface Parameterization: a Tutorial and Survey}.
-%\newblock In: N.A. Dodgson, M.S. Floater, M.A. Sabin (eds.) Advances in
-%  Multiresolution for Geometric Modelling, Mathematics and Visualization, pp.
-%  157--186. Springer Berlin Heidelberg (2005).
-%\newblock \doi{10.1007/3-540-26808-1\_9}.
-%\newblock \urlprefix\url{http://dx.doi.org/10.1007/3-540-26808-1\_9}
-%
-%\bibitem{gatica}
-%Gatica, G.N., Hsiao, G.C., Sayas, F.J.: Relaxing the hypotheses of
-%  {B}ielak-{M}ac{C}amy's {BEM}-{FEM} coupling.
-%\newblock Numer. Math. \textbf{120}(3), 465--487 (2012).
-%\newblock \doi{10.1007/s00211-011-0414-z}.
-%\newblock \urlprefix\url{http://dx.doi.org/10.1007/s00211-011-0414-z}
-%
-%\bibitem{gemmrich}
-%Gemmrich, S., Nigam, N., Steinbach, O.: {B}oundary {I}ntegral {E}quations for
-%  the {L}aplace-{B}eltrami {O}perator.
-%\newblock Mathematics and Computation, a Contemporary View \textbf{3}, 21--37
-%  (2008)
-%
-%\bibitem{hackbusch}
-%Hackbusch, W.: Integral equations, \emph{International Series of Numerical
-%  Mathematics}, vol. 120.
-%\newblock Birkh\"auser Verlag, Basel (1995).
-%\newblock \doi{10.1007/978-3-0348-9215-5}.
-%\newblock \urlprefix\url{http://dx.doi.org/10.1007/978-3-0348-9215-5}.
-%\newblock {Theory and numerical treatment, Translated and revised by the author
-%  from the 1989 German original}
-%
-%\bibitem{kro:qua2011}
-%Kropinski, M., Quaife, B.: Fast integral equation methods for the modified
-%  {H}elmholtz equation.
-%\newblock Journal of Computational Physics \textbf{230}, 425--434 (2011)
-%
-%\bibitem{kro:nig2013}
-%Kropinski, M.C.A., Nigam, N.: {Fast integral equation methods of the
-%  Laplace-Beltrami equation on the sphere}.
-%\newblock Advances in Computational Mathematics \textbf{40}, 577--596 (2014)
-%
-%\bibitem{rothe:heat}
-%Kropinski, M.C.A., Quaife, B.: {Fast Integral Equation Methods for Rothe's
-%  Method Applied to the Isotropic Heat Equation}.
-%\newblock Comput. Math. Appl. \textbf{61}(9), 2436--2446 (2011)
-%
-%\bibitem{lebedev}
-%Lebedev, N.N.: Special functions and their applications.
-%\newblock Dover Publications Inc., New York (1972).
-%\newblock Revised edition, translated from the Russian and edited by Richard A.
-%  Silverman, Unabridged and corrected republication
-%
-%\bibitem{lindblom}
-%Lindblom, L., Szil\'{a}gyi, B.: {Solving partial differential equations
-%  numerically on manifolds with arbitrary spatial topologies}.
-%\newblock Journal of Computational Physics \textbf{243}, 151--175 (2013)
-%
-%\bibitem{Myers}
-%Myers, T., Charpin, J.: A mathematical model for atmospheric ice accretion and
-%  water flow on a cold surface.
-%\newblock International Journal of Heat and Mass Transfer \textbf{47}(25),
-%  5483--5500 (2004).
-%\newblock \doi{10.1016/j.ijheatmasstransfer.2004.06.037}.
-%\newblock
-%  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S0017931004002807}
-%
-%\bibitem{fatAbramowitz}
-%Olver, F.W.J., Lozier, D.W., Boisvert, R.F., Clark, C.W. (eds.): N{IST}
-%  handbook of mathematical functions.
-%\newblock U.S. Department of Commerce National Institute of Standards and
-%  Technology, Washington, DC (2010).
-%\newblock With 1 CD-ROM (Windows, Macintosh and UNIX)
-%
-%\bibitem{qua2011}
-%Quaife, B.: {Fast Integral Equation Methods for the Modified Helmholtz
-%  Equation}.
-%\newblock Ph.D. thesis, Simon Fraser University (2011)
-%
-%\bibitem{ruuth}
-%Ruuth, S.J., Merriman, B.: A simple embedding method for solving partial
-%  differential equations on surfaces.
-%\newblock Journal of Computational Physics \textbf{227}(3), 1943--1961 (2008).
-%\newblock \doi{10.1016/j.jcp.2007.10.009}.
-%\newblock
-%  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S002199910700441X}
-%
-%\bibitem{Witkin}
-%Witkin, A., Kass, M.: Reaction-diffusion textures.
-%\newblock SIGGRAPH Comput. Graph. \textbf{25}(4), 299--308 (1991).
-%\newblock \doi{10.1145/127719.122750}.
-%\newblock \urlprefix\url{http://doi.acm.org/10.1145/127719.122750}
-%
-%\end{thebibliography}
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+
+\bibitem{alpert}
+Alpert, B.K.: {Hybrid Gauss-Trapezoidal Quadrature Rules}.
+\newblock SIAM Journal on Scientific Computing \textbf{20}, 1551--1584 (1999)
+
+\bibitem{Bertalmio}
+Bertalmio, M., Cheng, L.T., Osher, S., Sapiro, G.: {Variational Problems and
+  Partial Differential Equations on Implicit Surfaces}.
+\newblock Journal of Computational Physics \textbf{174}(2), 759--780 (2001).
+\newblock \doi{10.1006/jcph.2001.6937}.
+\newblock
+  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S0021999101969372}
+
+\bibitem{Chaplain}
+Chaplain, M., Ganesh, M., Graham, I.: {Spatio-temporal Pattern Formation on
+  Spherical Surfaces: Numerical Simulation and Application to Solid Tumour
+  Growth}.
+\newblock J. Math. Biology \textbf{42}, 387--423 (2001)
+
+\bibitem{floater}
+Floater, M.S., Hormann, K.: {Surface Parameterization: a Tutorial and Survey}.
+\newblock In: N.A. Dodgson, M.S. Floater, M.A. Sabin (eds.) Advances in
+  Multiresolution for Geometric Modelling, Mathematics and Visualization, pp.
+  157--186. Springer Berlin Heidelberg (2005).
+\newblock \doi{10.1007/3-540-26808-1\_9}.
+\newblock \urlprefix\url{http://dx.doi.org/10.1007/3-540-26808-1\_9}
+
+\bibitem{gatica}
+Gatica, G.N., Hsiao, G.C., Sayas, F.J.: Relaxing the hypotheses of
+  {B}ielak-{M}ac{C}amy's {BEM}-{FEM} coupling.
+\newblock Numer. Math. \textbf{120}(3), 465--487 (2012).
+\newblock \doi{10.1007/s00211-011-0414-z}.
+\newblock \urlprefix\url{http://dx.doi.org/10.1007/s00211-011-0414-z}
+
+\bibitem{gemmrich}
+Gemmrich, S., Nigam, N., Steinbach, O.: {B}oundary {I}ntegral {E}quations for
+  the {L}aplace-{B}eltrami {O}perator.
+\newblock Mathematics and Computation, a Contemporary View \textbf{3}, 21--37
+  (2008)
+
+\bibitem{hackbusch}
+Hackbusch, W.: Integral equations, \emph{International Series of Numerical
+  Mathematics}, vol. 120.
+\newblock Birkh\"auser Verlag, Basel (1995).
+\newblock \doi{10.1007/978-3-0348-9215-5}.
+\newblock \urlprefix\url{http://dx.doi.org/10.1007/978-3-0348-9215-5}.
+\newblock {Theory and numerical treatment, Translated and revised by the author
+  from the 1989 German original}
+
+\bibitem{kro:qua2011}
+Kropinski, M., Quaife, B.: Fast integral equation methods for the modified
+  {H}elmholtz equation.
+\newblock Journal of Computational Physics \textbf{230}, 425--434 (2011)
+
+\bibitem{kro:nig2013}
+Kropinski, M.C.A., Nigam, N.: {Fast integral equation methods of the
+  Laplace-Beltrami equation on the sphere}.
+\newblock Advances in Computational Mathematics \textbf{40}, 577--596 (2014)
+
+\bibitem{rothe:heat}
+Kropinski, M.C.A., Quaife, B.: {Fast Integral Equation Methods for Rothe's
+  Method Applied to the Isotropic Heat Equation}.
+\newblock Comput. Math. Appl. \textbf{61}(9), 2436--2446 (2011)
+
+\bibitem{lebedev}
+Lebedev, N.N.: Special functions and their applications.
+\newblock Dover Publications Inc., New York (1972).
+\newblock Revised edition, translated from the Russian and edited by Richard A.
+  Silverman, Unabridged and corrected republication
+
+\bibitem{lindblom}
+Lindblom, L., Szil\'{a}gyi, B.: {Solving partial differential equations
+  numerically on manifolds with arbitrary spatial topologies}.
+\newblock Journal of Computational Physics \textbf{243}, 151--175 (2013)
+
+\bibitem{Myers}
+Myers, T., Charpin, J.: A mathematical model for atmospheric ice accretion and
+  water flow on a cold surface.
+\newblock International Journal of Heat and Mass Transfer \textbf{47}(25),
+  5483--5500 (2004).
+\newblock \doi{10.1016/j.ijheatmasstransfer.2004.06.037}.
+\newblock
+  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S0017931004002807}
+
+\bibitem{fatAbramowitz}
+Olver, F.W.J., Lozier, D.W., Boisvert, R.F., Clark, C.W. (eds.): N{IST}
+  handbook of mathematical functions.
+\newblock U.S. Department of Commerce National Institute of Standards and
+  Technology, Washington, DC (2010).
+\newblock With 1 CD-ROM (Windows, Macintosh and UNIX)
+
+\bibitem{qua2011}
+Quaife, B.: {Fast Integral Equation Methods for the Modified Helmholtz
+  Equation}.
+\newblock Ph.D. thesis, Simon Fraser University (2011)
+
+\bibitem{ruuth}
+Ruuth, S.J., Merriman, B.: A simple embedding method for solving partial
+  differential equations on surfaces.
+\newblock Journal of Computational Physics \textbf{227}(3), 1943--1961 (2008).
+\newblock \doi{10.1016/j.jcp.2007.10.009}.
+\newblock
+  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S002199910700441X}
+
+\bibitem{Witkin}
+Witkin, A., Kass, M.: Reaction-diffusion textures.
+\newblock SIGGRAPH Comput. Graph. \textbf{25}(4), 299--308 (1991).
+\newblock \doi{10.1145/127719.122750}.
+\newblock \urlprefix\url{http://doi.acm.org/10.1145/127719.122750}
+
+\end{thebibliography}
 
 \end{document}
 
