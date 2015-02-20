@@ -192,8 +192,8 @@ semi-implicit time discretization to the heat equation, time-stepping
 then involves repeatedly solving an elliptic PDE of the
 form~\eqref{bigmodel}, where $k^2 = O(1/\Delta t)$.  In fact, this
 strategy is not restricted to the heat equation since the
-PDE~\cite{bigmodel} also arises when an IMEX
-method~\cite{asc:ruu:set1995} is applied to PDEs that involve the heat
+PDE~\eqref{bigmodel} also arises when an IMEX
+method~\cite{asc:ruu:wet1995} is applied to PDEs that involve the heat
 operator.  Therefore, possible applications span many fields of science
 such as fluid dynamics.  This approach is discussed in~\cite{rothe:heat}
 for several PDEs in the plane.
@@ -984,8 +984,8 @@ potential~\eqref{doublelayerpotential} satisfies $(-\lap_{\S} +
 k^2)(\widetilde{W}\mu)(x)=0$.  We might thus also try to look for the
 solution to~\eqref{DBVP} in the form of a double-layer potential.  In
 either case, we need to calculate the unknown density $\sigma$.  In
-order to find the boundary integral equation that $\sigma$ solves, we
-require the jump relations of the layer potentials.
+order to formulate a boundary integral equation that $\sigma$ solves,
+we require the jump relations of the layer potentials.
 
 %\begin{align*}
 %  u(x) & =  \int\limits_\Gamma G_k(x,y) \,\sigma(y) \,ds_{y}. 
@@ -1029,7 +1029,7 @@ consider the single-layer potential with density $\sigma$ for $x \notin
   & = \C \int\limits_\Gamma P_{\nu(k)}(-<x,y>)\,\sigma(y)\,ds_{y}.
 \end{align*}
 The following Lemma, which is proved in~\cite{mit:tay1999} (Proposition
-3.8), describes the limit behavior of the single-layer potential.  
+3.8), describes the limiting behavior of the single-layer potential.
 \begin{lemma}
 Let $\widetilde{V_k}$ be the single-layer potential defined
 in~\eqref{singlelayerpotential}. For $x_{0}\in\Gamma$ we have:
@@ -1474,7 +1474,7 @@ Alpert quadrature formula is $\mathcal{O}(h^{16}\log h)$, and we use
 Fourier interpolation to assign values to the density function $\mu$ at
 quadrature nodes that are intermediate to the regular grid.
 
-We present four numerical examples which we now summarize.
+We present three numerical examples which we now summarize.
 \begin{itemize}
   \item{\em{The effect of the quadrature rule}:} For a two-ply connected
   domain, we report a convergence study for the two quadrature formulas.
@@ -1670,127 +1670,137 @@ Research Council of Canada. NN gratefully acknowledges support from the
 Canada Research Chairs Council, Canada.
 \end{acknowledgements}
 
-\bibliographystyle{spmpsci}
-\bibliography{refs}
+%\bibliographystyle{spmpsci}
+%\bibliography{refs}
 
-%\begin{thebibliography}{10}
-%\providecommand{\url}[1]{{#1}}
-%\providecommand{\urlprefix}{URL }
-%\expandafter\ifx\csname urlstyle\endcsname\relax
-%  \providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
-%  \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup
-%  \urlstyle{rm}\Url}\fi
-%
-%\bibitem{alpert}
-%Alpert, B.K.: {Hybrid Gauss-Trapezoidal Quadrature Rules}.
-%\newblock SIAM Journal on Scientific Computing \textbf{20}, 1551--1584 (1999)
-%
-%\bibitem{Bertalmio}
-%Bertalmio, M., Cheng, L.T., Osher, S., Sapiro, G.: {Variational Problems and
-%  Partial Differential Equations on Implicit Surfaces}.
-%\newblock Journal of Computational Physics \textbf{174}(2), 759--780 (2001).
-%\newblock \doi{10.1006/jcph.2001.6937}.
-%\newblock
-%  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S0021999101969372}
-%
-%\bibitem{Chaplain}
-%Chaplain, M., Ganesh, M., Graham, I.: {Spatio-temporal Pattern Formation on
-%  Spherical Surfaces: Numerical Simulation and Application to Solid Tumour
-%  Growth}.
-%\newblock J. Math. Biology \textbf{42}, 387--423 (2001)
-%
-%\bibitem{floater}
-%Floater, M.S., Hormann, K.: {Surface Parameterization: a Tutorial and Survey}.
-%\newblock In: N.A. Dodgson, M.S. Floater, M.A. Sabin (eds.) Advances in
-%  Multiresolution for Geometric Modelling, Mathematics and Visualization, pp.
-%  157--186. Springer Berlin Heidelberg (2005).
-%\newblock \doi{10.1007/3-540-26808-1\_9}.
-%\newblock \urlprefix\url{http://dx.doi.org/10.1007/3-540-26808-1\_9}
-%
-%\bibitem{gatica}
-%Gatica, G.N., Hsiao, G.C., Sayas, F.J.: Relaxing the hypotheses of
-%  {B}ielak-{M}ac{C}amy's {BEM}-{FEM} coupling.
-%\newblock Numer. Math. \textbf{120}(3), 465--487 (2012).
-%\newblock \doi{10.1007/s00211-011-0414-z}.
-%\newblock \urlprefix\url{http://dx.doi.org/10.1007/s00211-011-0414-z}
-%
-%\bibitem{gemmrich}
-%Gemmrich, S., Nigam, N., Steinbach, O.: {B}oundary {I}ntegral {E}quations for
-%  the {L}aplace-{B}eltrami {O}perator.
-%\newblock Mathematics and Computation, a Contemporary View \textbf{3}, 21--37
-%  (2008)
-%
-%\bibitem{hackbusch}
-%Hackbusch, W.: Integral equations, \emph{International Series of Numerical
-%  Mathematics}, vol. 120.
-%\newblock Birkh\"auser Verlag, Basel (1995).
-%\newblock \doi{10.1007/978-3-0348-9215-5}.
-%\newblock \urlprefix\url{http://dx.doi.org/10.1007/978-3-0348-9215-5}.
-%\newblock {Theory and numerical treatment, Translated and revised by the author
-%  from the 1989 German original}
-%
-%\bibitem{kro:qua2011}
-%Kropinski, M., Quaife, B.: Fast integral equation methods for the modified
-%  {H}elmholtz equation.
-%\newblock Journal of Computational Physics \textbf{230}, 425--434 (2011)
-%
-%\bibitem{kro:nig2013}
-%Kropinski, M.C.A., Nigam, N.: {Fast integral equation methods of the
-%  Laplace-Beltrami equation on the sphere}.
-%\newblock Advances in Computational Mathematics \textbf{40}, 577--596 (2014)
-%
-%\bibitem{rothe:heat}
-%Kropinski, M.C.A., Quaife, B.: {Fast Integral Equation Methods for Rothe's
-%  Method Applied to the Isotropic Heat Equation}.
-%\newblock Comput. Math. Appl. \textbf{61}(9), 2436--2446 (2011)
-%
-%\bibitem{lebedev}
-%Lebedev, N.N.: Special functions and their applications.
-%\newblock Dover Publications Inc., New York (1972).
-%\newblock Revised edition, translated from the Russian and edited by Richard A.
-%  Silverman, Unabridged and corrected republication
-%
-%\bibitem{lindblom}
-%Lindblom, L., Szil\'{a}gyi, B.: {Solving partial differential equations
-%  numerically on manifolds with arbitrary spatial topologies}.
-%\newblock Journal of Computational Physics \textbf{243}, 151--175 (2013)
-%
-%\bibitem{Myers}
-%Myers, T., Charpin, J.: A mathematical model for atmospheric ice accretion and
-%  water flow on a cold surface.
-%\newblock International Journal of Heat and Mass Transfer \textbf{47}(25),
-%  5483--5500 (2004).
-%\newblock \doi{10.1016/j.ijheatmasstransfer.2004.06.037}.
-%\newblock
-%  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S0017931004002807}
-%
-%\bibitem{fatAbramowitz}
-%Olver, F.W.J., Lozier, D.W., Boisvert, R.F., Clark, C.W. (eds.): N{IST}
-%  handbook of mathematical functions.
-%\newblock U.S. Department of Commerce National Institute of Standards and
-%  Technology, Washington, DC (2010).
-%\newblock With 1 CD-ROM (Windows, Macintosh and UNIX)
-%
-%\bibitem{qua2011}
-%Quaife, B.: {Fast Integral Equation Methods for the Modified Helmholtz
-%  Equation}.
-%\newblock Ph.D. thesis, Simon Fraser University (2011)
-%
-%\bibitem{ruuth}
-%Ruuth, S.J., Merriman, B.: A simple embedding method for solving partial
-%  differential equations on surfaces.
-%\newblock Journal of Computational Physics \textbf{227}(3), 1943--1961 (2008).
-%\newblock \doi{10.1016/j.jcp.2007.10.009}.
-%\newblock
-%  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S002199910700441X}
-%
-%\bibitem{Witkin}
-%Witkin, A., Kass, M.: Reaction-diffusion textures.
-%\newblock SIGGRAPH Comput. Graph. \textbf{25}(4), 299--308 (1991).
-%\newblock \doi{10.1145/127719.122750}.
-%\newblock \urlprefix\url{http://doi.acm.org/10.1145/127719.122750}
-%
-%\end{thebibliography}
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+
+\bibitem{alpert}
+Alpert, B.K.: {Hybrid Gauss-Trapezoidal Quadrature Rules}.
+\newblock SIAM Journal on Scientific Computing \textbf{20}, 1551--1584 (1999)
+
+\bibitem{Bertalmio}
+Bertalmio, M., Cheng, L.T., Osher, S., Sapiro, G.: {Variational Problems and
+  Partial Differential Equations on Implicit Surfaces}.
+\newblock Journal of Computational Physics \textbf{174}(2), 759--780 (2001).
+\newblock \doi{10.1006/jcph.2001.6937}.
+\newblock
+  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S0021999101969372}
+
+\bibitem{Chaplain}
+Chaplain, M., Ganesh, M., Graham, I.: {Spatio-temporal Pattern Formation on
+  Spherical Surfaces: Numerical Simulation and Application to Solid Tumour
+  Growth}.
+\newblock J. Math. Biology \textbf{42}, 387--423 (2001)
+
+\bibitem{floater}
+Floater, M.S., Hormann, K.: {Surface Parameterization: a Tutorial and Survey}.
+\newblock In: N.A. Dodgson, M.S. Floater, M.A. Sabin (eds.) Advances in
+  Multiresolution for Geometric Modelling, Mathematics and Visualization, pp.
+  157--186. Springer Berlin Heidelberg (2005).
+\newblock \doi{10.1007/3-540-26808-1\_9}.
+\newblock \urlprefix\url{http://dx.doi.org/10.1007/3-540-26808-1\_9}
+
+\bibitem{gatica}
+Gatica, G.N., Hsiao, G.C., Sayas, F.J.: Relaxing the hypotheses of
+  {B}ielak-{M}ac{C}amy's {BEM}-{FEM} coupling.
+\newblock Numer. Math. \textbf{120}(3), 465--487 (2012).
+\newblock \doi{10.1007/s00211-011-0414-z}.
+\newblock \urlprefix\url{http://dx.doi.org/10.1007/s00211-011-0414-z}
+
+\bibitem{gemmrich}
+Gemmrich, S., Nigam, N., Steinbach, O.: {B}oundary {I}ntegral {E}quations for
+  the {L}aplace-{B}eltrami {O}perator.
+\newblock Mathematics and Computation, a Contemporary View \textbf{3}, 21--37
+  (2008)
+
+\bibitem{hackbusch}
+Hackbusch, W.: Integral equations, \emph{International Series of Numerical
+  Mathematics}, vol. 120.
+\newblock Birkh\"auser Verlag, Basel (1995).
+\newblock \doi{10.1007/978-3-0348-9215-5}.
+\newblock \urlprefix\url{http://dx.doi.org/10.1007/978-3-0348-9215-5}.
+\newblock {Theory and numerical treatment, Translated and revised by the author
+  from the 1989 German original}
+
+\bibitem{kro:qua2011}
+Kropinski, M., Quaife, B.: Fast integral equation methods for the modified
+  {H}elmholtz equation.
+\newblock Journal of Computational Physics \textbf{230}, 425--434 (2011)
+
+\bibitem{kro:nig2013}
+Kropinski, M.C.A., Nigam, N.: {Fast integral equation methods of the
+  Laplace-Beltrami equation on the sphere}.
+\newblock Advances in Computational Mathematics \textbf{40}, 577--596 (2014)
+
+\bibitem{rothe:heat}
+Kropinski, M.C.A., Quaife, B.: {Fast Integral Equation Methods for Rothe's
+  Method Applied to the Isotropic Heat Equation}.
+\newblock Comput. Math. Appl. \textbf{61}(9), 2436--2446 (2011)
+
+\bibitem{lebedev}
+Lebedev, N.N.: Special functions and their applications.
+\newblock Dover Publications Inc., New York (1972).
+\newblock Revised edition, translated from the Russian and edited by Richard A.
+  Silverman, Unabridged and corrected republication
+
+\bibitem{lindblom}
+Lindblom, L., Szil\'{a}gyi, B.: {Solving partial differential equations
+  numerically on manifolds with arbitrary spatial topologies}.
+\newblock Journal of Computational Physics \textbf{243}, 151--175 (2013)
+
+\bibitem{Myers}
+Myers, T., Charpin, J.: A mathematical model for atmospheric ice accretion and
+  water flow on a cold surface.
+\newblock International Journal of Heat and Mass Transfer \textbf{47}(25),
+  5483--5500 (2004).
+\newblock \doi{10.1016/j.ijheatmasstransfer.2004.06.037}.
+\newblock
+  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S0017931004002807}
+
+\bibitem{fatAbramowitz}
+Olver, F.W.J., Lozier, D.W., Boisvert, R.F., Clark, C.W. (eds.): N{IST}
+  handbook of mathematical functions.
+\newblock U.S. Department of Commerce National Institute of Standards and
+  Technology, Washington, DC (2010).
+\newblock With 1 CD-ROM (Windows, Macintosh and UNIX)
+
+\bibitem{qua2011}
+Quaife, B.: {Fast Integral Equation Methods for the Modified Helmholtz
+  Equation}.
+\newblock Ph.D. thesis, Simon Fraser University (2011)
+
+\bibitem{ruuth}
+Ruuth, S.J., Merriman, B.: A simple embedding method for solving partial
+  differential equations on surfaces.
+\newblock Journal of Computational Physics \textbf{227}(3), 1943--1961 (2008).
+\newblock \doi{10.1016/j.jcp.2007.10.009}.
+\newblock
+  \urlprefix\url{http://www.sciencedirect.com/science/article/pii/S002199910700441X}
+
+\bibitem{Witkin}
+Witkin, A., Kass, M.: Reaction-diffusion textures.
+\newblock SIGGRAPH Comput. Graph. \textbf{25}(4), 299--308 (1991).
+\newblock \doi{10.1145/127719.122750}.
+\newblock \urlprefix\url{http://doi.acm.org/10.1145/127719.122750}
+
+\bibitem{asc:ruu:wet1995}
+Ascher, U., Ruuth, S., Wetton, B.: Implicit-explicit methods for time-dependent
+  partial differential equations.
+\newblock SIAM Journal on Numerical Analysis \textbf{32}, 797--823 (1995)
+
+\bibitem{mit:tay1999}
+Mitrea, M., Taylor, M.: {Boundary Layer Methods for Lipschitz Domains in
+  Riemannian Manifolds}.
+\newblock Journal of Functional Analysis \textbf{163}, 181--251 (1999)
+
+\end{thebibliography}
 
 \end{document}
 

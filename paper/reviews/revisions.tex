@@ -42,7 +42,8 @@ specific cases. The numerical part of the manuscript uses the Alpert
 quadrature for logarithmically singular kernels, which is also quite
 standard and well-known.}
 \begin{itemize}
-  \item We have removed some of the proofs and cited paper [1].
+  \item We have removed some of the proofs and cited the
+  appropriate results from paper [1].
   \item While reference [1] addresses several key results, it is our
   opinion that our manuscript adds a significant contribution to the
   literature.  For instance, the numerical methods that we present, to
@@ -70,9 +71,9 @@ applications.}
   \item In the manuscript, we did motivate the Yukawa-Beltrami equation
   with the isotropic heat equation.  However, the bigger picture is to
   consider PDEs that involve both stiff (diffusion) and non-stiff
-  (reaction) terms and then apply an IMEX method.  This has several
-  applications, and 3 applications are cited in the first sentence of
-  the manuscript.
+  (advection or reaction) terms and then apply an IMEX or
+  semi-Lagrangian method.  This has several applications, and 3
+  applications are cited in the first sentence of the manuscript.
   \item We added a few sentences to discuss the bigger picture.
 \end{itemize}
 
@@ -102,7 +103,12 @@ increasingly coercive as $k$ increases.}
   singularity.
   \item We have left in the first numerical example since it numerically
   verifies our analysis, and also shows that the number of GMRES
-  iterations is mesh-independent.
+  iterations is mesh independent.  It is our opinion that results
+  concerning mesh independence should be checked numerically.  It is
+  possible that an equation of the form ``Identity + Compact" can be
+  solved numerically with mesh independence, but a large number of
+  iterations are required before convergence is guaranteed.  This is a
+  result that needs to be checked numerically.
   \item We have removed the second numerical example.
 \end{itemize}
 
@@ -120,6 +126,8 @@ discussion of the case $k\leq\frac{1}{2}.$}
   real.
   \item We now clarify the fact that the restriction $k > \frac{1}{2}$
   is one of convenience and is not essential.
+  \item However, the values of $k$ that we anticipate in our future work
+  are much larger than $\frac{1}{2}$.
 \end{itemize}
 
 \comment{Lemma 1 is a little unsatisfactory as the authors do not
@@ -134,7 +142,7 @@ this.}
   justify this value until Section 2.2
   \item Instead of using the standard method of finding the constant
   that guarantees that the PDE applied to the Green's function results
-  in the dirac delta function, we choose the constant so that the
+  in the Dirac delta function, we choose the constant so that the
   limiting value of the double-layer potential is $\frac{1}{2\pi}$.
   \item These two methods result in the same constant $C_{k}$ which we
   now state after the proof of Lemma 1.
