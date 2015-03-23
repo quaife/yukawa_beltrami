@@ -50,7 +50,7 @@ standard and well-known.}
   the best of our knowledge, are absent in the literature.  We are also
   unaware of any groups that are using integral equation methods to do
   time stepping for PDEs on surfaces.
-  \item Reference [1] does present much more general results then ours.
+  \item Reference [1] does present much more general results than ours.
   However, we are interested in one particular PDE (Yukawa-Beltrami) so
   that we can do time stepping on the surface of the sphere.
   \item While Alpert quadrature is now standard and well-known, it is a
@@ -109,7 +109,13 @@ increasingly coercive as $k$ increases.}
   solved numerically with mesh independence, but a large number of
   iterations are required before convergence is guaranteed.  This is a
   result that needs to be checked numerically.
-  \item We have removed the second numerical example.
+  \item We do agree that the problem does become more coercive as $k$
+  increases.  However, this only guarantees that if $k$ is increased,
+  then the spectrum becomes more clustered, the condition number
+  decreases, and the number of GMRES iterations decreases.  However,
+  the actual number of GMRES iterations and the condition number are of
+  interest to the numerical analysis community.  Therefore, we have
+  left the numerical second example in the manuscript.
 \end{itemize}
 
 \comment{The authors need to clarify the real distinction on the

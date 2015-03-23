@@ -209,10 +209,11 @@ constraint was satisfied. Experience with the Yukawa operator in
 $\mathbb{R}^2$~\cite{kro:qua2011,qua2011} suggests that any issues
 concerning unique solvability which arise for the Laplace-Beltrami
 operator when we move to a compact manifold will be ameliorated for the
-Yukawa-Beltrami operator.  We shall see this is indeed the case: it is
-possible, provided $k>\frac{1}{2}$, for the single-layer operator to
-exactly satisfy the boundary value problem. (In case we solve the
-Yukawa-Beltrami problem on a sphere of radius $R$, we require $kR>1/2$.)
+Yukawa-Beltrami operator.  We shall see this is indeed the case. In
+fact, when $k>\frac{1}{2}$, using conical functions, it can be readily
+seen that the single-layer potential exactly solves the boundary value
+problem.  (In case we solve the Yukawa-Beltrami problem on a sphere of
+radius $R$, we require $kR>1/2$.)
 
 To simplify the exposition and analysis, we shall concentrate on
 locating the homogeneous solution of~\eqref{bigmodel}.  In other words:
@@ -544,9 +545,9 @@ $\nu:=\frac{-1+i\sqrt{4k^2-1}}{2}$, $k>1/2$, and
 \end{definition} 
 (See Figure~\ref{f:greensFun} for a visualization of $G_1(x,x_0)$.) We
 mention here that the specific choice of $\C$ is motivated by the
-calculations performed while deriving a representation formula in
-Section~\ref{s:representation}.  We will see that $\C$ is well-defined
-with our assumption that $k>1/2$.
+calculations performed while deriving a representation formula.  We will
+see that $\C$ is well-defined with our assumption that $k>1/2$ in
+Lemma~\ref{lem:constantC}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -680,6 +681,7 @@ are interested in the limit of $F(\theta)$ as the point $x\rightarrow
 x_0$, that is, as $\theta \rightarrow 0^+$.  
 
 \begin{lemma} 
+\label{lem:constantC}
 Let $F(\theta)$ be as defined in~\eqref{curlT}. Then
 $\lim_{\theta\rightarrow 0^+} F(\theta)= \frac{2}{\pi}C_k \sin(\nu
 \pi)$.
@@ -747,13 +749,13 @@ normalization of the second layer potential (defined in the next
 section), it is equivalent to imposing that $G(x,x_{0})$ is the
 fundamental solution of the Yukawa-Beltrami equation.  That is, this
 choice of $C_{k}$ guarantees that $(-\Delta_{\S} + k^{2})G_{k}(x,x_{0})
-= \delta(x-x_{0})$, where $\delta$ is the usual dirac delta function.
+= \delta(x-x_{0})$, where $\delta$ is the usual Dirac distribution.
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Representation formula}
-\label{s:representation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Representation formula}
+%\label{s:representation}
 The following representation formula can be found in~\cite{mit:tay1999}
 (equation (7.37)).  Let $\Omega$ and
 $\Omega^{c}:=\S\setminus{\overline{\Omega}}$ be a simply-connected
@@ -1539,49 +1541,49 @@ $N$ & \# GMRES & Trapezoid Error & Alpert Error  \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{The effect of $k$}
-%We consider the same two-ply connected geometry illustrated in
-%Figure~\ref{f:twoply}.  We solve~\eqref{e:dlpBIE} for varying values of
-%$k > 1/2$ using Alpert's quadrature rule with $N=32$.  We report the
-%condition number of the resulting linear system and the required number
-%of GMRES iterations in Table~\ref{t:example2}.  We see that for larger
-%values of $k$, the conditioning of the linear system improves, and the
-%number of GMRES iterations decreases.  In Figure~\ref{f:evalues}, we
-%plot the eigenvalues of the linear system for $k=1$ and $k=64$.  We see
-%that for larger values of $k$, the eigenvalues cluster more strongly
-%around $1/2$ resulting in a smaller number of GMRES iterations and a
-%smaller condition number.
-%
-%\begin{table}[htps]
-%\caption{\label{t:example2} The condition number of the linear system
-%corresponding to a discretization of~\eqref{e:dlpBIE} and the number of
-%GMRES iterations as a function of the parameter $k$.}
-%\centering
-%\begin{tabular*}{0.8\textwidth}{@{\extracolsep{\fill}}lll}
-%$k$ & Condition Number & \# GMRES \\
-%\hline\noalign{\smallskip}
-%0.51 & 4.22E1 & 14 \\
-%1    & 1.22E1 & 13 \\
-%2    & 4.50E0 & 11 \\
-%4    & 2.17E0 & 9  \\
-%8    & 1.45E0 & 8  \\  
-%16   & 1.24E0 & 7  \\ 
-%32   & 1.13E0 & 6  \\
-%64   & 1.07E0 & 6  \\
-%\noalign{\smallskip}\hline
-%\end{tabular*}
-%\end{table}
-%
-%\begin{figure}[htps]
-%\centering
-%\begin{tabular}{cc}
-%\input{eigsk1.tex} &
-%\input{eigsk64.tex}
-%\end{tabular}
-%\caption{\label{f:evalues} The eigenvalues of a discretization
-%of~\eqref{e:dlpBIE} for $k=1$ (left) and $k=64$ (right)}
-%\end{figure}
-%
+\subsection{The effect of $k$}
+We consider the same two-ply connected geometry illustrated in
+Figure~\ref{f:twoply}.  We solve~\eqref{e:dlpBIE} for varying values of
+$k > 1/2$ using Alpert's quadrature rule with $N=32$.  We report the
+condition number of the resulting linear system and the required number
+of GMRES iterations in Table~\ref{t:example2}.  We see that for larger
+values of $k$, the conditioning of the linear system improves, and the
+number of GMRES iterations decreases.  In Figure~\ref{f:evalues}, we
+plot the eigenvalues of the linear system for $k=1$ and $k=64$.  We see
+that for larger values of $k$, the eigenvalues cluster more strongly
+around $1/2$ resulting in a smaller number of GMRES iterations and a
+smaller condition number.
+
+\begin{table}[htps]
+\caption{\label{t:example2} The condition number of the linear system
+corresponding to a discretization of~\eqref{e:dlpBIE} and the number of
+GMRES iterations as a function of the parameter $k$.}
+\centering
+\begin{tabular*}{0.8\textwidth}{@{\extracolsep{\fill}}lll}
+$k$ & Condition Number & \# GMRES \\
+\hline\noalign{\smallskip}
+0.51 & 4.22E1 & 14 \\
+1    & 1.22E1 & 13 \\
+2    & 4.50E0 & 11 \\
+4    & 2.17E0 & 9  \\
+8    & 1.45E0 & 8  \\  
+16   & 1.24E0 & 7  \\ 
+32   & 1.13E0 & 6  \\
+64   & 1.07E0 & 6  \\
+\noalign{\smallskip}\hline
+\end{tabular*}
+\end{table}
+
+\begin{figure}[htps]
+\centering
+\begin{tabular}{cc}
+\input{eigsk1.tex} &
+\input{eigsk64.tex}
+\end{tabular}
+\caption{\label{f:evalues} The eigenvalues of a discretization
+of~\eqref{e:dlpBIE} for $k=1$ (left) and $k=64$ (right)}
+\end{figure}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The effect of the geometry's curvature}
@@ -1670,7 +1672,7 @@ Research Council of Canada. NN gratefully acknowledges support from the
 Canada Research Chairs Council, Canada.
 \end{acknowledgements}
 
-%\bibliographystyle{spmpsci}
+\bibliographystyle{spmpsci}
 %\bibliography{refs}
 
 \begin{thebibliography}{10}
@@ -1684,6 +1686,11 @@ Canada Research Chairs Council, Canada.
 \bibitem{alpert}
 Alpert, B.K.: {Hybrid Gauss-Trapezoidal Quadrature Rules}.
 \newblock SIAM Journal on Scientific Computing \textbf{20}, 1551--1584 (1999)
+
+\bibitem{asc:ruu:wet1995}
+Ascher, U., Ruuth, S., Wetton, B.: Implicit-explicit methods for time-dependent
+  partial differential equations.
+\newblock SIAM Journal on Numerical Analysis \textbf{32}, 797--823 (1995)
 
 \bibitem{Bertalmio}
 Bertalmio, M., Cheng, L.T., Osher, S., Sapiro, G.: {Variational Problems and
@@ -1720,15 +1727,6 @@ Gemmrich, S., Nigam, N., Steinbach, O.: {B}oundary {I}ntegral {E}quations for
 \newblock Mathematics and Computation, a Contemporary View \textbf{3}, 21--37
   (2008)
 
-\bibitem{hackbusch}
-Hackbusch, W.: Integral equations, \emph{International Series of Numerical
-  Mathematics}, vol. 120.
-\newblock Birkh\"auser Verlag, Basel (1995).
-\newblock \doi{10.1007/978-3-0348-9215-5}.
-\newblock \urlprefix\url{http://dx.doi.org/10.1007/978-3-0348-9215-5}.
-\newblock {Theory and numerical treatment, Translated and revised by the author
-  from the 1989 German original}
-
 \bibitem{kro:qua2011}
 Kropinski, M., Quaife, B.: Fast integral equation methods for the modified
   {H}elmholtz equation.
@@ -1754,6 +1752,11 @@ Lebedev, N.N.: Special functions and their applications.
 Lindblom, L., Szil\'{a}gyi, B.: {Solving partial differential equations
   numerically on manifolds with arbitrary spatial topologies}.
 \newblock Journal of Computational Physics \textbf{243}, 151--175 (2013)
+
+\bibitem{mit:tay1999}
+Mitrea, M., Taylor, M.: {Boundary Layer Methods for Lipschitz Domains in
+  Riemannian Manifolds}.
+\newblock Journal of Functional Analysis \textbf{163}, 181--251 (1999)
 
 \bibitem{Myers}
 Myers, T., Charpin, J.: A mathematical model for atmospheric ice accretion and
@@ -1790,17 +1793,9 @@ Witkin, A., Kass, M.: Reaction-diffusion textures.
 \newblock \doi{10.1145/127719.122750}.
 \newblock \urlprefix\url{http://doi.acm.org/10.1145/127719.122750}
 
-\bibitem{asc:ruu:wet1995}
-Ascher, U., Ruuth, S., Wetton, B.: Implicit-explicit methods for time-dependent
-  partial differential equations.
-\newblock SIAM Journal on Numerical Analysis \textbf{32}, 797--823 (1995)
-
-\bibitem{mit:tay1999}
-Mitrea, M., Taylor, M.: {Boundary Layer Methods for Lipschitz Domains in
-  Riemannian Manifolds}.
-\newblock Journal of Functional Analysis \textbf{163}, 181--251 (1999)
-
 \end{thebibliography}
+
+
 
 \end{document}
 
