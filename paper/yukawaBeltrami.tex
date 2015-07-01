@@ -153,7 +153,7 @@ discretization methods developed for PDEs in the plane or in
 $\mathbb{R}^3$ need to be modified. Recent work in this direction
 includes the closest point method~\cite{ruuth}, surface
 parametrization~\cite{floater}, embedding functions,~\cite{Bertalmio},
-and projections onto an approximation of the manifolds by tesselations
+and projections onto an approximation of the manifolds by tessellations
 of simpler, non-curved domains (such as triangles)~\cite{lindblom}. 
 
 It is well-known that for elliptic PDEs in $\mathbb{R}^2$ or
@@ -325,7 +325,7 @@ operator:
 \end{align*}
 
 
-Stoke's theorem for the  smooth positively oriented curve $\Gamma$ and
+Stokes' theorem for the  smooth positively oriented curve $\Gamma$ and
 the enclosed region $\Omega$ may be written  as
 \begin{align*}
   \int\limits_{\Omega} \mbox{curl}_{\S} \vec{V}(x) d\sigma_x \, = \,
@@ -350,7 +350,7 @@ $\lap_{\S}$,
   -\int\limits_{\Omega} \underline{\mbox{curl}}_{\S} v(x) \cdot
   \underline{\mbox{curl}}_{\S} u(x) \, d\sigma_x 
   =& \int\limits_{\Gamma} v(x) [\underline{\mbox{curl}}_S u(x) \cdot 
-  \underline{t}(x)] ds_x +\int\limits_{\Omega} v(x) \lap_{\S}u(x) d\sigma_x.
+  \mathbf{t}(x)] ds_x +\int\limits_{\Omega} v(x) \lap_{\S}u(x) d\sigma_x.
 \end{align}
 
 We obtain Green's second formula by interchanging the roles of $u$ and
@@ -458,7 +458,7 @@ solution of~\eqref{LegendrePequation}, namely $Q_{\nu(k)}$.
   \centering
   \input{legendre1D.tex}
   \caption{\label{f:legendreP} The LegendreP function
-  $P_{\nu(k)}(-\cos\theta)$, for $\theta \in (0,\pi]$ and $k=1$}
+  $P_{\nu(k)}(-\cos\theta)$, for $\theta \in (0,\pi]$ and $k=1$.}
 \end{figure}  
 We also recall that $P_{\nu}$ is well-defined for all $\nu \in
 \mathbb{C}$, whereas $Q_\nu$ is well-defined for $\nu \not=
@@ -502,7 +502,7 @@ kind},~\cite{fatAbramowitz}.
   \input{legendre3D.tex}
   \caption{\label{f:greensFun} $G_1(x,x_0)$ when $x_0=(0,0,1)^T$. The
   singularity at the north pole is logarithmic. Only the top hemisphere
-  is shown here for purpose of illustration}
+  is shown here for purpose of illustration.}
 \end{figure}
 A more (computationally) convenient representation is in terms of the
 {\it conical or Mehler functions} (Section 8.5 in~\cite{lebedev}). The
@@ -528,7 +528,7 @@ k^2$ for points $x,x_0$ on the surface of the unit sphere is
 \begin{subequations}
   \begin{align}
     G_k(x,x_{0})&:=\C P_{\nu}\left(-<x,x_{0}>\right) \nonumber \\
-    &:=\C P_{\nu}\left(\frac{\|x-x_{0}\|^2}{2}-1\right) \label{LegP} \\
+    &=\C P_{\nu}\left(\frac{\|x-x_{0}\|^2}{2}-1\right) \label{LegP} \\
     &= \C\, \tensor[_2]{F}{_1} \left(-\nu, \nu+1; 1; 
       \frac{1+<x,x_{0}>}{2}\right)\label{hyperG} \\
     &=\C P_{-\frac{1}{2} + i \tau}
@@ -959,15 +959,16 @@ density function $\mu$
     \label{doublelayerpotential}
   \end{align}
 \end{itemize}
-We wish to point out here that the form of the double-layer potential above is equivalent to the, perhaps, more familiar form:
+We wish to point out here that the form of the double-layer potential
+above is equivalent to the, perhaps, more familiar form:
 \begin{align*}
   (\widetilde{W_k}\mu )(x):=-\int\limits_{\Gamma}
-  \mu(y) \frac{\partial \,}{\partial n_y} G_k(x,y) \,
+  \mu(y) \frac{\partial \,}{\partial \mathbf{n}(y)} G_k(x,y) \,
   ds_y, \quad\mbox{for $x\notin\Gamma$},
 \end{align*}
-where $n_{y}$ is the outward pointing normal to $\Gamma$ at the point
-$y$ lying in a tangent plane to $\S$.  See~\cite{kro:nig2013} for a
-more detailed discussion on this point.
+where $\mathbf{n}(y)$ is the outward pointing normal to $\Gamma$ at the
+point $y$ lying in a tangent plane to $\S$.  See~\cite{kro:nig2013} for
+a more detailed discussion on this point.
 
 By Proposition~\ref{prop:repr}, every solution to the homogeneous
 Yukawa-Beltrami equation can be written as the sum of a single- and a
@@ -1139,7 +1140,7 @@ Hence the double-layer potential satisfies:
 \end{align*}
 where we tacitly assumed the orientation of the tangential vector
 $\vec{t}$ along $\Gamma$ to be in accordance with the orientation of
-$\Omega^{c}$ in the sense of Stoke's theorem.
+$\Omega^{c}$ in the sense of Stokes' theorem.
 
 \end{lemma}
 
@@ -1256,15 +1257,15 @@ has the following properties:
   \lim_{\substack {s \rightarrow 0}} f(s) = 
    \lim_{\substack {x \rightarrow x_{0} \\ x \in \Gamma}}
    [\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x) \cdot \vec{t}(x)] =  
-   -\frac{1}{4\pi} \kappa \mathbf{t}\cdot(\mathbf{n}_{p}
+   -\frac{1}{4\pi} \kappa \mathbf{t}\cdot(\mathbf{n}_{0}
     \times \mathbf{x}_0)
 \end{align*}
 
 Here $\kappa$ is the principle curvature of $\Gamma$ at $x_{0}$,
 $\mathbf{x}_0$ is the 3-dimensional vector associated with the point
-$x_0$ (assuming the origin is located at the center of the sphere),
-$\mathbf{n}_p$ is the principle normal of $\Gamma$ at $x_0$ and
-$\mathbf{t}$ is a three-dimensional vector, identified with $\vec{t}$.
+$x_{0}$ (assuming the origin is located at the center of the sphere),
+$\mathbf{n}_{0}$ is the principle normal of $\Gamma$ at $x_0$ and
+$\mathbf{t}$ is the tangent vector.
 \item $\frac{d}{ds}f(s)$ can be extended to be well-defined and
 continuous at $s=0$.
 \item $\frac{d^2}{ds^2} f(s)$ is unbounded as $s\rightarrow 0$, and
@@ -1273,150 +1274,6 @@ therefore $f$ cannot be extended to be a $C^{2}$ function on $\Gamma$.
 \end{lemma}
 
 \begin{proof}
-\todo{Bryan: Check bolding in this proof}
-
-%We provide a simple argument via l'H\^{o}pital's rule in the case that
-%$\Gamma$ is a simple smooth closed curve. For this argument, it is
-%easier  to work with points and vectors in $\mathbb{R}^3$.  Let $x_0$,
-%$x$ be points on the unit sphere. We identify them with the
-%3-dimensional vectors $\mathbf{x}_{0}$, $\mathbf{x}$ respectively.  Let
-%$\mathbf{t}$ and $\mathbf{n}$ be the unit tangent and normal vectors
-%at the point $\mathbf{x} \in \Gamma$ lying in the tangent plane of
-%$\mathcal{S}$.  We note for future reference that
-%$\mathbf{x}=\mathbf{e_r}$, $\mathbf{x} \cdot \mathbf{x} = 1$ and that
-%$\mathbf{x} = \mathbf{n} \times \mathbf{t}$. Since $\Gamma$ is
-%parametrized by arc length $s$, we also note the following identities:
-%
-%\begin{align*}
-%  \mathbf{t} = \frac{d\mathbf{x}}{ds}, \qquad 
-%  \frac{d\mathbf{t}}{ds} = \kappa \, \mathbf{n}_{p}.
-%\end{align*}
-%The second identity is one of the Frenet formulae, where $\kappa$ is
-%the curvature of the curve $\Gamma$ at the point $\mathbf{x}$ and
-%$\mathbf{n}_{p}$ is the principal normal to the curve.  From these, it
-%is straightforward to show that 
-%\begin{align*}
-%  \frac{d \, }{ds} \left( \mathbf{t} \times \mathbf{x} \right)=
-%  \kappa \mathbf{n}_{p} \times \mathbf{x} . 
-%\end{align*}
-%
-%We now examine the kernel of the double-layer potential. Calculating the
-%three dimensional gradient of the fundamental solution $G$ yields
-%\begin{align*}
-%  \nabla G_k(x_0,x) &= \C \nabla P_\nu\left(
-%    \frac{\|x_0-x\|^2}{2}-1\right) = 
-%  -\C P'_\nu\left(\frac{\|x_0-x\|^2}{2}-1\right)
-%    (\mathbf{x}_{0}-\mathbf{x}),
-%\end{align*}
-%which we can decompose into the surface gradient plus a derivative in
-%the radial direction. We can write this more concisely as
-%\begin{align*}
-%\nabla G_k(x_0,x)=-\C P'_{\nu}(z) (\mathbf{x}_0-\mathbf{x}), 
-%  \qquad \mbox{where}\qquad z=\frac{\|{ x_0}-{x}\|^2}{2}-1.
-%\end{align*} 
-%The kernel of the double-layer operator is $f(s): =
-%[\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x) \cdot \vec{t}(x)]=
-%\frac{\partial}{\partial n} G_k({x}_{0},{x})$, which in turn can be
-%written as 
-%\begin{align*}
-% f(s)=\frac{\partial \, }{\partial n} G_{k}(x_{0},x) 
-% =\nabla G_{k} \cdot \mathbf{n} = \nabla G_k\cdot \left( \mathbf{t}
-% \times \mathbf{x} \right) 
-% =-\C (\mathbf{x}_0-\mathbf{x})P'_{\nu}(z)\cdot \left(
-% \mathbf{t} \times \mathbf{x} \right).
-%\end{align*}
-%Recalling that $P'_{\nu}(z)=\frac{-(\nu+1)}{1-z^2}(P_{\nu+1}(z)-z
-%P_{\nu}(z))$~\eqref{difflegp},
-%\begin{align}
-%  f(s) &= \C \frac{(\nu+1)}{1-z^2}\left(
-%  P_{\nu+1}(z)-zP_{\nu}(z)\right) 
-%  (\mathbf{x}_0-\mathbf{x})\cdot \left(
-%  \mathbf{t} \times {\mathbf x} \right) \nonumber\\
-%  &= 2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z} \left[
-%  \frac{(\mathbf{x}_0-\mathbf{x})}{\|\mathbf{x}_{0}-\mathbf{x}\|^2}
-%  \cdot \left( \mathbf{t} \times \mathbf{x} \right)\right].
-%  \label{kern1}
-%\end{align} 
-%
-%Now, the quantity
-%\begin{align*}
-%  2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z}
-%  =4\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{4-\|{x_0}-{x}\|^2},
-%\end{align*}
-%has a well-defined limit as $x \rightarrow
-%x_{0}$~\eqref{doublelayerwithz}. In fact,
-%following~\eqref{doublelayerwithz}
-%\begin{align*}
-%  \lim_{x\rightarrow x_0} 
-%  \C[\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x) \cdot \vec{t}(x)] 
-%  = \C(\nu+1)\lim_{z\rightarrow 1^-}
-%  P_{\nu+1}(-z)+zP_{\nu}(-z)) = -\frac{1}{2\pi}.
-%\end{align*}
-%
-%The remaining term in~\eqref{kern1} is $q(x,x_0) :=
-%\frac{(\mathbf{x}_{0}-\mathbf{x})}{\|\mathbf{x}_{0}-\mathbf{x}\|^2}
-%\cdot \left( \mathbf{t} \times \mathbf{x} \right).$  This term can be
-%shown to be continuous as $\mathbf{x} \rightarrow \mathbf{x}_{0}$ by
-%l'H\^{o}pital's rule.  A first application of l'H\^{o}pital's rule to
-%evaluate $q(x,x_0)$ at the point of singularity, $x = x_{0}$, 
-%\begin{align*}
-%  \lim_{x \rightarrow x_{0}}q(x,x_{0}) & = 
-%  \lim_{x \rightarrow x_{0}} 
-%  \frac{ -\mathbf{t} \cdot \left(\mathbf{t} \times \mathbf{x} \right)
-%  + (\mathbf{x}_{0}-\mathbf{x}) \cdot \left( \kappa \mathbf{n}_{p}
-%  \times \mathbf{x} \right)}
-%  {-2(\mathbf{x}_{0} - \mathbf{x}) \cdot \mathbf{t}} \\
-%  & = \lim_{\mathbf{x} \rightarrow \mathbf{x}_{0}} 
-%  \frac{(\mathbf{x}_{0}-\mathbf{x}) \cdot \left(
-%  \kappa\mathbf{n}_{p} \times \mathbf{x}\right)}
-%  {(\mathbf{x}_{0} - \mathbf{x}) \cdot \mathbf{t}}. 
-%\end{align*}
-%Proceeding with a second application of l'H\^{o}pital's rule yields
-%\begin{align*}
-%  \lim_{x \rightarrow x_{0}} q(x,x_0)  
-%  & = \lim_{x \rightarrow x_{0}} \frac{-\mathbf{t} \cdot 
-%  \left( \kappa \mathbf{n}_{p} \times \mathbf{x} \right) +
-%  \mathcal{O}(\mathbf{x}-\mathbf{x})}
-%  {-2\mathbf{t} \cdot \mathbf{t} + \mathcal{O}(\mathbf{x}-\mathbf{x})}
-%  = \frac{1}{2} \mathbf{t} \cdot \left( \kappa \mathbf{n}_{p} \times 
-%  \mathbf{x}_{0} \right).
-%\end{align*}
-%This shows that $f(s)$ has a well-defined limit as $s\rightarrow 0$,
-%that is, as $x \rightarrow x_0$. The kernel of the double-layer
-%operator can therefore be made continuous in the arclength parameter.
-%
-%If we now examine $\frac{d}{ds}f(s)$, we obtain
-%\begin{align*} 
-%  f'(s)&= -\C \frac{d}{ds}\left( P'_\nu(z)(\mathbf{x_0}-\mathbf{x}) \cdot 
-%    \mathbf{n} \right) \\
-%  &=-C_{k} \left\{P''_{\nu}(z) \frac{dz}{ds}
-%    (\mathbf{x}_{0}-\mathbf{x})  \cdot \mathbf{n} - P'_{\nu}(z)
-%    (-\mathbf{t} \cdot \mathbf{n}) + P'_\nu(z)((\mathbf{x}_{0} -
-%    \mathbf{x}) \cdot \frac{d}{ds}\mathbf{n})\right\}.
-% \end{align*}
-%Since $P_\nu(z)$ solves Legendre's equation~\eqref{LegendrePequation}
-%and since $\mathbf{x},\mathbf{t}, \mathbf{n}$ form an orthogonal set,
-%we have
-%\begin{align*}
-%  \lim_{\substack {s \rightarrow 0}} f'(s) =-C_k
-%  \left\{\frac{2zP'_{\nu}(z)-\nu(\nu+1)P_{\nu}(z)}{1-z^2}
-%  \frac{dz}{ds}(\mathbf{x_0}-\mathbf{x})\cdot \mathbf{n} + \kappa
-%  P'_\nu(z)((\mathbf{x}_{0}-\mathbf{x})\cdot (\mathbf{n}_{p} \times 
-%  \mathbf{x})\right\}
-%\end{align*}
-%Applying L'H\^{o}pital's rule to each of the terms above, we see that
-%$f'(s)$ has a well-defined and bounded limit at $s \rightarrow 0$.
-%Therefore, the kernel of the double-layer operator is differentiable in
-%the arc length parameter, with bounded derivative as $s \rightarrow 0$. 
-%
-%However,
-%\begin{align*} 
-%  f''(s) &= -\C \frac{d^2}{ds^2}\left( P'_\nu(z) 
-%  (\mathbf{x}_{0}-\mathbf{x}) \cdot \mathbf{n} \right)
-%\end{align*}
-%is not bounded as $s\rightarrow 0$. This can be shown using calculations
-%similar to those above, and we do not include them here.
-
 
 We provide a simple argument via l'H\^{o}pital's rule in the case that
 $\Gamma$ is a simple smooth closed curve. For this argument, it is
@@ -1428,19 +1285,19 @@ at the point $\mathbf{x} \in \Gamma$ lying in the tangent plane of
 $\mathcal{S}$.  We note for future reference that
 $\mathbf{x}=\mathbf{e_r}$, $\mathbf{x} \cdot \mathbf{x} = 1$ and that
 $\mathbf{x} = \mathbf{n} \times \mathbf{t}$. Since $\Gamma$ is
-parametrized by arc length $s$, we also note the following identities:
+parametrized by arclength $s$, we also note the following identities:
 
 \begin{align*}
   \mathbf{t} = \frac{d\mathbf{x}}{ds}, \qquad 
-  \frac{d\mathbf{t}}{ds} = \kappa \, \mathbf{n}_{p}.
+  \frac{d\mathbf{t}}{ds} = \kappa \, \mathbf{n}.
 \end{align*}
-The second identity is one of the Frenet formulae, where $\kappa$ is
-the curvature of the curve $\Gamma$ at the point $\mathbf{x}$ and
-$\mathbf{n}_{p}$ is the principal normal to the curve.  From these, it
-is straightforward to show that 
+The second identity is one of the Frenet formulae, where $\kappa$ is the
+curvature of the curve $\Gamma$ at the point $\mathbf{x}$ and
+$\mathbf{n}$ is the principal normal to the curve.  From these, it is
+straightforward to show that 
 \begin{align*}
   \frac{d \, }{ds} \left( \mathbf{t} \times \mathbf{x} \right)=
-  \kappa \mathbf{n}_{p} \times \mathbf{x} . 
+  \kappa \mathbf{n} \times \mathbf{x} . 
 \end{align*}
 
 We now examine the kernel of the double-layer potential. Calculating the
@@ -1459,10 +1316,10 @@ the radial direction. We can write this more concisely as
 \end{align*} 
 The kernel of the double-layer operator is $f(s): =
 [\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x) \cdot \vec{t}(x)]=
-\frac{\partial}{\partial n} G_k({x}_{0},{x})$, which in turn can be
-written as 
+\frac{\partial}{\partial \mathbf{n}} G_k({x}_{0},{x})$, which in turn
+can be written as 
 \begin{align*}
- f(s)=\frac{\partial \, }{\partial n} G_{k}(x_{0},x) 
+ f(s)=\frac{\partial \, }{\partial \mathbf{n}} G_{k}(x_{0},x) 
  =\nabla G_{k} \cdot \mathbf{n} = \nabla G_k\cdot \left( \mathbf{t}
  \times \mathbf{x} \right) 
  =-\C (\mathbf{x}_0-\mathbf{x})P'_{\nu}(z)\cdot \left(
@@ -1506,22 +1363,22 @@ evaluate $q(x,x_0)$ at the point of singularity, $x = x_{0}$,
   \lim_{x \rightarrow x_{0}}q(x,x_{0}) & = 
   \lim_{x \rightarrow x_{0}} 
   \frac{ -\mathbf{t} \cdot \left(\mathbf{t} \times \mathbf{x} \right)
-  + (\mathbf{x}_{0}-\mathbf{x}) \cdot \left( \kappa \mathbf{n}_{p}
+  + (\mathbf{x}_{0}-\mathbf{x}) \cdot \left( \kappa \mathbf{n}
   \times \mathbf{x} \right)}
   {-2(\mathbf{x}_{0} - \mathbf{x}) \cdot \mathbf{t}} \\
   & = \lim_{\mathbf{x} \rightarrow \mathbf{x}_{0}} 
   \frac{(\mathbf{x}_{0}-\mathbf{x}) \cdot \left(
-  \kappa\mathbf{n}_{p} \times \mathbf{x}\right)}
+  \kappa\mathbf{n} \times \mathbf{x}\right)}
   {-2(\mathbf{x}_{0} - \mathbf{x}) \cdot \mathbf{t}}. 
 \end{align*}
 Proceeding with a second application of l'H\^{o}pital's rule yields
 \begin{align*}
   \lim_{x \rightarrow x_{0}} q(x,x_0)  
   & = \lim_{x \rightarrow x_{0}} \frac{-\mathbf{t} \cdot 
-  \left( \kappa \mathbf{n}_{p} \times \mathbf{x} \right) +
+  \left( \kappa \mathbf{n} \times \mathbf{x} \right) +
   \mathcal{O}(\mathbf{x}_{0}-\mathbf{x})}
   {-2\mathbf{t} \cdot \mathbf{t} + \mathcal{O}(\mathbf{x}_{0}-\mathbf{x})}
-  = \frac{1}{2} \mathbf{t} \cdot \left( \kappa \mathbf{n}_{p} \times 
+  = \frac{1}{2} \mathbf{t} \cdot \left( \kappa \mathbf{n}_{0} \times 
   \mathbf{x}_{0} \right).
 \end{align*}
 This shows that $f(s)$ has a well-defined limit as $s\rightarrow 0$,
@@ -1534,23 +1391,22 @@ If we now examine $\frac{d}{ds}f(s)$, we obtain
     \mathbf{n} \right) \\
   &=-C_{k} \left\{P''_{\nu}(z) \frac{dz}{ds}
     (\mathbf{x}_{0}-\mathbf{x})  \cdot \mathbf{n} - P'_{\nu}(z)
-    (-\mathbf{t} \cdot \mathbf{n}) + P'_\nu(z)((\mathbf{x}_{0} -
-    \mathbf{x}) \cdot \frac{d}{ds}\mathbf{n})\right\}.
+    (-\mathbf{t} \cdot \mathbf{n}) + P'_\nu(z)\left((\mathbf{x}_{0} -
+    \mathbf{x}) \cdot \frac{d}{ds}\mathbf{n}\right)\right\}.
  \end{align*}
 Since $P_\nu(z)$ solves Legendre's equation~\eqref{LegendrePequation}
 and since $\mathbf{x},\mathbf{t}, \mathbf{n}$ form an orthogonal set,
 we have
 \begin{align*}
-  \lim_{\substack {s \rightarrow 0}} f'(s) =-C_k
-  \left\{\frac{2zP'_{\nu}(z)-\nu(\nu+1)P_{\nu}(z)}{1-z^2}
-  \frac{dz}{ds}(\mathbf{x_0}-\mathbf{x})\cdot \mathbf{n} + \kappa
-  P'_\nu(z)((\mathbf{x}_{0}-\mathbf{x})\cdot (\mathbf{n}_{p} \times 
-  \mathbf{x})\right\}
+  f'(s) =-C_k \left\{\frac{2zP'_{\nu}(z)-\nu(\nu+1)P_{\nu}(z)}{1-z^2}
+  \frac{dz}{ds}(\mathbf{x}_{0}-\mathbf{x})\cdot \mathbf{n} + \kappa
+  P'_\nu(z)((\mathbf{x}_{0}-\mathbf{x})\cdot (\mathbf{n} \times 
+  \mathbf{x})\right\}.
 \end{align*}
 Applying L'H\^{o}pital's rule to each of the terms above, we see that
 $f'(s)$ has a well-defined and bounded limit at $s \rightarrow 0$.
 Therefore, the kernel of the double-layer operator is differentiable in
-the arc length parameter, with bounded derivative as $s \rightarrow 0$. 
+the arclength parameter, with bounded derivative as $s \rightarrow 0$. 
 
 However,
 \begin{align*} 
@@ -1587,10 +1443,12 @@ From~\eqref{bigmess1}, we have
   = \cos(\nu \pi)\left[-P_{\nu+1}(-z) - zP_{\nu}(-z) \right] 
   -\frac{2}{\pi}\sin(\nu \pi)\left[-zQ_{\nu}(-z) - Q_{\nu+1}(-z) \right].
 \end{align*}
-The first term involving $P_{\nu}(-z)$ is smooth around $z=-1$
-\todo{Nilima: We need it to be smooth.  I tried taking derivatives with
-Maple and had no problems}.  The second term involving $Q_{\nu}(-z)$ is
-not smooth.  By~\eqref{Qasymptotics}, as $z \rightarrow -1$, we have
+Each term involving the LegendreP function is smooth at $z = -1$.  This
+can be seen by converting the expressions to hypergeometric functions
+with the argument $\frac{1+z}{2}$, which is analytic as long as $|z+1|
+< 2$~\cite{fatAbramowitz} (equation 15.2.1).  The second term involving
+$Q_{\nu}(-z)$ is not smooth.  By~\eqref{Qasymptotics}, as $z
+\rightarrow -1$, we have
 \begin{align*}
   -zQ_{\nu}(-z) - Q_{\nu+1}(-z) &= -z\left(
     -\frac{1}{2}\log(1+z) + R(\nu)\right) - 
@@ -1602,10 +1460,11 @@ not smooth.  By~\eqref{Qasymptotics}, as $z \rightarrow -1$, we have
 %    R(\nu+1) + \bigO(1-t)\right) \\
 %    &=-\frac{1}{2} (t-1)\log(1-t) + [\psi(\nu+1)-\psi(\nu+2)] + \bigO(1-t) + \big(t(1-t)).
 \end{align*}
-where $A$ and $B$ are smooth.  Clearly, therefore, as $z\rightarrow -1$,
-$P_{\nu+1}(z) -z P_{\nu}(z)$ is of the form $A(z) \log(1-z) + B(z)$,
-where $A$ and $B$ are smooth.  Consequently, near $s=0$, $f(s)$ has the
-form $A(s) + B(s) \log(s)$ where $A(s)$ and $B(s)$ are smooth.
+where $A$ and $B$ are smooth.  Clearly, therefore, as $z\rightarrow
+-1$, $P_{\nu+1}(z) -z P_{\nu}(z)$ is of the form $A(1+z) \log(1+z) +
+B(1+z)$, where $A$ and $B$ are smooth.  Consequently, near $s=0$,
+$f(s)$ has the form $A(s) + B(s) \log(s)$ where $A(s)$ and $B(s)$ are
+smooth.
 \end{proof}
 \qed
 
@@ -1709,7 +1568,7 @@ quickly decays to the GMRES tolerance.
 \caption{\label{f:twoply} A numerical solution of the Yukawa-Beltrami
 equation with $k=4$ in a two-ply connected domain viewed from two
 different angles.  The exact solution is the sum of two fundamental
-solutions, each one centered inside the regions bounded by $\Gamma$}
+solutions, each one centered inside the regions bounded by $\Gamma$.}
 \end{figure}
 
 \begin{table}[htps]
@@ -1770,7 +1629,7 @@ $k$ & Condition Number & \# GMRES \\
 \input{eigsk64.tex}
 \end{tabular}
 \caption{\label{f:evalues} The eigenvalues of a discretization
-of~\eqref{e:dlpBIE} for $k=1$ (left) and $k=64$ (right)}
+of~\eqref{e:dlpBIE} for $k=1$ (left) and $k=64$ (right).}
 \end{figure}
 
 
@@ -1823,7 +1682,7 @@ digits.  A plot of the solution is in Figure~\ref{f:36ply}.
   \caption{\label{f:36ply} The numerical solution of the Yukawa-Beltrami
   equation with $k=4$ in a 36-ply connected domain.  The Dirichlet
   boundary condition is equal to one on each of the boundaries (black
-  curves)}
+  curves).}
 \end{figure}
 
 \section{Conclusions and Discussion}
