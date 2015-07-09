@@ -242,7 +242,11 @@ equation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Some preliminaries}
- We favour an intrinsic definition, and where possible identify $x\in \S$ by two independent variables (the spherical angles), $x=x(\phi,\theta)$. We can also describe this point in terms of a Euclidean coordinate system in $\mathbb{R}^3$ whose origin is at the center of mass of the sphere: 
+We favour an intrinsic definition, and where possible identify $x\in \S$
+by two independent variables (the spherical angles), $x=x(\phi,\theta)$.
+We can also describe this point in terms of a Euclidean coordinate
+system in $\mathbb{R}^3$ whose origin is at the center of mass of the
+sphere: 
 \begin{align*}
  x= x(\varphi,\theta) \, \equiv \, \left( 
   \begin{array}{c}
@@ -366,9 +370,6 @@ symmetry of the left hand side
 \end{align}
 
 We shall make extensive use of these identities.
-
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -751,11 +752,6 @@ fundamental solution of the Yukawa-Beltrami equation.  That is, this
 choice of $C_{k}$ guarantees that $(-\Delta_{\S} + k^{2})G_{k}(x,x_{0})
 = \delta(x-x_{0})$, where $\delta$ is the usual Dirac distribution.
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Representation formula}
-%\label{s:representation}
 The following representation formula can be found in~\cite{mit:tay1999}
 (equation (7.37)).  Let $\Omega$ and
 $\Omega^{c}:=\S\setminus{\overline{\Omega}}$ be a simply-connected
@@ -778,156 +774,6 @@ C^{1}(\overline{\Omega})$ satisfies the representation formula
 \end{align}
 \end{proposition}
 
-%\begin{proof} 
-%We let $x\in \Omega$, and $x_0$ be a point either in $\Omega$ or
-%$\Omega^c$.  We proceed by examining the two possible cases.
-%
-%{\bf Case 1}:  $x_{0} \in \Omega^{c}$.  In this situation, the
-%fundamental solution $G_{k}(x,x_{0})$ satisfies the Yukawa-Beltrami
-%equation point-wise at all $x\in \Omega$. Since $x \neq x_0$,
-%$G_{k}(x,x_0)$ is a smooth function and we can therefore use Green's
-%second identity~\eqref{Green2} with $v(x)$ replaced by
-%$G_{k}(x,x_{0})$. Since $x_0\not \in \Omega$ all the
-%integrals involved are bounded, and 
-%\begin{align*}
-%  \int\limits_{\Omega} u(x)(\lap_{\S}G_{k}(x,x_0) 
-%      -k^{2}G_{k}(x,x_0)) \, d\sigma_x=0.
-%\end{align*}
-%Therefore, using~\eqref{Green2} we have 
-%\begin{align*}
-% 0 &= - \int\limits_{\Omega}
-%    G_k(x,x_{0})\left(\lap_{\S}u(x) -k^2 u(x)\right)\,d\sigma_x \\
-%    &-\int\limits_{{\Gamma}} G_k(x,x_{0}) \, \underline{\mbox{curl}}_{\S}
-%    u(x) \cdot \vec{t}(x) ds_{x} 
-% + \int\limits_{{\Gamma}}  u(x)
-% \,\underline{\mbox{curl}}_{{\S}} G_k(x,x_0) \cdot \vec{t}(x) ds_{x}.
-%\end{align*}
-%\begin{figure}
-%  \centering
-%  \input{proof1.tex}
-%  \caption{\label{f:proof1} The points $x,x_0$ belong to $\Omega$. We
-%  denote by $\Omega_\varepsilon:=\Omega\setminus B_{\varepsilon}(x_0)$}
-%\end{figure}
-%
-%{\bf Case 2}:  $x_0\in \Omega$.  In this situation  we cannot directly
-%use Green's second identity, since the fundamental solution has a
-%logarithmic singularity when $x=x_0$. Instead, we first define the
-%$\varepsilon$-neighbourhood of $x_0$,
-%$B_{\varepsilon}(x_0):=\{y\in{\S}:\, |y-x_0| \,<\, \varepsilon\}$. We
-%choose $\varepsilon>0$ small enough such that
-%$B_\varepsilon(x_{0})\subset \Omega$ (see Figure~\ref{f:proof1}). We
-%then set ${\Omega}_{\varepsilon}:=\Omega\setminus B_{\varepsilon}(x_0)$.
-%For $x\in \Omega_\varepsilon$, once again $G_k(x,x_0)$ satisfies the
-%Yukawa-Beltrami equation exactly.   The second Green's formula for
-%$\Omega_{\varepsilon}$ with $v(x)=G_k(x,x_0)$ yields:
-%\begin{align}
-%  - \int\limits_{\Omega_{\varepsilon}} G_k(x,x_0)\,
-%    (\lap_{\S}& u(x) -k^2u(x))\,d\sigma_x = 
-%    \int\limits_\Gamma [ G_k(x,x_0)\,\underline{\mbox{curl}}_{\S} 
-%    u(x) - u(x)\,\underline{\mbox{curl}}_{\S} G_k(x,x_0)] \cdot 
-%    \vec{t}(x) ds_x \nonumber \\
-%  &+\int\limits_{\partial B_{\varepsilon}(x_0)} [
-%    G_k(x,x_0)\,\underline{\mbox{curl}}_{\S} u(x) -
-%    u(x)\,\underline{\mbox{curl}}_{\S} G_k(x,x_0)]\cdot 
-%    \vec{t}(x) ds_{x}.
-%  \label{Green_S1eps}
-%\end{align}
-%We shall discuss each of these terms. We first note that since $x_{0}\in
-%\Omega$, the integrals over $\Gamma$ in~\eqref{Green_S1eps} are
-%well-defined. So we must examine the volume integral over
-%$\Omega_\varepsilon$ and the integrals over $\partial B_\varepsilon$.
-%For ease of exposition and without loss of generality, we take
-%$x_{0}=(0,0,1)$.  The curve $\partial B_{\varepsilon}$ is then fully
-%described by the latitude $\theta_{\varepsilon}$.  In this case, if
-%$x\in \partial B_\varepsilon$, then $<x,x_{0}> =
-%\cos(\theta_\varepsilon)$, and  $G_k(x,x_0) = \C
-%P_{\nu(k)}\left(-<x,x_{0}>\right) = \C
-%P_{\nu(k)}\left(-\cos(\theta_\varepsilon)\right).$ Therefore, since
-%$\cos(\theta_\varepsilon) = 1- \theta^2_\varepsilon/2 + \cdots$, we can
-%use the asymptotic result~\eqref{e:logSingularity} to compute
-%\begin{align*}
-% \int\limits_{\partial B_{\varepsilon}}\vert G_k(x,x_0)\,\vert  ds_x 
-%  &\leq \int_{0}^{2\pi}\vert \C P_{\nu(k)}(-\cos\theta_{\varepsilon})  
-%    \, \sin\theta_{\varepsilon}| \, d\varphi \\
-%  &= \C|\sin\theta_{\varepsilon}|
-%    |P_{\nu(k)}(-\cos\theta_{\varepsilon}) | 2\pi \\
-%  &= 2 \pi |\sin\theta_{\varepsilon}|\C \left(\cos(\nu\pi) 
-%    P_{\nu(k)}(\cos \theta_\varepsilon) - 
-%    \frac{2}{\pi}\sin(\nu \pi)
-%    Q_\nu(\cos \theta_{\varepsilon})\right) \\
-%  &\rightarrow 0 \quad \mbox{ (as $\varepsilon\rightarrow 0$)},
-%\end{align*}
-%where the limit holds since the singularity of $P_{\nu(k)}$ is only
-%logarithmic.  We can therefore estimate the first integral over
-%$\partial B_\varepsilon$ in~\eqref{Green_S1eps} as
-%\begin{align*}
-%  \left|\int\limits_{\partial B_{\varepsilon}} 
-%  G_{k}(x,x_{0})\,\underline{\mbox{curl}}_{\S} 
-%  u(x)\cdot\vec{t}(x)\, ds_x\right|\, \leq\, 
-%  \|\underline{\mbox{curl}}_{\S}u\|_{L^{\infty}} \,
-%  \int\limits_{\partial B_{\varepsilon}} |G_k(x,x_0)|\,ds_x 
-%  \rightarrow 0, \, \mbox{as}\, \varepsilon \rightarrow 0.
-%\end{align*}
-%
-%To analyse the second contribution along $\partial B_{\varepsilon}$
-%in~\eqref{Green_S1eps}, we again assume $x_{0}=(0,0,1)$.
-%Using~\eqref{curlT} we deduce that (note the orientation of $\partial
-%B_{\varepsilon}$)
-%\begin{align}
-%  \label{secondterm}
-%  -\int\limits_{\partial B_{\varepsilon}}
-%    [u(x)&\underline{\mbox{curl}}_{\S}G(x,x_0)\cdot \vec{t}(x)] ds_x 
-%    \nonumber \\
-%  &=\frac{\C(\nu+1) \sin^{2}\theta_{\varepsilon}}
-%         {\cos^{2}\theta_{\varepsilon} -1} 
-%  \left[ P_{\nu+1}(-\cos\theta_{\varepsilon}) +   
-%  (\cos \theta_\varepsilon) P_{\nu}(-\cos \theta_\varepsilon)\right] 
-%  \int_{2\pi}^0 u(\varphi,\theta_{\varepsilon})\, d\varphi  \nonumber\\
-%  &= \C(\nu+1) \left[ P_{\nu+1}(-\cos\theta_\varepsilon)
-%  + (\cos \theta_\varepsilon) P_\nu(-\cos\theta_\varepsilon)\right] 
-%  \int_{0}^{2\pi} u(\varphi,\theta_{\varepsilon})\, d\varphi.
-%\end{align}
-%
-%Combining~\eqref{smallermess1},~\eqref{smallermess2}
-%and~\eqref{secondterm} and using the continuity of $u$, we have
-%\begin{align*}
-%  -\lim_{\varepsilon\rightarrow 0}\int\limits_{\partial B_{\varepsilon}}
-%  u(x)& [\underline{\mbox{curl}}_{\S}G(x,x_0)\cdot \vec{t}(x)] ds_{x}
-%  = -4\C\sin(\nu \pi)  u(x_0) = u(x_0).
-%\end{align*} 
-%Note that $\C=-\frac{1}{4\sin(\nu\pi)}$ is chosen precisely to be this
-%value in~\eqref{constant-definition} to ensure this integral, in the
-%limit, is $u(x_0)$.
-%
-%We finally observe that since $u$ is assumed to be smooth enough,
-%\begin{align*} 
-%  \left| \int\limits_{\Omega} G_k(x,x_0)\,(\lap_{\S} u(x)-k^2u(x)) 
-%  \, d\sigma_x\right|\,&\leq \,
-%  \|\lap_{\S}\,u -k^2 u\|_{L^{\infty}(\Omega)} 
-%  \int\limits_{\Omega} |G_k(x,x_0)| \, d\sigma_x\,\\
-%  & \leq \|\lap_{\S}\,u -k^2 u\|_{L^{\infty}(\Omega)}M,
-%\end{align*}
-%where $M$ is a constant which depends on the volume of $\Omega$.
-%Specifically, since $P_\nu(k)(-t)$ is smooth away from the
-%(logarithmic) singularity at $t=1$, we have 
-%\begin{align*}
-%  M := \int\limits_{\Omega} |G_k(x,x_0)| \, d\sigma_x
-%  = \int_{B_{\varepsilon}(x_0)}|G_k(x,x_0)| \, d\sigma_x + M_1.
-%\end{align*}
-%The first integral is bounded since the logarithm is integrable over
-%${B_{\varepsilon}(x_0)}$, and $M_1$ is some finite constant depending
-%on the area of $\Omega$. Hence $M$ is a finite positive
-%constant depending on $\Omega$ and
-%\begin{align*}
-%  \lim_{\varepsilon\rightarrow 0}
-%  \int\limits_{\Omega_{\varepsilon}} G_k(x,x_0)\,(\lap_{\S} u(x)
-%  -k^2u(x)) \,d\sigma_x = \int\limits_{\Omega} G_k(x,x_0)\,
-%  (\lap_{\S} u(x) -k^2u(x))\,d\sigma_x.
-%\end{align*}
-%
-%Therefore, taking limits in~\eqref{Green_S1eps} proves the result.
-%\end{proof}
-%\qed
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Layer potentials and boundary integral operators}
@@ -988,27 +834,6 @@ either case, we need to calculate the unknown density.  In order to
 formulate a boundary integral equation that $\sigma$ or $\mu$ solves,
 we require the jump relations of the layer potentials.
 
-%\begin{align*}
-%  u(x) & =  \int\limits_\Gamma G_k(x,y) \,\sigma(y) \,ds_{y}. 
-%\end{align*}
-%\begin{align*}
-%  (-\lap_{\S} + k^2)(\widetilde{W}\mu)(x) & = (-\lap_{\S}+k^2)
-%  \int\limits_\Gamma \mu(y)\, [\underline{\mbox{curl}}_{\S}
-%  G(x,y)\cdot\vec{t}(y)]\,ds_{y} \\
-%  &=\int\limits_\Gamma \mu(y)
-%  [(\lap_{\S}-k^2)\,\underline{\mbox{curl}}_{\S}\,
-%  G(x,y)\cdot\vec{t}(y)]\,ds_{y} \\ 
-%  &=\int\limits_\Gamma \mu(y) [\underline{\mbox{curl}}_{\S} \,
-%  (\lap_{\S} -k^2)G(x,y)\cdot\vec{t}(y)]\,ds_{y} = 0.
-%\end{align*}
-%\begin{align*}
-%  (-\lap_{\S} + k^{2}) (\widetilde{V_k}\sigma)(x)& =
-%  (-\lap_{\S} + k^2) \int\limits_\Gamma G_k(x,y)\, \sigma(y)\,ds_{y} \\
-%  & = \int\limits_\Gamma (-\lap_{\S}+k^2) G_k(x,y)\, 
-%    \sigma(y)\,ds_{y}= \, 0.
-%\end{align*}
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Jump relations for the layer potentials} 
@@ -1042,67 +867,6 @@ in~\eqref{singlelayerpotential}. For $x_{0}\in\Gamma$ we have:
 as a weakly singular line integral and hence $(\widetilde{V_k}\sigma)$
 is continuous across $\Gamma$.
 \end{lemma}
-%\begin{proof}
-%Fix an arbitrary $\varepsilon > 0$. Let $x_0 \in \Gamma$ be fixed, and
-%$x \in \Omega$ satisfy $|x-x_0| < \varepsilon$.  Introduce the notation 
-%\begin{align*}
-%  C_{\e,\leq}:=\{y \in \Gamma,\|y-x_0\|\leq\e\},\qquad  
-%  C_{\e,>}:=\{y\in \Gamma,\|y-x_0\|>\e\}.
-%\end{align*}
-%
-%Then, if we define
-%\begin{align*}
-%  I_{\varepsilon}(x) &: = \int\limits_\Gamma G_k(x,y)
-%  \,\sigma(y) \,ds_{y} - \int_{C_{\e,>}} G_k(x_0,y)
-%  \,\sigma(y)\,ds_{y},
-%\end{align*} 
-%we can easily show
-%\begin{align}
-%  I_{\varepsilon}& =  \int_{C_{\e,>}}
-%  \left[ G_k(x,y)\,-\, G_k(x_0,y) \right]\,\sigma(y)\,ds_{y} +    
-%    \int_{C_{\e,\leq}} G_k(x,y)\, \sigma(y)\, ds_{y}.
-%  \label{lemm}
-%\end{align}
-%The first integral in~\eqref{lemm} vanishes in the limit as
-%$x\rightarrow x_0$ since $P_{\nu(k)}(1-<x,x_0>)$ is continuous away from
-%$<x,x_0>=1$, i.e. where $x=x_0$.  That is, 
-%\begin{align*}
-%  \lim\limits_{x \to x_0} \int_{C_{\e,>}}
-%  \left[G_k(x,y)\,-\,G_k(x_0,y) \right]\,\sigma(y)\,ds_{y} = 0 .
-%\end{align*}
-%The second term in~\eqref{lemm} can be bound in terms of the density
-%$\sigma$:
-%\begin{align*}
-%  &\left|\int_{C_{\e,\leq}}
-%  G_k(x,y)\,\sigma(y)\,ds_{y}\,\right| \, \leq \,
-%  \| \sigma \|_{L_\infty(\Gamma)} \int_{C_{\e,\leq}}
-%  \left| G_k(x,y)\right|\,ds_{y}.
-%\end{align*}
-%To finish the proof, note that we can estimate
-%\begin{align*}
-%  \int_{C_{\e,\leq}} \left| G_k(x,y)\right|\,ds_{y}\,\leq\,
-%  \int\limits_{\substack{y \in \Gamma \\ |y-x| \leq 2\varepsilon}}
-%  \left| G_k(x,y)\right|\,ds_{y}
-%  \buildrel {x\rightarrow x_{0}}\over\longrightarrow 
-%  \int\limits_{\substack{y \in \Gamma \\ |y-x_{0}| \leq 2\varepsilon}}
-%  \left| G_k(x_0,y)\right|\,ds_{y}
-%  \buildrel{\varepsilon\rightarrow 0}\over\longrightarrow 0.
-%\end{align*}
-%As before, the final limit holds since $G_{k}(x_{0},y)$ has a
-%logarithmic singularity at $y = x_{0}$.  Putting these estimates
-%together, we see that  $\displaystyle \lim_{\varepsilon\rightarrow
-%0}\lim_{x\rightarrow x_{0}} I_{\varepsilon}(x)=0$, which proves the
-%assertion.
-%\end{proof}
-%\qed
-
-%The case of the double-layer potential is slightly more involved. We
-%anticipate that, just as for the Laplace-Beltrami double-layer
-%potential~\cite{gemmrich}, the Yukawa-Beltrami double-layer will possess
-%a jump across the boundary of a domain.  Indeed, since $G_k(x,x_0)$ has
-%a logarithmic singularity, the estimates follow the same argument as for
-%the Laplace-Beltrami. The details of the calculation are cumbersome, but
-%the overall strategy is that of Section 8.2 in~\cite{hackbusch}.
 
 Unlike the single-layer potential, the double-layer potential is
 discontinuous across the boundary of the domain.  In particular, we have
@@ -1144,97 +908,6 @@ $\Omega^{c}$ in the sense of Stokes' theorem.
 
 \end{lemma}
 
-%\begin{proof}
-%We provide only a sketch of the proof.  Given $\varepsilon \, > \,0$,
-%let $x\in \Omega^{c}$ with $ \| x-x_0\|<\varepsilon$.   We use the same
-%notation for $C_{\epsilon,\geq}$ and $C_{\epsilon,<}$ introduced
-%earlier.  Then, for fixed $\e>0$, 
-%\begin{align}
-%  (\widetilde{W_k}\mu)(x)-(K_{\varepsilon} \mu)(x_0) = 
-%  \int_{C_{\e,\geq}}\mu(y)\left[\underline{\mbox{curl}}_{\S}\, 
-%  G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_{0},y)
-%  \right]\cdot\vec{t}(y)\, ds_{y} \nonumber\\
-%  +\int_{C_{\e,<}} \mu(y)\,\underline{\mbox{curl}}_{\S}\,
-%  G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
-%  \label{eq:Kjump1}
-%\end{align}
-%We note that the integrand of $\int_{C_{\e,\geq}} \mu(y)
-%\left[\underline{\mbox{curl}}_{\S}\,
-%G_k(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,G_k(x_0,y)\right]\cdot\vec{t}(y)\,
-%ds_{y}$ is continuous in $x$ away from  $x_0$, and therefore 
-%\begin{align*}
-%  \lim_{x\rightarrow x_0}  \int_{C_{\e,\geq}}
-%  \mu(y)\left[\underline{\mbox{curl}}_{\S}\,
-%  G_{k}(x,y)\,-\,\underline{\mbox{curl}}_{\S}\,
-%  G_{k}(x_{0},y)\right]\cdot\vec{t}(y)\,ds_{y} = 0.
-%\end{align*}
-%
-%The integral over $C_{\e,<}$ in~\eqref{eq:Kjump1} can be rewritten as
-%\begin{align}
-%  \int_{C_{\e,<}} \mu(y)\,\underline{\mbox{curl}}_{\S}\,
-%    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} 
-%  = &\int_{C_{\e,<}} \left[\mu(y)-\mu(x_0)\right]\,
-%    \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}
-%    \nonumber \\
-%  + \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
-%    G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
-%  \label{interm}
-%\end{align}
-%For the first integral on the right hand side of~\eqref{interm}, using
-%Lemma~\ref{regularity}, we have the estimate (for a fixed $x$)
-%\begin{align*}
-%  &\left|\int_{C_{\e,<}} \left[\mu(y)-\mu(x_0)\right]\,
-%  \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)
-%  \,ds_{y}\right| \\
-%  &\qquad \leq \sup_{y \in C_{\e,<}} |\mu(y)-\mu(x_0)|
-%  \int_{C_{\e,<}} \left|\underline{\mbox{curl}}_{\S}\,
-%  G_k(x,y)\cdot\vec{t}(y)\right|\,ds_{y}\\
-%  &\qquad \leq M\,\cdot \mbox{length $(C_{\e,<})$}\;
-%  \cdot \sup_{y \in C_{\e,<}} |\mu(y)-\mu(x_0)|
-%\end{align*}
-%for some constant $M$, and hence the integral vanishes in the limit as
-%$\varepsilon\longrightarrow 0$.
-%
-%For the second integral in~\eqref{interm}, we define
-%$\Omega_{\varepsilon}(x_{0}):=\left\{ y\in\Omega^{c}:\; \|x_0-y\|<
-%\varepsilon \right\}$ to see
-%\begin{align*}
-%  \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
-%    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \\
-%  &= \mu(x_0) \left[ \int\limits_{\partial \Omega_{\varepsilon}(x_0)} 
-%  \underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y} - 
-%  \int\limits_{\substack{y \in \Omega^{c} \\ \|y - x_{0}\| =
-%  \varepsilon}}
-%\underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \right].
-%\end{align*}
-%Using the representation formula~\eqref{eq:representationformula} with
-%$u=1$ we have
-%\begin{align*}
-%  \mu(x_0)&\int_{C_{\e,<}} \underline{\mbox{curl}}_{\S}\,
-%    G_k(x,y)\cdot\vec{t}(y)\,ds_{y} \\
-%    &=\;\mu(x_0) \left(1 - \int\limits_{\Omega_{\varepsilon}} 
-%    k^2 G_k(x,y) d\sigma_{y}\right) 
-%   - \mu(x_0) \int\limits_{\substack{y \in \Omega^{c} \\ \|y - x_{0}\| =
-%  \varepsilon}}
-%\underline{\mbox{curl}}_{\S}\,G_k(x,y)\cdot\vec{t}(y)\,ds_{y}.
-%\end{align*}
-%Without loss of generality we can set $x_0$ to be the north pole, and
-%compute the last integral above  to find, for all $x_{0}$: 
-%\begin{align*}
-%  \lim_{\varepsilon\rightarrow 0}
-%  \int\limits_{\substack{y \in \Gamma \\ \|y - x_{0}\| = \varepsilon}}
-%  \underline{\mbox{curl}}_{\S}\,G(x,y)\cdot\vec{t}(y)\,ds_{y}
-%  =\frac{\alpha(x_0)}{2\pi}.
-%\end{align*}
-%Putting the parts together we see that
-%\begin{align*}
-%  \lim_{\varepsilon\rightarrow 0} \lim_{x\rightarrow x_0}
-%  \left((\widetilde{W}\mu)(x)-(K_{\varepsilon}\mu)(x_0)\right)
-%  =\left(1-\frac{\alpha(x_0)}{2\pi}\right)\mu(x_0).
-%\end{align*}
-%\end{proof}
-%\qed
-
 We need to record one further property of this kernel, which will be
 used to understand the convergence properties of our quadrature rule in
 Section~\ref{s:numerics}.
@@ -1243,48 +916,46 @@ Section~\ref{s:numerics}.
 \label{regularity}
 Let $x_0,x$ be points on the sphere, connected by the smooth curve
 $\Gamma$. Let $x_0$ be fixed, and let $\Gamma$ be parametrized by
-$x=x(s), s\in[-A,A]$ such that $x(0)=x_{0}$. Then the kernel of the
+$x=x(s), s\in[-A,A]$ such that $x(\tau)=x_{0}$. Then the kernel of the
 double-layer operator is continuously differentiable in $s$, but the
 second derivative is unbounded. More precisely, the function 
 \begin{align*}
-  f(s):=\underline{\mbox{curl}}_{\S}\,
-    G_{k}(x_0,x(s))\cdot\vec{t}(x(s)), \quad s\in[-A,A], s \neq 0,
+  f(s,\tau):=\underline{\mbox{curl}}_{\S}\,
+    G_{k}(x(\tau),x(s))\cdot\vec{t}(s), \quad s\in[-A,A],
 \end{align*}
 has the following properties:
 \begin{itemize}
 \item 
+\begin{align*}
+  f(s,\tau) = L_{1}(s,\tau) \log(L_{3}(s,t)) + L_{2}(s,\tau),
+\end{align*}
+where $L_{1}, L_{2}$ and $L_{3}$ are analytic.
+\item 
 \begin{align*} 
-  \lim_{\substack {s \rightarrow 0}} f(s) = 
-   \lim_{\substack {x \rightarrow x_{0} \\ x \in \Gamma}}
-   [\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x) \cdot \vec{t}(x)] =  
-   -\frac{1}{4\pi} \kappa \mathbf{t}\cdot(\mathbf{n}_{0}
-    \times \mathbf{x}_0)
+  \lim_{\substack {s \rightarrow \tau}} f(s,\tau) =
+    L_{2}(\tau,\tau) =  -\frac{1}{4\pi} 
+    \kappa \mathbf{t}\cdot(\mathbf{n}_{0} \times \mathbf{x}_{0}).
 \end{align*}
 
 Here $\kappa$ is the principle curvature of $\Gamma$ at $x_{0}$,
-$\mathbf{x}_0$ is the 3-dimensional vector associated with the point
+$\mathbf{x}_{0}$ is the 3-dimensional vector associated with the point
 $x_{0}$ (assuming the origin is located at the center of the sphere),
 $\mathbf{n}_{0}$ is the principle normal of $\Gamma$ at $x_0$ and
 $\mathbf{t}$ is the tangent vector.
-\item $\frac{d}{ds}f(s)$ can be extended to be well-defined and
-continuous at $s=0$.
-\item $\frac{d^2}{ds^2} f(s)$ is unbounded as $s\rightarrow 0$, and
-therefore $f$ cannot be extended to be a $C^{2}$ function on $\Gamma$.
 \end{itemize}
 \end{lemma}
 
 \begin{proof}
-
 We provide a simple argument via l'H\^{o}pital's rule in the case that
 $\Gamma$ is a simple smooth closed curve. For this argument, it is
-easier  to work with points and vectors in $\mathbb{R}^3$.  Let $x_0$,
+easier  to work with points and vectors in $\mathbb{R}^3$.  Let $x_{0}$,
 $x$ be points on the unit sphere. We identify them with the
 3-dimensional vectors $\mathbf{x}_{0}$, $\mathbf{x}$ respectively.  Let
-$\mathbf{t}$ and $\mathbf{n}$ be the unit tangent and normal vectors
-at the point $\mathbf{x} \in \Gamma$ lying in the tangent plane of
+$\mathbf{t}$ and $\mathbf{n}$ be the unit tangent and normal vectors at
+the point $\mathbf{x} \in \Gamma$ lying in the tangent plane of
 $\mathcal{S}$.  We note for future reference that
-$\mathbf{x}=\mathbf{e_r}$, $\mathbf{x} \cdot \mathbf{x} = 1$ and that
-$\mathbf{x} = \mathbf{n} \times \mathbf{t}$. Since $\Gamma$ is
+$\mathbf{x}=\mathbf{e}_{r}$, $\mathbf{x} \cdot \mathbf{x} = 1$, and
+$\mathbf{x}=\mathbf{n} \times \mathbf{t}$. Since $\Gamma$ is
 parametrized by arclength $s$, we also note the following identities:
 
 \begin{align*}
@@ -1303,64 +974,95 @@ straightforward to show that
 We now examine the kernel of the double-layer potential. Calculating the
 three dimensional gradient of the fundamental solution $G$ yields
 \begin{align*}
-  \nabla G_k(x_0,x) &= \C \nabla P_\nu\left(
-    \frac{\|x_0-x\|^2}{2}-1\right) = 
-  -\C P'_\nu\left(\frac{\|x_0-x\|^2}{2}-1\right)
-    (\mathbf{x}_{0}-\mathbf{x}),
+  \nabla G_k(x(\tau),x(s)) &= \C \nabla P_\nu\left(
+    \frac{\|x(\tau)-x(s)\|^2}{2}-1\right) \\
+  &=-\C P'_\nu\left(\frac{\|x(\tau)-x(s)\|^2}{2}-1\right)
+    (\mathbf{x}(\tau)-\mathbf{x}(s)),
 \end{align*}
 which we can decompose into the surface gradient plus a derivative in
 the radial direction. We can write this more concisely as
 \begin{align*}
-\nabla G_k(x_0,x)=-\C P'_{\nu}(z) (\mathbf{x}_0-\mathbf{x}), 
-  \qquad \mbox{where}\qquad z=\frac{\|{ x_0}-{x}\|^2}{2}-1.
+  \nabla G_{k}(x(\tau),x(s))=-\C P'_{\nu}(z) (\mathbf{x}(\tau)-\mathbf{x}(s)), 
+  \qquad \mbox{where}\qquad z=\frac{\|{ x}(\tau)-{x}(s)\|^2}{2}-1.
 \end{align*} 
-The kernel of the double-layer operator is $f(s): =
-[\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x) \cdot \vec{t}(x)]=
-\frac{\partial}{\partial \mathbf{n}} G_k({x}_{0},{x})$, which in turn
+
+The kernel of the double-layer operator is $f(s,\tau)=
+\frac{\partial}{\partial \mathbf{n}} G_{k}({x}_{0},{x})$, which in turn
 can be written as 
 \begin{align*}
- f(s)=\frac{\partial \, }{\partial \mathbf{n}} G_{k}(x_{0},x) 
- =\nabla G_{k} \cdot \mathbf{n} = \nabla G_k\cdot \left( \mathbf{t}
- \times \mathbf{x} \right) 
- =-\C (\mathbf{x}_0-\mathbf{x})P'_{\nu}(z)\cdot \left(
- \mathbf{t} \times \mathbf{x} \right).
+  f(s,\tau)=\frac{\partial \, }{\partial \mathbf{n}} G_{k}(x_{0},x) 
+  =\nabla G_{k} \cdot \mathbf{n}
+  =-\C P'_{\nu}(z)\left(
+    (\mathbf{x}_{0}-\mathbf{x})\cdot \mathbf{n}(s) \right).
 \end{align*}
-Recalling that $P'_{\nu}(z)=-\frac{(\nu+1)}{1-z^2}(P_{\nu+1}(z)-z
-P_{\nu}(z))$~\eqref{difflegp},
+Recalling from~\eqref{difflegp} that
+$P'_{\nu}(z)=-\frac{(\nu+1)}{1-z^{2}}(P_{\nu+1}(z)-z P_{\nu}(z))$,
 \begin{align}
-  f(s) &= \C \frac{(\nu+1)}{1-z^2}\left(
-  P_{\nu+1}(z)-zP_{\nu}(z)\right) 
-  (\mathbf{x}_0-\mathbf{x})\cdot \left(
-  \mathbf{t} \times {\mathbf x} \right) \nonumber\\
-  &= 2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z} \left[
-  \frac{(\mathbf{x}_0-\mathbf{x})}{\|\mathbf{x}_{0}-\mathbf{x}\|^2}
-  \cdot \left( \mathbf{t} \times \mathbf{x} \right)\right].
-  \label{kern1}
-\end{align} 
+  f(s,\tau)= \frac{\C(\nu+1)}{1-z^2} \left(
+    P_{\nu+1}(z)-zP_{\nu}(z)\right)\left(
+  (\mathbf{x}_0-\mathbf{x})\cdot \mathbf{n}(s) \right).
+  \label{colton2}
+\end{align}
+Now, as $s \rightarrow \tau$, $z \rightarrow -1.$ Using the connection
+formulae~\eqref{connect}, and denoting $-z = \zeta$, we
+rewrite~\eqref{colton2} as
+\begin{align}
+ f(s,\tau)= \frac{\C(\nu+1)}{1-z^2}&\left(
+   (\mathbf{x}_0-\mathbf{x})\cdot \mathbf{n}(s) \right) \nonumber \\
+    &\left\{ \frac{2}{\pi}\sin(\nu\pi)
+    \left( -\zeta Q_{\nu}(\zeta) + Q_{\nu+1}(\zeta)\right) 
+    +\cos(\nu\pi)\left(
+    -P_{\nu+1}(\zeta)+\zeta P_\nu(\zeta)\right)\right\}.
+\end{align}
 
-Now, the quantity
+We know each term involving the LegendreP function is smooth at
+$\zeta=1$.  This can be seen by converting the expressions to
+hypergeometric functions with the argument $\frac{1+z}{2}$, which is
+analytic as long as $|z+1| < 2$~\cite{fatAbramowitz} (equation 15.2.1).
+The terms involving $Q_{\nu}(\zeta)$ are not smooth.
+By~\eqref{Qasymptotics}, as $\zeta \rightarrow 1$, we know that $\zeta
+Q_\nu(\zeta) - Q_{\nu+1}(\zeta)$ has a singularity of form
+$\frac{1-\zeta}{2}\log(1-\zeta)$.  Using this fact, we can write
 \begin{align*}
-  2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z}
-  =4\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{4-\|{x_0}-{x}\|^2},
+ f(s,\tau)&= L_{1}(s,\tau)\log(L_3(s,\tau)) + L_2(s,\tau), \\
+ L_1(s,\tau) &= - \frac{(1+\nu)}{1-\zeta^2}\left(
+    (\mathbf{x}_{0}-\mathbf{x})\cdot \mathbf{n}(s) \right) 
+    \frac{1}{4\pi}(1-\zeta), \\ 
+ L_{3}(s,\tau)&= 1-\zeta = 1+ z = \frac{\|x(\tau) - x(s)\|^2}{2}, \\
+ L_{2}(s,\tau)&= f(s,\tau) - L_{1}(s,\tau)\log(L_{3}(s,\tau)).
 \end{align*}
-has a well-defined limit as $x \rightarrow
-x_{0}$~\eqref{doublelayerwithz}. In fact,
-following~\eqref{doublelayerwithz}
-\begin{align*}
-  \lim_{x\rightarrow x_0} 
-  \C[\underline{\mbox{curl}}_{\S}G_{k}(x_{0},x) \cdot \vec{t}(x)] 
-  = \C(\nu+1)\lim_{z\rightarrow 1^-}
-  P_{\nu+1}(-z)+zP_{\nu}(-z)) = -\frac{1}{2\pi}.
-\end{align*}
+It is clear that $L_{1}(s,\tau)$ and $L_{3}(s,\tau)$ are smooth.
+Indeed, when $s$ is close to $\tau$, the normal $\mathbf{n}(s)$ becomes
+nearly orthogonal to the curve $x(\tau)-x(s)$. Therefore, $f(\tau,\tau)
+= L_{2}(\tau,\tau).$  Moreover, by inspection of the series involved in
+the definitions of $Q_{\nu},P_{\nu}$, we see that $L_{2}(s,\tau)$ is
+also smooth, since we have precisely subtracted the logarithmic
+singularity. Note that this argument is very similar to that used
+in~\cite{coltonkress}
 
-The remaining term in~\eqref{kern1} is $q(x,x_0) :=
-\frac{(\mathbf{x}_{0}-\mathbf{x})}{\|\mathbf{x}_{0}-\mathbf{x}\|^2}
-\cdot \left( \mathbf{t} \times \mathbf{x} \right).$  This term can be
-shown to be continuous as $\mathbf{x} \rightarrow \mathbf{x}_{0}$ by
-l'H\^{o}pital's rule.  A first application of l'H\^{o}pital's rule to
-evaluate $q(x,x_0)$ at the point of singularity, $x = x_{0}$, 
+It remains to precisely compute $f(\tau,\tau)$. To this end, we recall
+that from~\eqref{doublelayerwithz},
 \begin{align*}
-  \lim_{x \rightarrow x_{0}}q(x,x_{0}) & = 
+  \C(\nu+1)\lim_{z\rightarrow 1^-} 
+    (P_{\nu+1}(-z)+zP_{\nu}(-z)) = -\frac{1}{2\pi}.
+\end{align*}
+From~\eqref{colton2}, 
+\begin{align*}
+  \lim_{s\rightarrow \tau}f(s,\tau) = -\frac{1}{2\pi} \lim_{s\rightarrow \tau}
+  \frac{(\mathbf{x}_{0}-\mathbf{x})}{\|\mathbf{x}_{0}-\mathbf{x}\|^2} \cdot
+  \left(\mathbf{t} \times \mathbf{x} \right) =
+  -\frac{1}{2\pi}\lim_{s\rightarrow \tau}q(x(\tau),x(s))
+\end{align*}
+where
+$q(x(\tau),x(s)):=\frac{\mathbf{x}(s)-\mathbf{x}(\tau)}{\|\mathbf{x}(s)-\mathbf{x}(\tau)\|^2}
+\cdot \left(\mathbf{t} \times \mathbf{x} \right).$ 
+
+This term can be shown to be continuous as $\mathbf{x} \rightarrow
+\mathbf{x}_{0}$ by l'H\^{o}pital's rule.  A first application of
+l'H\^{o}pital's rule to evaluate $q(x_{0},x)$ at the point of
+singularity, $x = x_{0}$, 
+\begin{align*}
+  \lim_{x \rightarrow x_{0}}q(x_{0},x) & = 
   \lim_{x \rightarrow x_{0}} 
   \frac{ -\mathbf{t} \cdot \left(\mathbf{t} \times \mathbf{x} \right)
   + (\mathbf{x}_{0}-\mathbf{x}) \cdot \left( \kappa \mathbf{n}
@@ -1373,105 +1075,22 @@ evaluate $q(x,x_0)$ at the point of singularity, $x = x_{0}$,
 \end{align*}
 Proceeding with a second application of l'H\^{o}pital's rule yields
 \begin{align*}
-  \lim_{x \rightarrow x_{0}} q(x,x_0)  
+  \lim_{x \rightarrow x_{0}} q(x_{0},x)  
   & = \lim_{x \rightarrow x_{0}} \frac{-\mathbf{t} \cdot 
   \left( \kappa \mathbf{n} \times \mathbf{x} \right) +
-  \mathcal{O}(\mathbf{x}_{0}-\mathbf{x})}
-  {-2\mathbf{t} \cdot \mathbf{t} + \mathcal{O}(\mathbf{x}_{0}-\mathbf{x})}
+  \mathcal{O}(\mathbf{x} - \mathbf{x}_{0})}
+  {-2\mathbf{t} \cdot \mathbf{t} + \mathcal{O}(\mathbf{x}-\mathbf{x}_{0})}
   = \frac{1}{2} \mathbf{t} \cdot \left( \kappa \mathbf{n}_{0} \times 
   \mathbf{x}_{0} \right).
 \end{align*}
-This shows that $f(s)$ has a well-defined limit as $s\rightarrow 0$,
-that is, as $x \rightarrow x_0$. The kernel of the double-layer operator
-can therefore be made continuous in the arclength parameter.
 
-If we now examine $\frac{d}{ds}f(s)$, we obtain
-\begin{align*} 
-  f'(s)&= -\C \frac{d}{ds}\left( P'_\nu(z)(\mathbf{x_0}-\mathbf{x}) \cdot 
-    \mathbf{n} \right) \\
-  &=-C_{k} \left\{P''_{\nu}(z) \frac{dz}{ds}
-    (\mathbf{x}_{0}-\mathbf{x})  \cdot \mathbf{n} - P'_{\nu}(z)
-    (-\mathbf{t} \cdot \mathbf{n}) + P'_\nu(z)\left((\mathbf{x}_{0} -
-    \mathbf{x}) \cdot \frac{d}{ds}\mathbf{n}\right)\right\}.
- \end{align*}
-Since $P_\nu(z)$ solves Legendre's equation~\eqref{LegendrePequation}
-and since $\mathbf{x},\mathbf{t}, \mathbf{n}$ form an orthogonal set,
-we have
-\begin{align*}
-  f'(s) =-C_k \left\{\frac{2zP'_{\nu}(z)-\nu(\nu+1)P_{\nu}(z)}{1-z^2}
-  \frac{dz}{ds}(\mathbf{x}_{0}-\mathbf{x})\cdot \mathbf{n} + \kappa
-  P'_\nu(z)((\mathbf{x}_{0}-\mathbf{x})\cdot (\mathbf{n} \times 
-  \mathbf{x})\right\}.
-\end{align*}
-Applying L'H\^{o}pital's rule to each of the terms above, we see that
-$f'(s)$ has a well-defined and bounded limit at $s \rightarrow 0$.
-Therefore, the kernel of the double-layer operator is differentiable in
-the arclength parameter, with bounded derivative as $s \rightarrow 0$. 
-
-However,
-\begin{align*} 
-  f''(s) &= -\C \frac{d^2}{ds^2}\left( P'_\nu(z) 
-  (\mathbf{x}_{0}-\mathbf{x}) \cdot \mathbf{n} \right) = 
-    -C_{k}\frac{d}{ds}\left\{P''_{\nu}(z) \frac{dz}{ds}
-    (\mathbf{x}_{0}-\mathbf{x})  \cdot \mathbf{n} + 
-    P'_\nu(z)\left((\mathbf{x}_{0} -
-    \mathbf{x}) \cdot \frac{d}{ds}\mathbf{n}\right)\right\}
-\end{align*}
-is not bounded as $s\rightarrow 0$. The most singular contribution to
-$f''(s)$ as $s\rightarrow 0$ is from the third derivative of $P_{\nu}$.
-More specifically, the most singular contribution to $f''(s)$ as
-$s\rightarrow 0$ is from the term 
-\begin{align*}
-  P_{\nu}'''(z) \left(\frac{dz}{ds}\right)^2 
-    (\mathbf{x}_{0}-\mathbf{x}) \cdot \mathbf{n}.
-\end{align*}
-We obtain insight into the behaviour of $f''(s)$ by examining the
-structure of $f(s)$ in detail:
-\begin{align*}
-  f(s) &= 2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z} \left[
-  \frac{(\mathbf{x}_{0}-\mathbf{x})}{\|\mathbf{x}_{0}-\mathbf{x}\|^2}
-  \cdot \left( \mathbf{t} \times \mathbf{x} \right)\right] \\
-  &= 2\C(\nu+1)\frac{P_{\nu+1}(z)-zP_{\nu}(z)}{1-z} q(x,x_0).
-\end{align*}
-As $x\rightarrow x_{0}$, $z \rightarrow -1.$ We have already seen that
-$q(x,x_{0})$ is continuous \todo{Nilima: we need it to be smooth} as
-$x\rightarrow x_0$, as is $\frac{1}{1-z}$.  We want to examine the
-behaviour of $P_{\nu+1}(z) - zP_{\nu}(z)$ as $z\rightarrow -1$.
-From~\eqref{bigmess1}, we have
-\begin{align*}
-  P_{\nu+1}(z)-zP_{\nu}(z)
-  = \cos(\nu \pi)\left[-P_{\nu+1}(-z) - zP_{\nu}(-z) \right] 
-  -\frac{2}{\pi}\sin(\nu \pi)\left[-zQ_{\nu}(-z) - Q_{\nu+1}(-z) \right].
-\end{align*}
-Each term involving the LegendreP function is smooth at $z = -1$.  This
-can be seen by converting the expressions to hypergeometric functions
-with the argument $\frac{1+z}{2}$, which is analytic as long as $|z+1|
-< 2$~\cite{fatAbramowitz} (equation 15.2.1).  The second term involving
-$Q_{\nu}(-z)$ is not smooth.  By~\eqref{Qasymptotics}, as $z
-\rightarrow -1$, we have
-\begin{align*}
-  -zQ_{\nu}(-z) - Q_{\nu+1}(-z) &= -z\left(
-    -\frac{1}{2}\log(1+z) + R(\nu)\right) - 
-    \left(-\frac{1}{2}\log(1+z) - R(\nu+1)\right) \\
-  &= \frac{1+z}{2}\log(1+z) + -zR(\nu) + R(\nu+1) \\
-  &= A(1+z)\log(1+z) + B(1+z),
-%tQ_{\nu}(t) - Q_{\nu+1}(t) &= t\left(-\frac{1}{2}\log(1-t) + 
-%  R(\nu) + \bigO(1-t)\right) - \left(-\frac{1}{2}\log(1-t) + 
-%    R(\nu+1) + \bigO(1-t)\right) \\
-%    &=-\frac{1}{2} (t-1)\log(1-t) + [\psi(\nu+1)-\psi(\nu+2)] + \bigO(1-t) + \big(t(1-t)).
-\end{align*}
-where $A$ and $B$ are smooth.  Clearly, therefore, as $z\rightarrow
--1$, $P_{\nu+1}(z) -z P_{\nu}(z)$ is of the form $A(1+z) \log(1+z) +
-B(1+z)$, where $A$ and $B$ are smooth.  Consequently, near $s=0$,
-$f(s)$ has the form $A(s) + B(s) \log(s)$ where $A(s)$ and $B(s)$ are
-smooth.
 \end{proof}
 \qed
 
 From Lemma~\ref{regularity}, we see that the kernel of the double-layer
-operator, $\underline{\mbox{curl}}_{\S}\, G_{k}(x,y)\cdot\vec{t}(y)$, is
-continuous at $x \in \Gamma$ as a function of $y$.  This allows us to
-conclude that the integral operator $\widetilde{W_k}$ is a compact
+operator, $\underline{\mbox{curl}}_{\S}\, G_{k}(x,y)\cdot\vec{t}(y)$,
+is continuous at $x \in \Gamma$ as a function of $y$.  This allows us
+to conclude that the integral operator $\widetilde{W_k}$ is a compact
 operator from $L^{2}(\Gamma)$ to itself.  The compactness, in addition
 to the jump $1-\alpha(x_0)/(2\pi)$ (Lemma~\ref{l:DLPjump}) guarantees
 that the double-layer potential representation will result in a second
@@ -1561,8 +1180,6 @@ third-order accuracy, and the error of the Alpert quadrature formula
 quickly decays to the GMRES tolerance.
 
 \begin{figure}[htps]
-%  \includegraphics[width=0.5\textwidth]{vortexBC1}
-%  \includegraphics[width=0.5\textwidth]{vortexBC2}
   \includegraphics[width=0.5\textwidth]{Fig1}
   \includegraphics[width=0.5\textwidth]{Fig2}
 \caption{\label{f:twoply} A numerical solution of the Yukawa-Beltrami
@@ -1677,7 +1294,6 @@ digits.  A plot of the solution is in Figure~\ref{f:36ply}.
 
 \begin{figure}
   \centering
-%  \includegraphics[width=0.5\textwidth]{constBC}
   \includegraphics[width=0.5\textwidth]{Fig3}
   \caption{\label{f:36ply} The numerical solution of the Yukawa-Beltrami
   equation with $k=4$ in a 36-ply connected domain.  The Dirichlet
@@ -1753,6 +1369,10 @@ Chaplain, M., Ganesh, M., Graham, I.: {Spatio-temporal Pattern Formation on
   Spherical Surfaces: Numerical Simulation and Application to Solid Tumour
   Growth}.
 \newblock J. Math. Biology \textbf{42}, 387--423 (2001)
+\bibitem{coltonkress}
+Colton, D., Kress, R.: Inverse acoustic and electromagnetic scattering theory,
+  vol.~93.
+\newblock Springer Science \& Business Media (2012)
 
 \bibitem{floater}
 Floater, M.S., Hormann, K.: {Surface Parameterization: a Tutorial and Survey}.
