@@ -350,24 +350,23 @@ With $\vec{W}(x) = \underline{\mbox{curl}}_{\S} u(x)$ we finally
 obtain Green's first formula for the Laplace-Beltrami operator
 $\lap_{\S}$,
 \begin{align}
-  \label{Green1}
   -\int\limits_{\Omega} \underline{\mbox{curl}}_{\S} v(x) \cdot
   \underline{\mbox{curl}}_{\S} u(x) \, d\sigma_x 
   =& \int\limits_{\Gamma} v(x) [\underline{\mbox{curl}}_S u(x) \cdot 
   \mathbf{t}(x)] ds_x +\int\limits_{\Omega} v(x) \lap_{\S}u(x) d\sigma_x.
+  \label{Green1}
 \end{align}
 
 We obtain Green's second formula by interchanging the roles of $u$ and
 $v$ in~\eqref{Green1}, subtracting the two identities, and using the
 symmetry of the left hand side
-\begin{align}
+\begin{align*}
   &\int\limits_{\Omega} v(x)(-\lap_{\S}u(x) + k^2 u(x))-
   u(x)(-\lap_{\S}v(x) +k^2v(x))\, d\sigma_x \nonumber \\
   =&\int\limits_\Gamma [v(x)\,\underline{\mbox{curl}}_{\S} 
   u(x) - u(x)\, \underline{\mbox{curl}}_{\S}v(x)] \cdot 
   \vec{t}(x) ds_x.
-  \label{Green2}
-\end{align}
+\end{align*}
 
 We shall make extensive use of these identities.
 
@@ -533,7 +532,8 @@ k^2$ for points $x,x_0$ on the surface of the unit sphere is
     &= \C\, \tensor[_2]{F}{_1} \left(-\nu, \nu+1; 1; 
       \frac{1+<x,x_{0}>}{2}\right)\label{hyperG} \\
     &=\C P_{-\frac{1}{2} + i \tau}
-    \left(<x,x_{0}>\right) \label{conicalP},
+    \left(<x,x_{0}>\right) 
+    \label{conicalP},
   \end{align} 
 \end{subequations}
 where 
@@ -613,7 +613,7 @@ $\mu=0$):
 \end{align}
 Combining~\eqref{connect} with~\eqref{Pasymptotics}
 and~\eqref{Qasymptotics}, we obtain
-\begin{align}
+\begin{align*}
   \lim_{x\rightarrow x_{0}}G_k(x,x_{0}) &= \lim_{x\rightarrow x_{0}}
       \C P_{\nu}(-<x,x_{0}>) \nonumber \\
   &= \lim_{x\rightarrow x_{0} }\C\left(\cos(\nu\pi)
@@ -626,8 +626,7 @@ and~\eqref{Qasymptotics}, we obtain
   &=\frac{\C\sin(\nu\pi)}{\pi}\lim_{x\rightarrow x_0}
       \log(1-<x,x_0>) + \C\left[\cos(\nu\pi)-
       2\frac{\sin(\nu\pi)}{\pi}R(\nu)\right].
-  \label{e:logSingularity}
-\end{align}
+\end{align*}
 Therefore, as $x\rightarrow x_{0}$ $G_k(x,x_{0})$ possesses a
 logarithmic singularity (recall that $\nu$ is not an integer).  At this
 point, we could predict a value for $\C$ so that the strength the
@@ -1006,14 +1005,14 @@ $P'_{\nu}(z)=-\frac{(\nu+1)}{1-z^{2}}(P_{\nu+1}(z)-z P_{\nu}(z))$,
 Now, as $s \rightarrow \tau$, $z \rightarrow -1.$ Using the connection
 formulae~\eqref{connect}, and denoting $-z = \zeta$, we
 rewrite~\eqref{colton2} as
-\begin{align}
+\begin{align*}
  f(s,\tau)= \frac{\C(\nu+1)}{1-z^2}&\left(
    (\mathbf{x}_0-\mathbf{x})\cdot \mathbf{n}(s) \right) \nonumber \\
     &\left\{ \frac{2}{\pi}\sin(\nu\pi)
     \left( -\zeta Q_{\nu}(\zeta) + Q_{\nu+1}(\zeta)\right) 
     +\cos(\nu\pi)\left(
     -P_{\nu+1}(\zeta)+\zeta P_\nu(\zeta)\right)\right\}.
-\end{align}
+\end{align*}
 
 We know each term involving the LegendreP function is smooth at
 $\zeta=1$.  This can be seen by converting the expressions to
@@ -1034,11 +1033,13 @@ $\frac{1-\zeta}{2}\log(1-\zeta)$.  Using this fact, we can write
 It is clear that $L_{1}(s,\tau)$ and $L_{3}(s,\tau)$ are smooth.
 Indeed, when $s$ is close to $\tau$, the normal $\mathbf{n}(s)$ becomes
 nearly orthogonal to the curve $x(\tau)-x(s)$. Therefore, $f(\tau,\tau)
-= L_{2}(\tau,\tau).$  Moreover, by inspection of the series involved in
-the definitions of $Q_{\nu},P_{\nu}$, we see that $L_{2}(s,\tau)$ is
-also smooth, since we have precisely subtracted the logarithmic
-singularity. Note that this argument is very similar to that used
-in~\cite{coltonkress}
+= L_{2}(\tau,\tau).$  Moreover, $P_{\nu}(x)$ is analytic. The terms
+involving $Q_{_\nu}(x)$ can be rewritten in terms of hypergeometric
+functions. We can then use the linear transformation formulae in
+Section 15.3 and the expressions 15.3.10 in~\cite{fatAbramowitz} to see
+that $L_{2}(s,\tau)$ is also smooth, since we have precisely subtracted
+the logarithmic singularity. Note that this argument is very similar to
+that used in~\cite{coltonkress}.
 
 It remains to precisely compute $f(\tau,\tau)$. To this end, we recall
 that from~\eqref{doublelayerwithz},
